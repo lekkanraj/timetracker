@@ -87,7 +87,7 @@ if(!empty($userInfo))
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="role">Role</label>
-                                        <select class="form-control" id="role" name="role">
+                                        <select class="form-control" id="role" name="role" disabled="disabled">
                                             <option value="0">Select Role</option>
                                             <?php
                                             if(!empty($roles))

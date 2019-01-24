@@ -70,6 +70,30 @@ class BaseController extends CI_Controller {
 	}
 	
 	/**
+	 * This function is used to check the access
+	 */
+	function isTeamLead() {
+	    if ($this->role != ROLE_MANAGER) {
+	        return true;
+	    } else {
+	        return false;
+	    }
+	}
+	
+	/**
+	 * This function is used to check the access
+	 */
+	function isAdminManager() {
+	    if ($this->role == ROLE_ADMIN) {
+	        return false;
+	    }elseif($this->role == ROLE_MANAGER) {
+	        return false;
+	    }else {
+	        return true;
+	    }
+	}
+	
+	/**
 	 * This function is used to load the set of views
 	 */
 	function loadThis() {

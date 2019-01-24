@@ -9,6 +9,9 @@ class User_model extends CI_Model
      */
     function userListingCount($searchText = '')
     {
+        $userId=$this->session->userdata('userId');
+        $roleId= $this->session->userdata('role');
+        
         $this->db->select('BaseTbl.userId, BaseTbl.email, BaseTbl.name, BaseTbl.mobile, Role.role');
         $this->db->from('tbl_users as BaseTbl');
         $this->db->join('tbl_roles as Role', 'Role.roleId = BaseTbl.roleId','left');
@@ -19,7 +22,13 @@ class User_model extends CI_Model
             $this->db->where($likeCriteria);
         }
         $this->db->where('BaseTbl.isDeleted', 0);
-        $this->db->where('BaseTbl.roleId !=', 1);
+        if($roleId==ROLE_MANAGER){
+            $this->db->where('BaseTbl.roleId =', ROLE_EMPLOYEE);
+            $this->db->where('BaseTbl.leadId =', $userId);
+        }else{
+            $this->db->where('BaseTbl.roleId !=', ROLE_ADMIN);
+        }
+        
         $query = $this->db->get();
         
         return count($query->result());
@@ -34,6 +43,8 @@ class User_model extends CI_Model
      */
     function userListing($searchText = '', $page, $segment)
     {
+        $userId=$this->session->userdata('userId');
+        $roleId= $this->session->userdata('role');
         $this->db->select('BaseTbl.userId, BaseTbl.email, BaseTbl.name, BaseTbl.mobile, Role.role');
         $this->db->from('tbl_users as BaseTbl');
         $this->db->join('tbl_roles as Role', 'Role.roleId = BaseTbl.roleId','left');
@@ -44,7 +55,12 @@ class User_model extends CI_Model
             $this->db->where($likeCriteria);
         }
         $this->db->where('BaseTbl.isDeleted', 0);
-        $this->db->where('BaseTbl.roleId !=', 1);
+        if($roleId==ROLE_MANAGER){
+            $this->db->where('BaseTbl.roleId =', ROLE_EMPLOYEE);
+            $this->db->where('BaseTbl.leadId =', $userId);
+        }else{
+            $this->db->where('BaseTbl.roleId !=', ROLE_ADMIN);
+        }
         $this->db->limit($page, $segment);
         $query = $this->db->get();
         

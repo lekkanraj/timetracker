@@ -36,7 +36,7 @@ class User extends BaseController
      */
     function userListing()
     {
-        if($this->isAdmin() == TRUE)
+        if($this->isAdminManager() == TRUE)
         {
             $this->loadThis();
         }
@@ -66,7 +66,7 @@ class User extends BaseController
      */
     function addNew()
     {
-        if($this->isAdmin() == TRUE)
+        if($this->isAdminManager() == TRUE)
         {
             $this->loadThis();
         }
@@ -74,7 +74,7 @@ class User extends BaseController
         {
             $this->load->model('user_model');
             $data['roles'] = $this->user_model->getUserRoles();
-            
+            $data['roleId']=$this->session->userdata ( 'role' );
             $this->global['pageTitle'] = 'Add New User';
 
             $this->loadViews("addNew", $this->global, $data, NULL);
@@ -104,7 +104,7 @@ class User extends BaseController
      */
     function addNewUser()
     {
-        if($this->isAdmin() == TRUE)
+        if($this->isAdminManager() == TRUE)
         {
             $this->loadThis();
         }
@@ -132,7 +132,7 @@ class User extends BaseController
                 $mobile = $this->input->post('mobile');
                 
                 $userInfo = array('email'=>$email, 'password'=>getHashedPassword($password), 'roleId'=>$roleId, 'name'=> $name,
-                                    'mobile'=>$mobile, 'createdBy'=>$this->vendorId, 'createdDtm'=>date('Y-m-d H:i:s'));
+                    'mobile'=>$mobile, 'createdBy'=>$this->vendorId, 'leadId'=>$this->vendorId,'createdDtm'=>date('Y-m-d H:i:s'));
                 
                 $this->load->model('user_model');
                 $result = $this->user_model->addNewUser($userInfo);
@@ -158,7 +158,7 @@ class User extends BaseController
      */
     function editOld($userId = NULL)
     {
-        if($this->isAdmin() == TRUE || $userId == 1)
+        if($this->isAdminManager() == TRUE)
         {
             $this->loadThis();
         }
@@ -184,7 +184,7 @@ class User extends BaseController
      */
     function editUser()
     {
-        if($this->isAdmin() == TRUE)
+        if($this->isAdminManager() == TRUE)
         {
             $this->loadThis();
         }

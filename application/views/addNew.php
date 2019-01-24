@@ -13,9 +13,6 @@
             <!-- left column -->
             <div class="col-md-8">
               <!-- general form elements -->
-                
-                
-                
                 <div class="box box-primary">
                     <div class="box-header">
                         <h3 class="box-title">Enter User Details</h3>
@@ -60,7 +57,7 @@
                                         <input type="text" class="form-control required digits" id="mobile" name="mobile" maxlength="10">
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <!-- <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="role">Role</label>
                                         <select class="form-control required" id="role" name="role">
@@ -78,11 +75,22 @@
                                             ?>
                                         </select>
                                     </div>
-                                </div>    
+                                </div>  -->
+                                   
                             </div>
                         </div><!-- /.box-body -->
     
                         <div class="box-footer">
+                        <?php 
+                        if($roleId==ROLE_ADMIN){
+                            $role=ROLE_MANAGER;
+                        }elseif($roleId==ROLE_MANAGER){
+                            $role=ROLE_EMPLOYEE;
+                        }else{
+                            $role=ROLE_ADMIN;
+                        }
+                        ?>
+                        	<input type="hidden" name=role value="<?php echo $role;?>" >
                             <input type="submit" class="btn btn-primary" value="Submit" />
                             <input type="reset" class="btn btn-default" value="Reset" />
                         </div>
