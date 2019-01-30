@@ -72,5 +72,9 @@ $route['createPasswordUser'] = "login/createPasswordUser";
 $route['addNewTl'] = "user/addNewTl";
 $route['addNewEmp'] = "user/addNewEmp";
 
+$route['ajax/break'] = "ajax/break";
+$route['logoff'] = "login/logoff";
+
+
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

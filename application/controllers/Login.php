@@ -16,6 +16,7 @@ class Login extends CI_Controller
     {
         parent::__construct();
         $this->load->model('login_model');
+        $this->load->model('common_model');
     }
 
     /**
@@ -77,6 +78,27 @@ class Login extends CI_Controller
                                     );
                                     
                     $this->session->set_userdata($sessionArray);
+                    
+                    /*Day Tracking Insert*/
+                    $userId=$this->session->userdata ( 'userId' );
+                    $currentTime=date("Y-m-d h:i:s");
+                    $currentDate=date("Y-m-d");
+                    $where=array(
+                        'userid'=>$userId,
+                        'created_on'=>$currentDate
+                    );
+                    $count=0;
+                    $count=$this->common_model->get_num_rows(TABLE_DAILY_TRACKING,$where);
+                    if($count<=0){
+                        $data=array(
+                            'userid'=>$userId,
+                            'day_start'=>$currentTime,
+                            'day_end'=>$currentTime,
+                            'created_on'=>$currentDate,
+                        );
+                        $res= $this->common_model->insert_db(TABLE_DAILY_TRACKING,$data);
+                    }
+                    
                     
                     redirect('/dashboard');
                 }
@@ -230,6 +252,33 @@ class Login extends CI_Controller
 
             redirect("/login");
         }
+    }
+    
+    function logoff(){
+        $userId=$this->session->userdata ( 'userId' );
+        $currentTime=date("Y-m-d h:i:s");
+        $currentDate=date("Y-m-d");
+        $where=array(
+            'userid'=>$userId,
+            'created_on'=>$currentDate
+        );
+        $select=array('day_start');
+        $count=0;
+        $count=$this->common_model->selectData(TABLE_DAILY_TRACKING,$select,$where);
+       
+        if(count($count)>0){
+            $count=$count[0];
+            $dayStart=$count->day_start;
+            $spendHours=timeDifference($dayStart,$currentTime);
+            $data=array(
+                'day_end'=>$currentTime,
+                'spend_hours'=>$spendHours,
+            );
+            $res= $this->common_model->edit_db(TABLE_DAILY_TRACKING,$data,$where);
+            redirect("/logout");
+        }
+        redirect("/dashboard");
+        
     }
 
 

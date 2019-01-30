@@ -82,12 +82,12 @@
     
                         <div class="box-footer">
                         <?php 
-                        if($roleId==ROLE_ADMIN){
-                            $role=ROLE_MANAGER;
-                        }elseif($roleId==ROLE_MANAGER){
+                        if($roleId==ROLE_MANAGER){
+                            $role=ROLE_TEAMLEAD;
+                        }elseif($roleId==ROLE_TEAMLEAD){
                             $role=ROLE_EMPLOYEE;
                         }else{
-                            $role=ROLE_ADMIN;
+                            $role=ROLE_MANAGER;
                         }
                         ?>
                         	<input type="hidden" name=role value="<?php echo $role;?>" >

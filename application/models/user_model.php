@@ -22,11 +22,11 @@ class User_model extends CI_Model
             $this->db->where($likeCriteria);
         }
         $this->db->where('BaseTbl.isDeleted', 0);
-        if($roleId==ROLE_MANAGER){
+        if($roleId==ROLE_TEAMLEAD){
             $this->db->where('BaseTbl.roleId =', ROLE_EMPLOYEE);
             $this->db->where('BaseTbl.leadId =', $userId);
         }else{
-            $this->db->where('BaseTbl.roleId !=', ROLE_ADMIN);
+            $this->db->where('BaseTbl.roleId !=', ROLE_MANAGER);
         }
         
         $query = $this->db->get();
@@ -55,11 +55,11 @@ class User_model extends CI_Model
             $this->db->where($likeCriteria);
         }
         $this->db->where('BaseTbl.isDeleted', 0);
-        if($roleId==ROLE_MANAGER){
+        if($roleId==ROLE_TEAMLEAD){
             $this->db->where('BaseTbl.roleId =', ROLE_EMPLOYEE);
             $this->db->where('BaseTbl.leadId =', $userId);
         }else{
-            $this->db->where('BaseTbl.roleId !=', ROLE_ADMIN);
+            $this->db->where('BaseTbl.roleId !=', ROLE_MANAGER);
         }
         $this->db->limit($page, $segment);
         $query = $this->db->get();

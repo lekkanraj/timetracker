@@ -149,4 +149,12 @@ if(!function_exists('setFlashData'))
     }
 }
 
+function timeDifference($startTime,$endTime){
+    $datetime1 = new DateTime($startTime);
+    $datetime2 = new DateTime($endTime);
+    $interval = $datetime1->diff($datetime2);
+    
+    return $interval->format('%h').":".$interval->format('%i');
+}
+
 ?>
