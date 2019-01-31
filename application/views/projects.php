@@ -2,7 +2,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <i class="fa fa-users"></i> User Management
+        <i class="fa fa-users"></i> Project Management
         <small>Add, Edit, Delete</small>
       </h1>
     </section>
@@ -10,11 +10,7 @@
         <div class="row">
             <div class="col-xs-12 text-right">
                 <div class="form-group">
-                <?php $roleId=$this->session->userdata ( 'role' );
-                if($roleId==ROLE_MANAGER){
-                ?>
-                    <a class="btn btn-primary" href="<?php echo base_url(); ?>addNew"><i class="fa fa-plus"></i> Add New</a>
-                <?php }?>
+                    <a class="btn btn-primary" href="<?php echo base_url().'admin/addproject'; ?>"><i class="fa fa-plus"></i> Add New</a>
                 </div>
             </div>
         </div>
@@ -22,9 +18,9 @@
             <div class="col-xs-12">
               <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">Users List</h3>
+                    <h3 class="box-title">Project List</h3>
                     <div class="box-tools">
-                        <form action="<?php echo base_url() ?>userListing" method="POST" id="searchList">
+                        <form action="<?php echo base_url() ?>admin/projectlist" method="POST" id="searchList">
                             <div class="input-group">
                               <input type="text" name="searchText" value="<?php echo $searchText; ?>" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Search"/>
                               <div class="input-group-btn">
@@ -38,34 +34,31 @@
                   <table class="table table-hover">
                     <tr>
                       <th>Id</th>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Mobile</th>
-                      <?php  if($roleId==ROLE_MANAGER){?>
-                      <th>Role</th>                      
+                      <th>Project Name</th>
+                      <th>Shift Start</th>
+                      <th>Shift End</th>
+                      <th>Breaks Count</th>                      
                       <th class="text-center">Actions</th>
-                      <?php }?>
+                   
                     </tr>
                     <?php
-                    if(!empty($userRecords))
+                    if(!empty($Info))
                     {
-                        foreach($userRecords as $record)
+                        foreach($Info as $record)
                         {
                     ?>
-                    <tr>
-                      <td><?php echo $record->userId ?></td>
-                      <td><?php echo $record->name ?></td>
-                      <td><?php echo $record->email ?></td>
-                      <td><?php echo $record->mobile ?></td>
-                      <?php  if($roleId==ROLE_MANAGER){?>
-                      <td><?php echo $record->role ?></td>
-                      <td class="text-center">
-                          <a class="btn btn-sm btn-info" href="<?php echo base_url().'editOld/'.$record->userId; ?>"><i class="fa fa-pencil"></i></a>
-                          <a class="btn btn-sm btn-danger deleteUser" href="#" data-userid="<?php echo $record->userId; ?>"><i class="fa fa-trash"></i></a>
-                      </td>
-                      <?php }?>
-                    </tr>
-                    <?php
+                        <tr>
+                          <td><?php echo $record->id ?></td>
+                          <td><?php echo $record->name ?></td>
+                          <td><?php echo $record->shift_start_time ?></td>
+                          <td><?php echo $record->shift_end_time ?></td>
+                          <td><?php echo $record->breaks_count ?></td>
+                          <td class="text-center">
+                              <a class="btn btn-sm btn-info" href="<?php //echo base_url().'editOld/'.$record->id; ?>"><i class="fa fa-pencil"></i></a>
+                              <a class="btn btn-sm btn-danger deleteUser" href="#" data-userid="<?php //echo $record->id; ?>"><i class="fa fa-trash"></i></a>
+                          </td>
+                        </tr>
+                        <?php
                         }
                     }
                     ?>
@@ -87,7 +80,7 @@
             e.preventDefault();            
             var link = jQuery(this).get(0).href;            
             var value = link.substring(link.lastIndexOf('/') + 1);
-            jQuery("#searchList").attr("action", baseURL + "userListing/" + value);
+            jQuery("#searchList").attr("action", baseURL + "admin/projectlist/" + value);
             jQuery("#searchList").submit();
         });
     });

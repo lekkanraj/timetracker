@@ -60,30 +60,78 @@
         <div class="row">
             <!-- left column -->
             <div class="col-md-8">
+            <?php 
+            $trackInfo=isset($trackInfo[0])?$trackInfo[0]:'';
+            $dayStart=isset($trackInfo->day_start)?$trackInfo->day_start:'';
+            ?>
               <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header">
-                        <h3 class="box-title"></h3>
+                        <h3 class="box-title">
+                        	<?php echo "Day Started At : ".date('h:i',strtotime($dayStart));?>
+                        </h3>
                     </div><!-- /.box-header -->
-                    <!-- form start -->
-                    
                     <form role="form" id="addUser" class="form-horizontal" action="<?php echo base_url() ?>" method="post" role="form">
                         <div class="box-body">
+                            <?php for($i=1;$i<=3;$i++){?>
                             <div class="form-group">
-                                <label class="control-label col-sm-4" for="email">Start Time/End</label>
+                                <label class="control-label col-sm-4" for="email">Break <?php echo $i;?></label>
                                 <div class="col-sm-6">
                                   <div class="onoffswitch">
-                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="daystart">
-                                    <label class="onoffswitch-label" for="daystart">
-                                        <span class="onoffswitch-inner daystarton" breaktype="1" breakStatus="1"></span>
-                                        <span class="onoffswitch-switch daystartoff"></span>
-                                    </label>
+                                  <?php 
+                                        $res=getBreakInfoByBreakId($i);
+                                        $breakStart=isset($res->break_start)? $res->break_start :'';
+                                        $breakEnd=isset($res->break_end)? $res->break_end :'';
+                                        $breakHours=isset($res->break_hours)? $res->break_hours :'';
+                                        $breakStarted=$breakEnded=false;
+                                        if(empty($breakHours)){
+                                            $breakStarted=true;
+                                        }else{
+                                            $breakEnded=true;
+                                        }
+                                        $breakStatus=1;
+                                        $checked="";
+                                      /*   if(!empty($breakStart)){
+                                            $checked="checked";
+                                            $breakStatus=2;
+                                        }elseif(empty($breakHours)){
+                                            $checked="";
+                                        }else{
+                                            $breakEnded=true;
+                                        } */
+                                        if(!empty($breakStart)){
+                                            $checked="checked";
+                                            $breakStatus=2;
+                                        }elseif(empty($breakHours)){
+                                            $checked="";
+                                        }
+                                        
+                                    ?>
+                                    <?php if($breakEnded==false){?>
+                                        <input type="checkbox" name="onoffswitch<?php echo $i;?>" class="onoffswitch-checkbox" id="daystart<?php echo $i;?>" <?php echo $checked;?>>
+                                        <label class="onoffswitch-label" for="daystart<?php echo $i;?>">
+                                            <span class="onoffswitch-inner daystarton" breaktype="<?php echo $i;?>" breakStatus="<?php echo $breakStatus;?>"></span>
+                                            <span class="onoffswitch-switch daystartoff"></span>
+                                        </label>
                                 </div>
                                 </div>
+                                            <?php if(!empty($breakStart)){?>
+                                            		<label>Started : <?php echo $breakStart;?></label>
+                                            <?php }?>  
+                                        <?php }else{?>
+                                   </div>
+                                </div>         
+                                            	<label>Spend : <?php echo $breakHours;?></label>                                    	
+                                            <?php }?>
                              </div>
+                             <?php 
+                                }
+                            ?>
                              
                              <div class="form-group">
-                             	<a href="<?php echo base_url().'/logoff';?>" class="">Logoff the Day </a>
+                             	<div class="col-sm-6">
+                             		<a href="<?php echo base_url().'/logoff';?>" class="">Logoff the Day </a>
+                             	</div>
                              </div>
                             
                         </div><!-- /.box-body -->
@@ -125,7 +173,6 @@
 </div>
 <script type="text/javascript">
 $(function(){
-	
 	$('.daystarton').on('click',function(){
 		var breaktype=$(this).attr('breaktype');
 		var breakStatus=$(this).attr('breakStatus');
@@ -135,12 +182,6 @@ $(function(){
 				'breakStatus':breakStatus,
 				};
 		var res=postdata(info);
-		$(this).attr('breakStatus',2);
-
-		if(breakStatus==2){
-			$(this).attr('disabled:true');
-		}
-		
 	});
 
 
@@ -150,7 +191,11 @@ $(function(){
     	      url: "<?php echo base_url()."ajax/break"; ?>",
     	      data: info,
     	      dataType: "text",
-    	      success: function(resultData) {  }
+    	      success: function(resultData) { 
+    	    	  setTimeout(function(){ 
+    	    	  window.location="<?php echo base_url()."/dashboard";?>";
+    	    	  }, 1500);
+        	  }
     	});
     	return saveData;
 	}

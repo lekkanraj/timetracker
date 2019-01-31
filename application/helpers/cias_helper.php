@@ -154,7 +154,26 @@ function timeDifference($startTime,$endTime){
     $datetime2 = new DateTime($endTime);
     $interval = $datetime1->diff($datetime2);
     
-    return $interval->format('%h').":".$interval->format('%i');
+    return $interval->format('%h').":".$interval->format('%i').":".$interval->format('%s');
+}
+
+function getBreakInfoByBreakId($breakId){
+        $CI = get_instance();
+        $CI->load->model('common_model');
+        $userId=$CI->session->userdata ( 'userId' );
+        $currentDate=date("Y-m-d");
+        $where=array(
+            'userid'=>$userId,
+            'created_on'=>$currentDate,
+            'breakid'=>$breakId
+        );
+        $select=array('*');
+        
+        $breakInfo=$CI->common_model->selectData(TABLE_USER_BREAKS,$select,$where);
+        if(count($breakInfo)>0){
+            $breakInfo=$breakInfo[0];
+        }
+        return $breakInfo;
 }
 
 ?>

@@ -74,6 +74,9 @@ $route['addNewEmp'] = "user/addNewEmp";
 
 $route['ajax/break'] = "ajax/break";
 $route['logoff'] = "login/logoff";
+//Admin
+$route['admin/projectlist'] = "admin/projectlist";
+$route['admin/addproject'] = "admin/addproject";
 
 
 /* End of file routes.php */

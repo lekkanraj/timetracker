@@ -11,6 +11,7 @@ class User_model extends CI_Model
     {
         $userId=$this->session->userdata('userId');
         $roleId= $this->session->userdata('role');
+        $projectId= $this->session->userdata('projectId');
         
         $this->db->select('BaseTbl.userId, BaseTbl.email, BaseTbl.name, BaseTbl.mobile, Role.role');
         $this->db->from('tbl_users as BaseTbl');
@@ -24,7 +25,7 @@ class User_model extends CI_Model
         $this->db->where('BaseTbl.isDeleted', 0);
         if($roleId==ROLE_TEAMLEAD){
             $this->db->where('BaseTbl.roleId =', ROLE_EMPLOYEE);
-            $this->db->where('BaseTbl.leadId =', $userId);
+            $this->db->where('BaseTbl.projectId =', $projectId);
         }else{
             $this->db->where('BaseTbl.roleId !=', ROLE_MANAGER);
         }
@@ -45,6 +46,7 @@ class User_model extends CI_Model
     {
         $userId=$this->session->userdata('userId');
         $roleId= $this->session->userdata('role');
+        $projectId= $this->session->userdata('projectId');
         $this->db->select('BaseTbl.userId, BaseTbl.email, BaseTbl.name, BaseTbl.mobile, Role.role');
         $this->db->from('tbl_users as BaseTbl');
         $this->db->join('tbl_roles as Role', 'Role.roleId = BaseTbl.roleId','left');
@@ -57,7 +59,7 @@ class User_model extends CI_Model
         $this->db->where('BaseTbl.isDeleted', 0);
         if($roleId==ROLE_TEAMLEAD){
             $this->db->where('BaseTbl.roleId =', ROLE_EMPLOYEE);
-            $this->db->where('BaseTbl.leadId =', $userId);
+            $this->db->where('BaseTbl.projectId =', $projectId);
         }else{
             $this->db->where('BaseTbl.roleId !=', ROLE_MANAGER);
         }

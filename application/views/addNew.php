@@ -57,7 +57,7 @@
                                         <input type="text" class="form-control required digits" id="mobile" name="mobile" maxlength="10">
                                     </div>
                                 </div>
-                                <!-- <div class="col-md-6">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="role">Role</label>
                                         <select class="form-control required" id="role" name="role">
@@ -75,22 +75,31 @@
                                             ?>
                                         </select>
                                     </div>
-                                </div>  -->
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="project">Project/Team</label>
+                                        <select class="form-control required" id="role" name="project">
+                                            <option value="0">Select</option>
+                                            <?php
+                                            if(!empty($projects))
+                                            {
+                                                foreach ($projects as $rl)
+                                                {
+                                                    ?>
+                                                    <option value="<?php echo $rl->id ?>"><?php echo $rl->name ?></option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
                                    
                             </div>
                         </div><!-- /.box-body -->
     
                         <div class="box-footer">
-                        <?php 
-                        if($roleId==ROLE_MANAGER){
-                            $role=ROLE_TEAMLEAD;
-                        }elseif($roleId==ROLE_TEAMLEAD){
-                            $role=ROLE_EMPLOYEE;
-                        }else{
-                            $role=ROLE_MANAGER;
-                        }
-                        ?>
-                        	<input type="hidden" name=role value="<?php echo $role;?>" >
                             <input type="submit" class="btn btn-primary" value="Submit" />
                             <input type="reset" class="btn btn-default" value="Reset" />
                         </div>

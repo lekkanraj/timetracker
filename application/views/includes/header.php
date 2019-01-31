@@ -128,21 +128,32 @@
                 <span>My Tasks</span>
               </a>
             </li> -->
-           
+           <li class="treeview">
+              <a href="<?php echo base_url(); ?>dashboard">
+                <i class="fa fa-home"></i>
+                <span>Dashboard</span>
+              </a>
+            </li>
             <?php
             if($role == ROLE_MANAGER)
             {
             ?>
             <li class="treeview">
-              <a href="<?php echo base_url(); ?>userListing">
-                <i class="fa fa-users"></i>
-                <span>Users</span>
+              <a href="<?php echo base_url().'admin/projectlist'; ?>">
+                <i class="fa fa-tasks"></i>
+                <span>Projects</span>
               </a>
             </li>
             <li class="treeview">
-              <a href="<?php echo base_url(); ?>addNew">
-                <i class="fa fa-users"></i>
+              <a href="<?php echo base_url().'addNew'; ?>">
+                <i class="fa fa-user"></i>
                 <span>Add User</span>
+              </a>
+            </li>
+            <li class="treeview">
+              <a href="<?php echo base_url().'userListing'; ?>">
+                <i class="fa fa-users"></i>
+                <span>User List</span>
               </a>
             </li>
             <li class="treeview">
@@ -161,13 +172,7 @@
             <li class="treeview">
               <a href="<?php echo base_url(); ?>userListing">
                 <i class="fa fa-users"></i>
-                <span>Users</span>
-              </a>
-            </li>
-            <li class="treeview">
-              <a href="<?php echo base_url(); ?>addNew">
-                <i class="fa fa-users"></i>
-                <span>Add User</span>
+                <span>Team Members</span>
               </a>
             </li>
             <li class="treeview">

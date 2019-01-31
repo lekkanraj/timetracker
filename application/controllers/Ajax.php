@@ -2,13 +2,6 @@
 
 require APPPATH . '/libraries/BaseController.php';
 
-/**
- * Class : User (UserController)
- * User Class to control all user related operations.
- * @author : Kishor Mali
- * @version : 1.1
- * @since : 15 November 2016
- */
 class Ajax extends BaseController
 {
     /**
@@ -47,7 +40,6 @@ class Ajax extends BaseController
                 'breakid'=>$breakId,
                 'user_tracking_id'=>$daytrackingId,
                 'break_start'=>$currentTime,
-                'break_end'=>$currentTime,
                 'created_on'=>$currentDate,
             );
             $res= $this->common_model->insert_db(TABLE_USER_BREAKS,$data);

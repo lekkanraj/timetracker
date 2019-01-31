@@ -2,13 +2,7 @@
 
 require APPPATH . '/libraries/BaseController.php';
 
-/**
- * Class : User (UserController)
- * User Class to control all user related operations.
- * @author : Kishor Mali
- * @version : 1.1
- * @since : 15 November 2016
- */
+
 class User extends BaseController
 {
     /**
@@ -18,6 +12,7 @@ class User extends BaseController
     {
         parent::__construct();
         $this->load->model('user_model');
+        $this->load->model('common_model');
         $this->isLoggedIn();   
     }
     
@@ -27,8 +22,21 @@ class User extends BaseController
     public function index()
     {
         $this->global['pageTitle'] = 'Dashboard';
+        $userId=$this->session->userdata ( 'userId' );
+        $currentDate=date("Y-m-d");
+        $where=array(
+            'userid'=>$userId,
+            'created_on'=>$currentDate
+        );
+        $select=array('*');
         
-        $this->loadViews("dashboard", $this->global, NULL , NULL);
+        $trackInfo=$this->common_model->selectData(TABLE_DAILY_TRACKING,$select,$where);
+        
+        $pageInfo=array(
+            'trackInfo'=>$trackInfo,
+        );
+        
+        $this->loadViews("dashboard", $this->global, $pageInfo , NULL);
     }
     
     /**
@@ -76,6 +84,14 @@ class User extends BaseController
             $data['roles'] = $this->user_model->getUserRoles();
             $data['roleId']=$this->session->userdata ( 'role' );
             $this->global['pageTitle'] = 'Add New User';
+            
+            $where=array(
+                'isActive'=>1,
+            );
+            $select=array('id,name');
+            
+            $data['projects']=$this->common_model->selectData(TABLE_MASTER_PROJECTS,$select,$where);
+           
 
             $this->loadViews("addNew", $this->global, $data, NULL);
         }
@@ -117,6 +133,7 @@ class User extends BaseController
             $this->form_validation->set_rules('password','Password','required|max_length[20]');
             $this->form_validation->set_rules('cpassword','Confirm Password','trim|required|matches[password]|max_length[20]');
             $this->form_validation->set_rules('role','Role','trim|required|numeric');
+            $this->form_validation->set_rules('project','Project','trim|required|numeric');
             $this->form_validation->set_rules('mobile','Mobile Number','required|min_length[10]|xss_clean');
             
             if($this->form_validation->run() == FALSE)
@@ -129,10 +146,13 @@ class User extends BaseController
                 $email = $this->input->post('email');
                 $password = $this->input->post('password');
                 $roleId = $this->input->post('role');
+                $projectId = $this->input->post('project');
                 $mobile = $this->input->post('mobile');
                 
                 $userInfo = array('email'=>$email, 'password'=>getHashedPassword($password), 'roleId'=>$roleId, 'name'=> $name,
-                    'mobile'=>$mobile, 'createdBy'=>$this->vendorId, 'leadId'=>$this->vendorId,'createdDtm'=>date('Y-m-d H:i:s'));
+                    'mobile'=>$mobile, 'createdBy'=>$this->vendorId,'createdDtm'=>date('Y-m-d H:i:s'),
+                    'projectId'=>$projectId
+                );
                 
                 $this->load->model('user_model');
                 $result = $this->user_model->addNewUser($userInfo);
