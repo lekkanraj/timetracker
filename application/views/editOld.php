@@ -15,6 +15,7 @@ if(!empty($userInfo))
         $email = $uf->email;
         $mobile = $uf->mobile;
         $roleId = $uf->roleId;
+        $projectId=$uf->projectId;
     }
 }
 
@@ -87,7 +88,7 @@ if(!empty($userInfo))
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="role">Role</label>
-                                        <select class="form-control" id="role" name="role" disabled="disabled">
+                                        <select class="form-control" id="role" name="role">
                                             <option value="0">Select Role</option>
                                             <?php
                                             if(!empty($roles))
@@ -102,7 +103,26 @@ if(!empty($userInfo))
                                             ?>
                                         </select>
                                     </div>
-                                </div>    
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="project">Project/Team</label>
+                                        <select class="form-control required" id="role" name="project">
+                                            <option value="0">Select</option>
+                                            <?php
+                                            if(!empty($projects))
+                                            {
+                                                foreach ($projects as $rl)
+                                                {
+                                                    ?>
+                                                    <option value="<?php echo $rl->id ?>" <?php if($rl->id == $projectId) {echo "selected=selected";} ?>><?php echo $rl->name ?></option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>     
                             </div>
                         </div><!-- /.box-body -->
     

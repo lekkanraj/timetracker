@@ -77,6 +77,7 @@ $route['logoff'] = "login/logoff";
 //Admin
 $route['admin/projectlist'] = "admin/projectlist";
 $route['admin/addproject'] = "admin/addproject";
+$route['admin/pdfd'] = "admin/pdfd";
 
 
 /* End of file routes.php */

@@ -74,6 +74,19 @@ class Admin extends BaseController
         
     }
     
+    function pdfd(){
+      //  $html = $this->load->view('pdf_report', $data, true); // render the view into HTML
+        //https://davidsimpson.me/2013/05/19/using-mpdf-with-codeigniter/
+        
+        $html="Welcome";
+        $this->load->library('pdf');
+        
+        $pdf = $this->pdf->load();
+        
+       $pdf->WriteHTML($html); // write the HTML into the PDF
+        
+        $pdf->Output($pdfFilePath);
+    }
     
 
     function pageNotFound()

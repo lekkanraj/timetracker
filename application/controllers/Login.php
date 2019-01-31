@@ -76,7 +76,7 @@ class Login extends CI_Controller
                     
                     /*Day Tracking Insert*/
                     $userId=$this->session->userdata ( 'userId' );
-                    $currentTime=date("Y-m-d h:i:s");
+                    $currentTime=date("Y-m-d H:i:s");
                     $currentDate=date("Y-m-d");
                     $where=array(
                         'userid'=>$userId,
@@ -251,7 +251,7 @@ class Login extends CI_Controller
     
     function logoff(){
         $userId=$this->session->userdata ( 'userId' );
-        $currentTime=date("Y-m-d h:i:s");
+        $currentTime=date("Y-m-d H:i:s");
         $currentDate=date("Y-m-d");
         $where=array(
             'userid'=>$userId,

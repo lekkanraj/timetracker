@@ -154,7 +154,7 @@ function timeDifference($startTime,$endTime){
     $datetime2 = new DateTime($endTime);
     $interval = $datetime1->diff($datetime2);
     
-    return $interval->format('%h').":".$interval->format('%i').":".$interval->format('%s');
+    return $interval->format('%H').":".$interval->format('%i').":".$interval->format('%s');
 }
 
 function getBreakInfoByBreakId($breakId){

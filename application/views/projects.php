@@ -35,8 +35,8 @@
                     <tr>
                       <th>Id</th>
                       <th>Project Name</th>
-                      <th>Shift Start</th>
-                      <th>Shift End</th>
+                      <!--    <th>Shift Start</th>
+                      <th>Shift End</th> -->
                       <th>Breaks Count</th>                      
                       <th class="text-center">Actions</th>
                    
@@ -50,12 +50,14 @@
                         <tr>
                           <td><?php echo $record->id ?></td>
                           <td><?php echo $record->name ?></td>
-                          <td><?php echo $record->shift_start_time ?></td>
-                          <td><?php echo $record->shift_end_time ?></td>
+                          <!--   <td><?php echo $record->shift_start_time ?></td>
+                          <td><?php echo $record->shift_end_time ?></td> -->
                           <td><?php echo $record->breaks_count ?></td>
                           <td class="text-center">
+                          <!-- 
                               <a class="btn btn-sm btn-info" href="<?php //echo base_url().'editOld/'.$record->id; ?>"><i class="fa fa-pencil"></i></a>
                               <a class="btn btn-sm btn-danger deleteUser" href="#" data-userid="<?php //echo $record->id; ?>"><i class="fa fa-trash"></i></a>
+                           -->
                           </td>
                         </tr>
                         <?php

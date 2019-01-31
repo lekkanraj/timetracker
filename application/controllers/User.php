@@ -192,6 +192,13 @@ class User extends BaseController
             $data['roles'] = $this->user_model->getUserRoles();
             $data['userInfo'] = $this->user_model->getUserInfo($userId);
             
+            $where=array(
+                'isActive'=>1,
+            );
+            $select=array('id,name');
+            
+            $data['projects']=$this->common_model->selectData(TABLE_MASTER_PROJECTS,$select,$where);
+            
             $this->global['pageTitle'] = 'Edit User';
             
             $this->loadViews("editOld", $this->global, $data, NULL);
@@ -220,6 +227,7 @@ class User extends BaseController
             $this->form_validation->set_rules('cpassword','Confirm Password','matches[password]|max_length[20]');
             $this->form_validation->set_rules('role','Role','trim|required|numeric');
             $this->form_validation->set_rules('mobile','Mobile Number','required|min_length[10]|xss_clean');
+            $this->form_validation->set_rules('project','Project','trim|required|numeric');
             
             if($this->form_validation->run() == FALSE)
             {
@@ -232,18 +240,19 @@ class User extends BaseController
                 $password = $this->input->post('password');
                 $roleId = $this->input->post('role');
                 $mobile = $this->input->post('mobile');
+                $projectId = $this->input->post('project');
                 
                 $userInfo = array();
                 
                 if(empty($password))
                 {
                     $userInfo = array('email'=>$email, 'roleId'=>$roleId, 'name'=>$name,
-                                    'mobile'=>$mobile, 'updatedBy'=>$this->vendorId, 'updatedDtm'=>date('Y-m-d H:i:s'));
+                        'mobile'=>$mobile, 'updatedBy'=>$this->vendorId,'projectId'=>$projectId, 'updatedDtm'=>date('Y-m-d H:i:s'));
                 }
                 else
                 {
                     $userInfo = array('email'=>$email, 'password'=>getHashedPassword($password), 'roleId'=>$roleId,
-                        'name'=>ucwords($name), 'mobile'=>$mobile, 'updatedBy'=>$this->vendorId, 
+                        'name'=>ucwords($name), 'mobile'=>$mobile, 'updatedBy'=>$this->vendorId, 'projectId'=>$projectId,
                         'updatedDtm'=>date('Y-m-d H:i:s'));
                 }
                 

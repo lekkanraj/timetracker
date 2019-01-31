@@ -129,8 +129,10 @@
                             ?>
                              
                              <div class="form-group">
-                             	<div class="col-sm-6">
-                             		<a href="<?php echo base_url().'/logoff';?>" class="">Logoff the Day </a>
+                             	<div class="col-sm-12 text-center">
+                             		<a href="<?php echo base_url().'/logoff';?>" class="text-center">
+                             			<img alt="Logg Off the Day" height="100px"src="<?php echo base_url().'/assets/images/logoff.png';?>">
+                             		</a>
                              	</div>
                              </div>
                             
