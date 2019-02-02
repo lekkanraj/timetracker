@@ -80,5 +80,13 @@ $route['admin/addproject'] = "admin/addproject";
 $route['admin/pdfd'] = "admin/pdfd";
 
 
+$route['reports'] = "reports/index";
+$route['reports/bydays'] = "reports/bydays";
+$route['reports/summary'] = "reports/summary";
+
+
+$route['reports/excel'] = "reports/excel";
+
+
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

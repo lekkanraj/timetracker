@@ -46,15 +46,20 @@ class Admin extends BaseController
             $this->load->model('user_model');
             if(!$post){
                 $this->global['pageTitle'] = 'Add New Project';
-                $this->loadViews("addProject", $this->global, NULL, NULL);
+                $select=array('*');                
+                $Info=$this->common_model->selectData(TABLE_MASTER_BREAKS,$select);
+                $data=array(
+                    'info'=>$Info
+                );
+                $this->loadViews("addProject", $this->global, $data, NULL);
             }else{
                 $name = $post['name'];
-                $breakcount= $post['breakcount'];
+                $breaks= implode(',',$post['breaks']);
                 $Info = array(
                     'name'=>$name, 
                     'shift_start_time'=>date('Y-m-d H:i:s'),
                     'shift_end_time'=>date('Y-m-d H:i:s'),
-                    'breaks_count'=>$breakcount,
+                    'breaks'=>$breaks,
                     'isActive'=>1
                 );
                 
@@ -74,19 +79,7 @@ class Admin extends BaseController
         
     }
     
-    function pdfd(){
-      //  $html = $this->load->view('pdf_report', $data, true); // render the view into HTML
-        //https://davidsimpson.me/2013/05/19/using-mpdf-with-codeigniter/
-        
-        $html="Welcome";
-        $this->load->library('pdf');
-        
-        $pdf = $this->pdf->load();
-        
-       $pdf->WriteHTML($html); // write the HTML into the PDF
-        
-        $pdf->Output($pdfFilePath);
-    }
+
     
 
     function pageNotFound()

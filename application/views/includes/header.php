@@ -156,12 +156,6 @@
                 <span>User List</span>
               </a>
             </li>
-            <li class="treeview">
-              <a href="#" >
-                <i class="fa fa-files-o"></i>
-                <span>Reports</span>
-              </a>
-            </li>
             <?php
             }
             ?>
@@ -175,15 +169,15 @@
                 <span>Team Members</span>
               </a>
             </li>
+            <?php
+            }
+            ?>
             <li class="treeview">
-              <a href="#" >
+              <a href="<?php echo base_url().'reports'; ?>" >
                 <i class="fa fa-files-o"></i>
                 <span>Reports</span>
               </a>
             </li>
-            <?php
-            }
-            ?>
           </ul>
         </section>
         <!-- /.sidebar -->

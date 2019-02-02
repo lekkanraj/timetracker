@@ -73,13 +73,22 @@
                     </div><!-- /.box-header -->
                     <form role="form" id="addUser" class="form-horizontal" action="<?php echo base_url() ?>" method="post" role="form">
                         <div class="box-body">
-                            <?php for($i=1;$i<=3;$i++){?>
+                        <?php 
+                        $breaks=isset($breaks)? $breaks:'array()';
+                        if($breaks){
+                            $breaks=explode(',', $breaks);
+                        }
+                        ?>
+                            <?php foreach ($breaks as $break){
+                                $breakT=getBreakInfo($break);
+                                $break_name=$breakT->break_name;  
+                                ?>
                             <div class="form-group">
-                                <label class="control-label col-sm-4" for="email">Break <?php echo $i;?></label>
+                                <label class="control-label col-sm-4" for="email"><?php echo $break_name;?></label>
                                 <div class="col-sm-6">
                                   <div class="onoffswitch">
                                   <?php 
-                                        $res=getBreakInfoByBreakId($i);
+                                        $res=getBreakInfoByBreakId($break);
                                         $breakStart=isset($res->break_start)? $res->break_start :'';
                                         $breakEnd=isset($res->break_end)? $res->break_end :'';
                                         $breakHours=isset($res->break_hours)? $res->break_hours :'';
@@ -108,9 +117,9 @@
                                         
                                     ?>
                                     <?php if($breakEnded==false){?>
-                                        <input type="checkbox" name="onoffswitch<?php echo $i;?>" class="onoffswitch-checkbox" id="daystart<?php echo $i;?>" <?php echo $checked;?>>
-                                        <label class="onoffswitch-label" for="daystart<?php echo $i;?>">
-                                            <span class="onoffswitch-inner daystarton" breaktype="<?php echo $i;?>" breakStatus="<?php echo $breakStatus;?>"></span>
+                                        <input type="checkbox" name="onoffswitch<?php echo $break;?>" class="onoffswitch-checkbox" id="daystart<?php echo $break;?>" <?php echo $checked;?>>
+                                        <label class="onoffswitch-label" for="daystart<?php echo $break;?>">
+                                            <span class="onoffswitch-inner daystarton" breaktype="<?php echo $break;?>" breakStatus="<?php echo $breakStatus;?>"></span>
                                             <span class="onoffswitch-switch daystartoff"></span>
                                         </label>
                                 </div>

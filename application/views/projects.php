@@ -37,7 +37,7 @@
                       <th>Project Name</th>
                       <!--    <th>Shift Start</th>
                       <th>Shift End</th> -->
-                      <th>Breaks Count</th>                      
+                      <th>Breaks</th>                      
                       <th class="text-center">Actions</th>
                    
                     </tr>
@@ -46,13 +46,29 @@
                     {
                         foreach($Info as $record)
                         {
+                            $breakText='';
+                            $breaks=isset($record->breaks)? $record->breaks:'';
+                            if($breaks !=''){
+                                $breaks=explode(',', $breaks);
+                                
+                                $c=1;
+                                foreach ($breaks as $break){
+                                    $breakT=getBreakInfo($break);
+                                    $breakText .=$breakT->break_name;
+                                    if(count($breaks)!=$c){
+                                        $breakText .=', ';
+                                    }
+                                    $c++;
+                                }
+                            }
+                            
                     ?>
                         <tr>
                           <td><?php echo $record->id ?></td>
                           <td><?php echo $record->name ?></td>
                           <!--   <td><?php echo $record->shift_start_time ?></td>
                           <td><?php echo $record->shift_end_time ?></td> -->
-                          <td><?php echo $record->breaks_count ?></td>
+                          <td><?php echo $breakText;?></td>
                           <td class="text-center">
                           <!-- 
                               <a class="btn btn-sm btn-info" href="<?php //echo base_url().'editOld/'.$record->id; ?>"><i class="fa fa-pencil"></i></a>

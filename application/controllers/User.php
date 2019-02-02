@@ -31,9 +31,19 @@ class User extends BaseController
         $select=array('*');
         
         $trackInfo=$this->common_model->selectData(TABLE_DAILY_TRACKING,$select,$where);
+        $projectId=$this->session->userdata ( 'projectId' );
+        $where1=array(
+            'id'=>$projectId,
+        );
+        $select1=array('breaks');
         
+        $breaks=$this->common_model->selectData(TABLE_MASTER_PROJECTS,$select1,$where1);
+        if(count($breaks)>0){
+            $breaks=$breaks[0]->breaks;
+        }
         $pageInfo=array(
             'trackInfo'=>$trackInfo,
+            'breaks'=>$breaks
         );
         
         $this->loadViews("dashboard", $this->global, $pageInfo , NULL);

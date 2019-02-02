@@ -19,7 +19,7 @@
                     </div><!-- /.box-header -->
                     <!-- form start -->
                     
-                    <form role="form" id="addUser" action="<?php echo base_url().'admin/addproject'; ?>" method="post" role="form">
+                    <form role="form" id="addUser" action="<?php echo base_url().'admin/addproject'; ?>" method="post" enctype="multipart/form-data">
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-6">                                
@@ -29,14 +29,25 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6">                                
+                            <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="fname">Break Count</label>
-                                        <input type="text" class="form-control required" id="fname" name="breakcount" required min="1" max="10" >
+                                        <label for="project">Select Breaks:</label>
+                                        <select class="form-control multiselect-ui required" id="role" name="breaks[]" multiple="multiple">
+                                            <option value="0">Select</option>
+                                            <?php
+                                            if(!empty($info))
+                                            {
+                                                foreach ($info as $rl)
+                                                {
+                                                    ?>
+                                                    <option value="<?php echo $rl->id ?>"><?php echo $rl->break_name ?></option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
                                     </div>
                                 </div>
-                            </div>
                         </div><!-- /.box-body -->
     
                         <div class="box-footer">
@@ -77,6 +88,14 @@
             </div>
         </div>    
     </section>
+    
+    <script type="text/javascript">
+$(function() {
+    $('.multiselect-ui').multiselect({
+        includeSelectAllOption: true
+    });
+});
+</script>
     
 </div>
 <script src="<?php echo base_url(); ?>assets/js/addUser.js" type="text/javascript"></script>

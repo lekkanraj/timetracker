@@ -4,11 +4,14 @@
 /**
  * This function is used to print the content of any data
  */
-function pre($data)
+function pre($data,$die=null)
 {
     echo "<pre>";
     print_r($data);
     echo "</pre>";
+    if($die==1){
+        die();
+    }
 }
 
 /**
@@ -174,6 +177,28 @@ function getBreakInfoByBreakId($breakId){
             $breakInfo=$breakInfo[0];
         }
         return $breakInfo;
+}
+
+function getBreakInfo($breakId){
+    $CI = get_instance();
+    $where=array(
+        'id'=>$breakId
+    );
+    $select=array('*');
+    
+    $breakInfo=$CI->common_model->selectData(TABLE_MASTER_BREAKS,$select,$where);
+    if(count($breakInfo)>0){
+        $breakInfo=$breakInfo[0];
+    }
+    return $breakInfo;
+}
+
+function displayDate($date1){
+    return date('d/m/Y',strtotime($date1));
+}
+
+function displayTime($date1){
+    return date('h:i a',strtotime($date1));
 }
 
 ?>
