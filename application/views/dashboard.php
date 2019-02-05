@@ -63,12 +63,13 @@
             <?php 
             $trackInfo=isset($trackInfo[0])?$trackInfo[0]:'';
             $dayStart=isset($trackInfo->day_start)?$trackInfo->day_start:'';
+            $dayEnd=isset($trackInfo->day_end)?$trackInfo->day_end:'';
             ?>
               <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header">
                         <h3 class="box-title">
-                        	<?php echo "Day Started At : ".date('h:i',strtotime($dayStart));?>
+                        	<?php echo "Day Started At : ".displayDateTime($dayStart);?>
                         </h3>
                     </div><!-- /.box-header -->
                     <form role="form" id="addUser" class="form-horizontal" action="<?php echo base_url() ?>" method="post" role="form">
@@ -79,7 +80,10 @@
                             $breaks=explode(',', $breaks);
                         }
                         ?>
-                            <?php foreach ($breaks as $break){
+                            <?php 
+                            $assignedBreak=false;
+                            $firstassigned=false;
+                            foreach ($breaks as $break){
                                 $breakT=getBreakInfo($break);
                                 $break_name=$breakT->break_name;  
                                 ?>
@@ -100,14 +104,7 @@
                                         }
                                         $breakStatus=1;
                                         $checked="";
-                                      /*   if(!empty($breakStart)){
-                                            $checked="checked";
-                                            $breakStatus=2;
-                                        }elseif(empty($breakHours)){
-                                            $checked="";
-                                        }else{
-                                            $breakEnded=true;
-                                        } */
+                                      
                                         if(!empty($breakStart)){
                                             $checked="checked";
                                             $breakStatus=2;
@@ -115,33 +112,47 @@
                                             $checked="";
                                         }
                                         
+                                                                                
+                                       
+                                        
                                     ?>
                                     <?php if($breakEnded==false){?>
-                                        <input type="checkbox" name="onoffswitch<?php echo $break;?>" class="onoffswitch-checkbox" id="daystart<?php echo $break;?>" <?php echo $checked;?>>
-                                        <label class="onoffswitch-label" for="daystart<?php echo $break;?>">
-                                            <span class="onoffswitch-inner daystarton" breaktype="<?php echo $break;?>" breakStatus="<?php echo $breakStatus;?>"></span>
-                                            <span class="onoffswitch-switch daystartoff"></span>
-                                        </label>
+                                    	<div <?php if($firstassigned==true){ echo "class='disablediv'";}$firstassigned=true;?>>
+                                            <input type="checkbox" name="onoffswitch<?php echo $break;?>" class="onoffswitch-checkbox" id="daystart<?php echo $break;?>" <?php echo $checked;?>>
+                                            <label class="onoffswitch-label" for="daystart<?php echo $break;?>" >
+                                                <span class="onoffswitch-inner daystarton" breaktype="<?php echo $break;?>" breakStatus="<?php echo $breakStatus;?>"></span>
+                                                <span class="onoffswitch-switch daystartoff"></span>
+                                            </label>
+                                        </div>
                                 </div>
                                 </div>
                                             <?php if(!empty($breakStart)){?>
                                             		<label>Started : <?php echo $breakStart;?></label>
                                             <?php }?>  
-                                        <?php }else{?>
+                                        <?php }else{
+                                            $firstassigned=false;
+                                            ?>
                                    </div>
                                 </div>         
                                             	<label>Spend : <?php echo $breakHours;?></label>                                    	
                                             <?php }?>
                              </div>
                              <?php 
+                             if(!empty($breakStart)){
+                                 $assignedBreak=true;
+                             }
+                             
+                             
                                 }
                             ?>
                              
                              <div class="form-group">
                              	<div class="col-sm-12 text-center">
-                             		<a href="<?php echo base_url().'/logoff';?>" class="text-center">
+                             	<?php if($dayEnd){?><label>Day Ended:<?php echo displayDateTime($dayEnd);?></label><?php }else{?>
+                             		<a href="javascript:void(0)" class="text-center logoff">
                              			<img alt="Logg Off the Day" height="100px"src="<?php echo base_url().'/assets/images/logoff.png';?>">
                              		</a>
+                             		<?php }?>
                              	</div>
                              </div>
                             
@@ -185,6 +196,7 @@
 <script type="text/javascript">
 $(function(){
 	$('.daystarton').on('click',function(){
+		//alert(234324);
 		var breaktype=$(this).attr('breaktype');
 		var breakStatus=$(this).attr('breakStatus');
 		
@@ -193,9 +205,11 @@ $(function(){
 				'breakStatus':breakStatus,
 				};
 		var res=postdata(info);
+		
 	});
 
-
+	
+	$(".disablediv *").attr("disabled", "disabled").off('click');
 	function postdata(info){
     	var saveData = $.ajax({
     	      type: 'POST',
@@ -205,11 +219,20 @@ $(function(){
     	      success: function(resultData) { 
     	    	  setTimeout(function(){ 
     	    	  window.location="<?php echo base_url()."/dashboard";?>";
-    	    	  }, 1500);
+    	    	  }, 500);
         	  }
     	});
     	return saveData;
 	}
+
+	$('.logoff').on('click',function(){
+		var res=$(".daystarton").attr('breakStatus');
+		if(res==2){
+			alert("Stop the Break");
+		}else{
+			window.location="<?php echo base_url().'logoff';?>"
+		}
+	});
 });
 </script>
 <script src="<?php echo base_url(); ?>assets/js/addUser.js" type="text/javascript"></script>

@@ -88,7 +88,6 @@ class Login extends CI_Controller
                         $data=array(
                             'userid'=>$userId,
                             'day_start'=>$currentTime,
-                            'day_end'=>$currentTime,
                             'created_on'=>$currentDate,
                         );
                         $res= $this->common_model->insert_db(TABLE_DAILY_TRACKING,$data);
@@ -250,12 +249,19 @@ class Login extends CI_Controller
     }
     
     function logoff(){
+        $post= $this->input->post();        
+        
         $userId=$this->session->userdata ( 'userId' );
         $currentTime=date("Y-m-d H:i:s");
         $currentDate=date("Y-m-d");
+        if($post){
+            $userId=isset($post['userid'])?$post['userid']:'';
+            $currentDate=isset($post['logoffdate'])?$post['logoffdate']:'';
+        }
+        
         $where=array(
             'userid'=>$userId,
-            'created_on'=>$currentDate
+            'created_on'=>sqldateformate($currentDate)
         );
         $select=array('day_start');
         $count=0;
@@ -265,12 +271,18 @@ class Login extends CI_Controller
             $count=$count[0];
             $dayStart=$count->day_start;
             $spendHours=timeDifference($dayStart,$currentTime);
+            $break_hours=updatebreakinfointracking($userId,$currentDate);
             $data=array(
                 'day_end'=>$currentTime,
                 'spend_hours'=>$spendHours,
+                'break_hours'=>$break_hours
             );
             $res= $this->common_model->edit_db(TABLE_DAILY_TRACKING,$data,$where);
-            redirect("/logout");
+            if($post){
+                redirect("/admin/team");
+            }else{
+                redirect("/logout");
+            }
         }
         redirect("/dashboard");
         

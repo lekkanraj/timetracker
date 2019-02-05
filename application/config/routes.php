@@ -74,14 +74,16 @@ $route['addNewEmp'] = "user/addNewEmp";
 
 $route['ajax/break'] = "ajax/break";
 $route['logoff'] = "login/logoff";
+$route['logoffemp'] = "login/logoff";
 //Admin
 $route['admin/projectlist'] = "admin/projectlist";
 $route['admin/addproject'] = "admin/addproject";
-$route['admin/pdfd'] = "admin/pdfd";
+$route['admin/team'] = "admin/team";
 
 
 $route['reports'] = "reports/index";
 $route['reports/bydays'] = "reports/bydays";
+//$route['reports/bydays/(:any)'] = "reports/bydays/$1";
 $route['reports/summary'] = "reports/summary";
 
 

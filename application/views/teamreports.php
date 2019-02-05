@@ -2,8 +2,8 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <i class="fa fa-users"></i> Reports
-        <small>By User & By Team</small>
+        <i class="fa fa-users"></i>TeEmployee Logs
+        <small>By User</small>
       </h1>
     </section>
     <section class="content">
@@ -14,17 +14,16 @@
               <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header">
-                        <h3 class="box-title">Generate Reports</h3>
+                        <h3 class="box-title">Logs</h3>
                     </div><!-- /.box-header -->
                     <!-- form start -->
                     <?php 
                     $fromdate=isset($post['fromdate'])?$post['fromdate']:'';
                     $todate=isset($post['todate'])?$post['todate']:'';
-                    $project=isset($post['project'])?$post['project']:'';
                     $reporttype=isset($post['reporttype'])?$post['reporttype']:'';
                     ?>
                     <div class="box-body">
-                    	<form role="form" id="addUser" action="<?php echo base_url().'reports'; ?>" method="post" role="form">
+                    	<form role="form" id="addUser" action="<?php echo base_url().'admin/team'; ?>" method="post" role="form">
                         	<div class="row">
                                 <div class="col-md-2">
                                     <div class="form-group">
@@ -46,20 +45,10 @@
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label for="project">Project/Team</label>
+                                        <label for="project">Select Employee</label>
                                         <select class="form-control required" id="role" name="project">
                                             <option value="0">Select</option>
-                                            <?php
-                                            if(!empty($projects))
-                                            {
-                                                foreach ($projects as $rl)
-                                                {
-                                                    ?>
-                                                    <option value="<?php echo $rl->id ?>" <?php if($rl->id==$project){echo "selected";}?>><?php echo $rl->name ?></option>
-                                                    <?php
-                                                }
-                                            }
-                                            ?>
+                                            
                                         </select>
                                     </div>
                                 </div>
@@ -84,17 +73,6 @@
                             </form>
                             </div>
                         </div><!-- /.box-body -->
-    					<div class="row">
-                            <div class="col-md-12">
-                               <div class="input-group">
-                                      <div class="input-group-btn">
-                                        <a target="_blank" href="<?php echo base_url()."reports/excel?fromdate=$fromdate&todate=$todate&project=$project&reporttype=$reporttype";?>"><button class="btn btn-md btn-default  downloadfile" filetype="1"><i class="fa fa-file-excel-o" style="font-size: 35px;"></i></button></a>
-                                        <a target="_blank" href="<?php echo base_url()."reports/bydays?fromdate=$fromdate&todate=$todate&project=$project&reporttype=$reporttype";?>"><button class="btn btn-md btn-default  downloadfile" filetype="2"><i class="fa fa-file-pdf-o" style="font-size: 35px;"></i></button></a>
-                                      </div>
-                                    </div>
-                                
-                            </div>
-                        </div>
                       <div class="row">
                             <div class="col-md-12">  
                         <table class="table table-bordered">
@@ -108,6 +86,7 @@
                             <th align='center'>End Time</th>
                             <th align='center'>Spend Hours</th>
                             <th align='center'>Break Hours</th>
+                            <th align='center'>Actions</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -127,13 +106,20 @@
                                 <td><?php echo displayTime($record->day_end); ?></td>
                                 <td><?php echo $record->spend_hours ?></td>
                                 <td><?php echo $record->break_hours ?></td>
+                                <td>
+                                	<?php $record->day_end; if(empty($record->day_end) && $record->userid !=$userId){?>
+                                        
+                                	    <a href='javascript:void(0)' class='logoffusers' userid="<?php echo $record->userid;?>" logoffdate="<?php echo $record->day_start;?>">Log Off</a>
+                                        
+                                	<?php    } ?> 
+                                </td>
                               </tr>
                           <?php 
                                 $i++;
                                 }
                             }else{?>
                             <tr>
-                                <td colspan='8'>No Records Found.</td>
+                                <td colspan='6'>No Records Found.</td>
                               </tr>
                             
                             <?php }?>
@@ -147,16 +133,23 @@
           
     </section>
 </div>
+<form id="logoffemp" method="post" action="<?php echo base_url().'logoffemp';?>" style="display: none;">
+<input type="hidden" name="userid" id="userid" />
+<input type="hidden" name="logoffdate" id="logoffdate" />
+</form>
 
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/common.js" charset="utf-8"></script>
 <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script type="text/javascript">
 $(document).ready(function(){
-	$('.downloadfile').on('click',function(){
-		var filetype=$(this).attr('filetype');
-		$('.filetype').val(filetype);
-
+	$('.logoffusers').on('click',function(){
+		var userid=$(this).attr('userid');
+		var logoffdate=$(this).attr('logoffdate');
+		$("#userid").val(userid);
+		$("#logoffdate").val(logoffdate);
+		$("#logoffemp").submit();
+		
 	});
     $("#txtFromDate").datepicker({
         numberOfMonths: 2,

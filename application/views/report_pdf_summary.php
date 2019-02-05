@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
+  <title>Report by Summary</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Bootstrap 3.3.4 -->
@@ -27,15 +27,14 @@
 <body>
 
 <div class="container">
-  <h2>Traking Info by day</h2>          
+  <h2>Traking Info In Summary</h2>          
   <table class="table table-bordered">
     <thead>
       <tr>
         <th align='center'>Sno</th>
         <th align='center'>Employee Name</th>
-        <th  align='center'>Date</th>
-        <th  align='center'>Start Time</th>
-        <th align='center'>End Time</th>
+        <th  align='center'>Team</th>
+        <th  align='center'>Days</th>
         <th align='center'>Spend Hours</th>
         <th align='center'>Break Hours</th>
       </tr>
@@ -50,12 +49,11 @@
         ?>
           <tr>
             <td><?php echo $i;?></td>
-            <td><?php echo $record->userid; ?></td>
-            <td><?php echo displayDate($record->day_start); ?></td>
-            <td><?php echo displayTime($record->day_start); ?></td>
-            <td><?php echo displayTime($record->day_end); ?></td>
-            <td><?php echo $record->spend_hours ?></td>
-            <td><?php echo $record->break_hours ?></td>
+            <td><?php echo $record['name']; ?></td>
+            <td><?php echo $record['projectname']; ?></td>
+            <td><?php echo $record['days']; ?></td>
+            <td><?php echo $record['hourscount']; ?></td>
+            <td><?php echo $record['breakscount']; ?></td>
           </tr>
       <?php 
             $i++;

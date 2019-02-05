@@ -164,9 +164,9 @@
             {
             ?>
             <li class="treeview">
-              <a href="<?php echo base_url(); ?>userListing">
-                <i class="fa fa-users"></i>
-                <span>Team Members</span>
+              <a href="<?php echo base_url().'admin/team'; ?>">
+                <i class="fa fa-tasks"></i>
+                <span>Employee Logs</span>
               </a>
             </li>
             <?php

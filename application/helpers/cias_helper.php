@@ -194,11 +194,89 @@ function getBreakInfo($breakId){
 }
 
 function displayDate($date1){
-    return date('d/m/Y',strtotime($date1));
+    if($date1){
+        return date('d/m/Y',strtotime($date1));
+    }else{
+        return "";
+    }
+    
 }
 
-function displayTime($date1){
-    return date('h:i a',strtotime($date1));
+function displayTime($date1){    
+    if($date1){
+        return date('h:i a',strtotime($date1));
+    }else{
+        return "";
+    }
+}
+
+function displayDateTime($date1){
+    if($date1){
+        return date('d-m-Y h:i a',strtotime($date1));
+    }else{
+        return "";
+    }
+}
+
+function sqldateformate($date){
+    return date('Y-m-d',strtotime($date));
+}
+
+function updatebreakinfointracking($userId,$date){
+    $CI = get_instance();
+    $CI->load->model('common_model');
+   
+    $where=array(
+        'userid'=>$userId,
+        'created_on'=>sqldateformate($date),
+    );
+    $select=array('break_hours');
+    
+    $breakInfo=$CI->common_model->selectData(TABLE_USER_BREAKS,$select,$where);
+    $returnData='';
+    if(count($breakInfo)>0){
+        $minutes = 0; //declare minutes either it gives Notice: Undefined variable
+        // loop throught all the times
+        foreach ($breakInfo as $time) {            
+            if(!empty($time->break_hours)){
+                list($hour, $minute,$seconds) = explode(':', $time->break_hours);
+                $minutes += $hour * 60;
+                $minutes += $minute;
+            }
+        }
+        
+        $hours = floor($minutes / 60);
+        $minutes -= $hours * 60;
+        
+        // returns the time already formatted
+        //return sprintf('%02d:%02d', $hours, $minutes);
+        $returnData="$hours:$minutes:00";
+    }
+    return $returnData;
+}
+
+function sumofTimes($time1='',$time2=''){
+    $breakInfo=array($time1,$time2);
+    $returnData='';
+    if(count($breakInfo)>0){
+        $minutes = 0; //declare minutes either it gives Notice: Undefined variable
+        // loop throught all the times
+        foreach ($breakInfo as $time) {
+            if(!empty($time)){
+                list($hour, $minute,$seconds) = explode(':', $time);
+                $minutes += $hour * 60;
+                $minutes += $minute;
+            }
+        }
+        
+        $hours = floor($minutes / 60);
+        $minutes -= $hours * 60;
+        
+        // returns the time already formatted
+        //return sprintf('%02d:%02d', $hours, $minutes);
+        $returnData="$hours:$minutes:00";
+    }
+    return $returnData;
 }
 
 ?>

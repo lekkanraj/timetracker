@@ -37,6 +37,7 @@ class Reports extends BaseController
         
         
         $post= $this->input->post(); 
+        $fromdate=$todate=$project=$reporttype='';
         if($post){
             $fromdate=isset($post['fromdate'])?$post['fromdate']:'';
             $todate=isset($post['todate'])?$post['todate']:'';
@@ -45,11 +46,53 @@ class Reports extends BaseController
             $data['post']=$post;
         }
         
+        $role=$this->session->userdata ( 'role' );
+        $projectId=$this->session->userdata ( 'projectId' );
+        $userId=$this->session->userdata ( 'userId' );
+        $currentDate=date("Y-m-d");
+        $trakingTable=TABLE_DAILY_TRACKING;
+        $userTable=TABLE_USERS;
+        $projectsTable=TABLE_MASTER_PROJECTS;
+        
+        $where=array(
+           // 'dt.userid'=>$userId,
+            
+        );
+        if($fromdate){
+            $where["dt.created_on >="]=sqldateformate($fromdate);
+        }
+        if($todate){
+            $where["dt.created_on <="]=sqldateformate($todate);
+        }
+        if($project){
+            $where["u.projectId"]=$project;
+        }
+        $select=array('u.name,dt.*,p.name as projectname');
+        $join=array(
+            "$userTable u"=>"u.userId=dt.userid",
+            "$projectsTable p"=>"p.id=u.projectId",
+        );
+        //selectData($tableName=null,$select=null,$where=null,$join=null,$like=null,$order_by=null,$order=null,$ion_limit=null,$ion_offset=null,$group_by=null)
+        $res=$this->common_model->selectData("$trakingTable dt",$select,$where,$join);
+        $data['info']=$res;
+        
+        
         $this->loadViews("reports", $this->global, $data , NULL);
     }
     
    
-    function byday(){
+    function bydays(){
+        $post= $this->input->get();
+        
+        $fromdate=$todate=$project=$reporttype='';
+        if($post){
+            $fromdate=isset($post['fromdate'])?$post['fromdate']:'';
+            $todate=isset($post['todate'])?$post['todate']:'';
+            $project=isset($post['project'])?$post['project']:'';
+            $reporttype=isset($post['reporttype'])?$post['reporttype']:'';
+            $data['post']=$post;
+        }
+        
         //  $html = $this->load->view('pdf_report', $data, true); // render the view into HTML
         //https://davidsimpson.me/2013/05/19/using-mpdf-with-codeigniter/
         $data=array();
@@ -58,25 +101,78 @@ class Reports extends BaseController
         $projectId=$this->session->userdata ( 'projectId' );
         $userId=$this->session->userdata ( 'userId' );
         $currentDate=date("Y-m-d");
-        $where=array(
-            'userid'=>$userId,
-        );
-        $select=array('*');
+        $trakingTable=TABLE_DAILY_TRACKING;
+        $userTable=TABLE_USERS;
+        $projectsTable=TABLE_MASTER_PROJECTS;
         
-        $res=$this->common_model->selectData(TABLE_DAILY_TRACKING,$select,$where);
+        $where=array(            
+        );
+        if($fromdate){
+            $where["dt.created_on >="]=sqldateformate($fromdate);
+        }
+        if($todate){
+            $where["dt.created_on <="]=sqldateformate($todate);
+        }
+        if($project){
+            $where["u.projectId"]=$project;
+        }
+        $select=array('u.name,dt.*,p.name as projectname');
+        $join=array(
+            "$userTable u"=>"u.userId=dt.userid",
+            "$projectsTable p"=>"p.id=u.projectId",
+        );
+        $order_by="dt.userid";
+        //selectData($tableName=null,$select=null,$where=null,$join=null,$like=null,$order_by=null,$order=null,$ion_limit=null,$ion_offset=null,$group_by=null)
+        $res=$this->common_model->selectData("$trakingTable dt",$select,$where,$join,'',$order_by,$order="asc");       
         $data['info']=$res;
-        if($role == ROLE_MANAGER)
-        {
-                        
+       
+        if($reporttype && $reporttype!=1){
+            $result=array();
+            $user='';
+            foreach ($res as $r){
+              
+                $name=$r->name;
+                $userids=$r->userid;
+                $break_hours=$r->break_hours;
+                $spend_hours=$r->spend_hours;
+                $projectname=$r->projectname;
+                
+                
+                if($user=='' || $userids !=$user){
+                    $user=$userids;
+                    $breakCount=$hoursCount=0;
+                    $days=1;
+                }
+                
+                $hoursCount=sumofTimes($hoursCount,$spend_hours);
+                $breakCount=sumofTimes($breakCount,$break_hours);
+                $result[$userids]=array(
+                    'name'=> $name,
+                    'projectname'=>$projectname,
+                    'days'=>$days,
+                    'hourscount'=>$hoursCount,
+                    'breakscount'=>$breakCount
+                ); 
+                //echo $userids."==>".$hoursCount."<br>";
+                $days++;
+               
+            }
+            //pre($result,1);
+            $data['info']=$result;
+        }
+        if($reporttype==2){
+            $html = $this->load->view('report_pdf_summary', $data, true);
+        }else{
+            $html = $this->load->view('report_pdf_bydays', $data, true);
         }
         
         
-        $html = $this->load->view('pdf', $data, true);
+        
         $this->load->library('pdf');        
         $pdf = $this->pdf->load();        
         $pdf->WriteHTML($html); // write the HTML into the PDF
         
-        $pdf->Output($pdfFilePath);
+        $pdf->Output('pdffile.pdf','I');
     }
     
     function excel(){

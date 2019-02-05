@@ -79,6 +79,52 @@ class Admin extends BaseController
         
     }
     
+    function team(){
+        
+        $this->global['pageTitle'] = 'Team Report';
+      
+        $post= $this->input->post();
+        $fromdate=$todate=$project=$reporttype='';
+        if($post){
+            $fromdate=isset($post['fromdate'])?$post['fromdate']:'';
+            $todate=isset($post['todate'])?$post['todate']:'';
+            $reporttype=isset($post['reporttype'])?$post['reporttype']:'';
+            $data['post']=$post;
+        }
+        
+        $role=$this->session->userdata ( 'role' );
+        $projectId=$this->session->userdata ( 'projectId' );
+        $userId=$this->session->userdata ( 'userId' );
+        $currentDate=date("Y-m-d");
+        $trakingTable=TABLE_DAILY_TRACKING;
+        $userTable=TABLE_USERS;
+        $projectsTable=TABLE_MASTER_PROJECTS;
+        
+        $where=array(
+            'u.projectId'=>$projectId,
+            'u.roleId !='=>1
+        );
+        if($fromdate){
+            $where["dt.created_on >="]=sqldateformate($fromdate);
+        }
+        if($todate){
+            $where["dt.created_on <="]=sqldateformate($todate);
+        }
+       
+        $select=array('u.name,dt.*,p.name as projectname');
+        $join=array(
+            "$userTable u"=>"u.userId=dt.userid",
+            "$projectsTable p"=>"p.id=u.projectId",
+        );
+        //selectData($tableName=null,$select=null,$where=null,$join=null,$like=null,$order_by=null,$order=null,$ion_limit=null,$ion_offset=null,$group_by=null)
+        $res=$this->common_model->selectData("$trakingTable dt",$select,$where,$join);
+        $data['info']=$res;
+        $data['userId']=$userId;
+        
+        
+        $this->loadViews("teamreports", $this->global, $data , NULL);
+    }
+    
 
     
 
