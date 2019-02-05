@@ -11,11 +11,11 @@
     
         <div class="row">
             <!-- left column -->
-            <div class="col-md-8">
+            <div class="col-md-12">
               <!-- general form elements -->
-                <div class="box box-primary">
-                    <div class="box-header">
-                        <h3 class="box-title">Enter User Details</h3>
+                <div class="box box-primary pad">
+                    <div class="box-header" style=" padding:0px 10px;">
+                        <h3>Enter User Details</h3>
                     </div><!-- /.box-header -->
                     <!-- form start -->
                     
@@ -100,7 +100,7 @@
                         </div><!-- /.box-body -->
     
                         <div class="box-footer">
-                            <input type="submit" class="btn btn-primary" value="Submit" />
+                            <input type="submit" class="btn btn-primary" value="Submit" style=" margin-right:10px;"  />
                             <input type="reset" class="btn btn-default" value="Reset" />
                         </div>
                     </form>

@@ -47,8 +47,8 @@ body {
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
   position: relative;
 }
-.layout-boxed {
-  background: url('../img/boxed-bg.jpg') repeat fixed;
+.layout-boxed .login-page {
+  background: url('../img/boxed-bg.jpg') repeat fixed !import;
 }
 /*
  * Content Wrapper - contains the main content

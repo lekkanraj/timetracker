@@ -1,0 +1,53 @@
+.login-page, .register-page {
+	background: url('../images/bg.jpg') repeat fixed !important;
+	background-size: cover !important;
+	
+}
+.login-box, .register-box {
+	width: 480px;
+    margin: 8% auto;	
+}
+.login-box-msg{
+	font-size:36px;
+}
+.login-logo a, .register-logo a {
+	color:#ffffff !important;
+}
+.tea {
+
+    font-size: 24px;
+    text-align: center !important;
+    margin-bottom: 15px !important;
+    background: #3c8dbc;
+    margin-right: 15px !important;
+	color:#fff;
+	padding-bottom:7px !important;
+	font-weight:normal;
+}
+.tea_box{
+	margin:10px 0 !important;
+	
+}
+.padding { padding:10px;}
+.project_table tbody tr th {
+
+    background: #3c8dbc;
+	color:#fff;
+	font-size: 16px;
+font-weight: normal;
+
+}
+label {
+
+    font-size: 16px;
+    font-weight: normal;
+
+}
+.table.table-hover.table-bordered.project_table thead tr th {
+
+    background: #3c8dbc;
+	color:#fff;
+	font-size: 16px;
+font-weight: normal;
+
+}

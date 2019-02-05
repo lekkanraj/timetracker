@@ -59,14 +59,14 @@
     
         <div class="row">
             <!-- left column -->
-            <div class="col-md-8">
+            <div class="col-md-12">
             <?php 
             $trackInfo=isset($trackInfo[0])?$trackInfo[0]:'';
             $dayStart=isset($trackInfo->day_start)?$trackInfo->day_start:'';
             $dayEnd=isset($trackInfo->day_end)?$trackInfo->day_end:'';
             ?>
               <!-- general form elements -->
-                <div class="box box-primary">
+                <div class="box box-primary padding">
                     <div class="box-header">
                         <h3 class="box-title">
                         	<?php echo "Day Started At : ".displayDateTime($dayStart);?>
@@ -87,9 +87,9 @@
                                 $breakT=getBreakInfo($break);
                                 $break_name=$breakT->break_name;  
                                 ?>
-                            <div class="form-group">
-                                <label class="control-label col-sm-4" for="email"><?php echo $break_name;?></label>
-                                <div class="col-sm-6">
+                            <div class="form-group col-md-4 tea_box">
+                                <label class="control-label col-sm-12 tea" for="email"><?php echo $break_name;?></label>
+                                <div class="col-sm-12">
                                   <div class="onoffswitch">
                                   <?php 
                                         $res=getBreakInfoByBreakId($break);
@@ -190,6 +190,8 @@
                 </div>
             </div>
         </div>    
+		
+		
     </section>
     
 </div>
@@ -236,3 +238,4 @@ $(function(){
 });
 </script>
 <script src="<?php echo base_url(); ?>assets/js/addUser.js" type="text/javascript"></script>
+

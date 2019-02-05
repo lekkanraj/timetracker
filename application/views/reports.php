@@ -12,9 +12,9 @@
             <!-- left column -->
             <div class="col-md-12">
               <!-- general form elements -->
-                <div class="box box-primary">
+                <div class="box box-primary pad">
                     <div class="box-header">
-                        <h3 class="box-title">Generate Reports</h3>
+                        <h3 class="box-title"><b>Generate Reports</b></h3>
                     </div><!-- /.box-header -->
                     <!-- form start -->
                     <?php 
@@ -80,24 +80,71 @@
                             			<input type="reset" class="btn btn-default" value="Reset" />
                             		</div>
                                 </div>
-                            </div>
-                            </form>
-                            </div>
-                        </div><!-- /.box-body -->
-    					<div class="row">
-                            <div class="col-md-12">
+								 <div class="col-md-2">
                                <div class="input-group">
                                       <div class="input-group-btn">
-                                        <a target="_blank" href="<?php echo base_url()."reports/excel?fromdate=$fromdate&todate=$todate&project=$project&reporttype=$reporttype";?>"><button class="btn btn-md btn-default  downloadfile" filetype="1"><i class="fa fa-file-excel-o" style="font-size: 35px;"></i></button></a>
-                                        <a target="_blank" href="<?php echo base_url()."reports/bydays?fromdate=$fromdate&todate=$todate&project=$project&reporttype=$reporttype";?>"><button class="btn btn-md btn-default  downloadfile" filetype="2"><i class="fa fa-file-pdf-o" style="font-size: 35px;"></i></button></a>
+                                        <a target="_blank" class="btn btn-app" href="<?php echo base_url()."reports/excel?fromdate=$fromdate&todate=$todate&project=$project&reporttype=$reporttype";?>">
+										<i class="fa fa-file-pdf-o" style="margin: 0;"></i> PDF
+										<button class="btn btn-md btn-default  downloadfile" filetype="1"></button></a>
+                                        <a target="_blank" class="btn btn-app" href="<?php echo base_url()."reports/bydays?fromdate=$fromdate&todate=$todate&project=$project&reporttype=$reporttype";?>">
+										<i class="fa fa-file-excel-o" ></i> XL
+										<button class="btn btn-md btn-default  downloadfile" filetype="2"></button></a>
                                       </div>
                                     </div>
                                 
                             </div>
-                        </div>
-                      <div class="row">
+                            </div>
+                            </form>
+							    <table class="table table-hover table-bordered project_table">
+                        <thead>
+                          <tr>
+                            <th align='center'>Sno</th>
+                            <th align='center'>Employee Name</th>
+                            <th align='center'>Project Name</th>
+                            <th  align='center'>Date</th>
+                            <th  align='center'>Start Time</th>
+                            <th align='center'>End Time</th>
+                            <th align='center'>Spend Hours</th>
+                            <th align='center'>Break Hours</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                         <?php
+                            if(!empty($info))
+                            {
+                                $i=1;
+                                foreach($info as $record)
+                                {
+                            ?>
+                              <tr>
+                                <td><?php echo $i;?></td>
+                                <td><?php echo $record->name; ?></td>
+                                <td><?php echo $record->projectname; ?></td>
+                                <td><?php echo displayDate($record->day_start); ?></td>
+                                <td><?php echo displayTime($record->day_start); ?></td>
+                                <td><?php echo displayTime($record->day_end); ?></td>
+                                <td><?php echo $record->spend_hours ?></td>
+                                <td><?php echo $record->break_hours ?></td>
+                              </tr>
+                          <?php 
+                                $i++;
+                                }
+                            }else{?>
+                            <tr>
+                                <td colspan='8'>No Records Found.</td>
+                              </tr>
+                            
+                            <?php }?>
+                        </tbody>
+                      </table>
+
+                            </div>
+                        </div><!-- /.box-body -->
+    					
+                     <!-- <div class="row">
                             <div class="col-md-12">  
-                        <table class="table table-bordered">
+							<div class="box box-primary pad">
+                        <table class="table table-hover table-bordered project_table">
                         <thead>
                           <tr>
                             <th align='center'>Sno</th>
@@ -140,7 +187,8 @@
                         </tbody>
                       </table>
                     </div>
-            	</div>
+					 </div>
+            	</div>-->
                 </div>
             </div>
             

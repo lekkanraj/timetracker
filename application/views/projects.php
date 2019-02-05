@@ -16,9 +16,9 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
-              <div class="box">
+              <div class="box box-primary padding">
                 <div class="box-header">
-                    <h3 class="box-title">Project List</h3>
+                    <h3 class="box-title"><i class="fa fa-tasks"></i> Project List</h3>
                     <div class="box-tools">
                         <form action="<?php echo base_url() ?>admin/projectlist" method="POST" id="searchList">
                             <div class="input-group">
@@ -31,7 +31,7 @@
                     </div>
                 </div><!-- /.box-header -->
                 <div class="box-body table-responsive no-padding">
-                  <table class="table table-hover">
+                  <table class="table table-hover table-bordered project_table">
                     <tr>
                       <th>Id</th>
                       <th>Project Name</th>

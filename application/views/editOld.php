@@ -35,14 +35,14 @@ if(!empty($userInfo))
     
         <div class="row">
             <!-- left column -->
-            <div class="col-md-8">
+            <div class="col-md-12">
               <!-- general form elements -->
                 
                 
                 
-                <div class="box box-primary">
+                <div class="box box-primary pad">
                     <div class="box-header">
-                        <h3 class="box-title">Enter User Details</h3>
+                        <h3 class="box-title"><b>Enter User Details</b></h3>
                     </div><!-- /.box-header -->
                     <!-- form start -->
                     
@@ -127,7 +127,7 @@ if(!empty($userInfo))
                         </div><!-- /.box-body -->
     
                         <div class="box-footer">
-                            <input type="submit" class="btn btn-primary" value="Submit" />
+                            <input type="submit" class="btn btn-primary" value="Submit" style=" margin-right:10px;" />
                             <input type="reset" class="btn btn-default" value="Reset" />
                         </div>
                     </form>

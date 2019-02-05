@@ -20,7 +20,7 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
-              <div class="box">
+              <div class="box box-primary padding">
                 <div class="box-header">
                     <h3 class="box-title">Users List</h3>
                     <div class="box-tools">
@@ -35,7 +35,7 @@
                     </div>
                 </div><!-- /.box-header -->
                 <div class="box-body table-responsive no-padding">
-                  <table class="table table-hover">
+                  <table class="table table-hover table-bordered project_table">
                     <tr>
                       <th>Id</th>
                       <th>Name</th>
@@ -60,7 +60,7 @@
                       <?php  if($roleId==ROLE_MANAGER){?>
                       <td><?php echo $record->role ?></td>
                       <td class="text-center">
-                          <a class="btn btn-sm btn-info" href="<?php echo base_url().'editOld/'.$record->userId; ?>"><i class="fa fa-pencil"></i></a>
+                          <a class="btn btn-sm btn-success" href="<?php echo base_url().'editOld/'.$record->userId; ?>"><i class="fa fa-pencil"></i></a>
                           <a class="btn btn-sm btn-danger deleteUser" href="#" data-userid="<?php echo $record->userId; ?>"><i class="fa fa-trash"></i></a>
                       </td>
                       <?php }?>
