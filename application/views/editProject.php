@@ -11,35 +11,52 @@
     
         <div class="row">
             <!-- left column -->
-            <div class="col-md-8">
+            <div class="col-md-12">
               <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header">
-                        <h3 class="box-title">Add Project Info</h3>
+                        <h3 class="box-title">Edit Project Info</h3>
                     </div><!-- /.box-header -->
                     <!-- form start -->
                     
-                    <form role="form" id="addUser" action="<?php echo base_url().'admin/addproject'; ?>" method="post" role="form">
+                    <form role="form" id="addUser" action="<?php echo base_url().'admin/editproject'; ?>" method="post" enctype="multipart/form-data">
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-6">                                
                                     <div class="form-group">
                                         <label for="fname">Project Name</label>
-                                        <input type="text" class="form-control required" id="fname" name="name" maxlength="128">
+                                        <input type="text" class="form-control required" id="fname" name="name" maxlength="128" value="<?php echo $info->name;?>">
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6">                                
+                            <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="fname">Break Count</label>
-                                        <input type="text" class="form-control required" id="fname" name="breakcount" required min="1" max="10" >
+                                    <?php 
+                                        $selected=explode(',',$info->breaks);
+                                    ?>
+                                        <label for="project">Select Breaks:(* Use CTRL+Click to select multiple breaks.)</label>
+                                        <select class="form-control multiselect-ui required" id="role" name="breaks[]" multiple="multiple" size="<?php echo count($breaks)+1;?>">
+                                            <option value="0">Select</option>
+                                            <?php
+                                            if(!empty($breaks))
+                                            {
+                                                foreach ($breaks as $rl)
+                                                {
+                                                    ?>
+                                                    <option value="<?php echo $rl->id; ?>" <?php if(in_array($rl->id,$selected)){ echo "selected";}?>><?php echo $rl->break_name ?></option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
                                     </div>
                                 </div>
-                            </div>
+                                </div>
                         </div><!-- /.box-body -->
     
                         <div class="box-footer">
+                        <input type="hidden" name="projectid" value=<?php echo $info->id;?>>
                             <input type="submit" class="btn btn-primary" value="Submit" />
                             <input type="reset" class="btn btn-default" value="Reset" />
                         </div>
@@ -77,6 +94,12 @@
             </div>
         </div>    
     </section>
+    
+    <script type="text/javascript">
+$(function() {
+    
+});
+</script>
     
 </div>
 <script src="<?php echo base_url(); ?>assets/js/addUser.js" type="text/javascript"></script>

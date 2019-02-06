@@ -147,9 +147,13 @@ input:checked + .slider:before {
                                 $break_name=$breakT->break_name;  
                                 ?>
                             <div class="form-group col-md-4 tea_box">
+							<label class="switch">
+  <input type="checkbox" checked>
+  <span class="slider round"></span>
+</label>
                                 <label class="control-label col-sm-12 tea" for="email"><?php echo $break_name;?></label>
                                 <div class="col-sm-12 text-center">
-                                  <div class="onoffswitch1">
+                                  <div class="onoffswitch">
                                   <?php 
                                         $res=getBreakInfoByBreakId($break);
                                         $breakStart=isset($res->break_start)? $res->break_start :'';
@@ -170,49 +174,47 @@ input:checked + .slider:before {
                                         }elseif(empty($breakHours)){
                                             $checked="";
                                         }
+                                        
+                                                                                
+                                       
+                                        
                                     ?>
                                     <?php if($breakEnded==false){?>
                                     	<div <?php if($firstassigned==true){ echo "class='disablediv'";}$firstassigned=true;?>>
-                                            <!-- <input type="checkbox" name="onoffswitch<?php echo $break;?>" class="onoffswitch-checkbox" id="daystart<?php echo $break;?>" <?php echo $checked;?>>
+                                            <input type="checkbox" name="onoffswitch<?php echo $break;?>" class="onoffswitch-checkbox" id="daystart<?php echo $break;?>" <?php echo $checked;?>>
                                             <label class="onoffswitch-label" for="daystart<?php echo $break;?>" >
                                                 <span class="onoffswitch-inner daystarton" breaktype="<?php echo $break;?>" breakStatus="<?php echo $breakStatus;?>"></span>
                                                 <span class="onoffswitch-switch daystartoff"></span>
-                                            </label> -->
-                                            <label class="switch">
-                                              <input type="checkbox" name="onoffswitch<?php echo $break;?>" class="onoffswitch-checkbox" id="daystart<?php echo $break;?>" <?php echo $checked;?>>
-                                              <span class="slider round daystarton" breaktype="<?php echo $break;?>" breakStatus="<?php echo $breakStatus;?>"></span>
                                             </label>
                                         </div>
                                 </div>
                                 </div>
                                             <?php if(!empty($breakStart)){?>
-                                            <div class="col-md-12">
                                             		<label>Started : <?php echo $breakStart;?></label>
-                                            </div>
                                             <?php }?>  
                                         <?php }else{
                                             $firstassigned=false;
                                             ?>
                                    </div>
                                 </div>  
-									<div class="col-md-12">
+									<div class="col-md-6">
 											<label>Started Time:<?php echo displayDateTime($breakStart);?></label>
-									</div>
-									<div class="col-md-12">
-											<label>Ended Time: <?php echo displayDateTime($breakEnd);?></label>  
-									</div>
-									<div class="col-md-12">
-                                		<label>Spend Hours: <?php echo $breakHours;?></label>
-                                	</div>                                    	
-                                <?php }?>
-								</div>
+												<label>Ended Time: <?php echo displayDateTime($breakEnd);?></label>  
+												</div>
+												<div class="col-md-6">
+                                            	<label>Spend Hours: <?php echo $breakHours;?></label>                                    	
+                                            <?php }?>
+											</div>
+                             </div>
                              <?php 
                              if(!empty($breakStart)){
                                  $assignedBreak=true;
                              }
-                            }
+                             
+                             
+                                }
                             ?>
-                             <div class="row">
+                             
                              <div class="form-group">
                              	<div class="col-sm-12 text-center">
                              	<?php if($dayEnd){?><label>Day Ended:<?php echo displayDateTime($dayEnd);?></label><?php }else{?>
@@ -222,7 +224,7 @@ input:checked + .slider:before {
                              		<?php }?>
                              	</div>
                              </div>
-                            </div>
+                            
                         </div><!-- /.box-body -->
                         </form>
                 </div>

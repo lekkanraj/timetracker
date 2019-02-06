@@ -42,12 +42,14 @@ class Admin extends BaseController
    
     function addproject()
     {
-            $post= $this->input->post();        
-            $this->load->model('user_model');
+            $post= $this->input->post();
             if(!$post){
                 $this->global['pageTitle'] = 'Add New Project';
-                $select=array('*');                
-                $Info=$this->common_model->selectData(TABLE_MASTER_BREAKS,$select);
+                $select=array('*'); 
+                $where=array(
+                    'isActive'=>1
+                );
+                $Info=$this->common_model->selectData(TABLE_MASTER_BREAKS,$select,$where);
                 $data=array(
                     'info'=>$Info
                 );
@@ -77,6 +79,59 @@ class Admin extends BaseController
                 redirect('admin/projectlist');
             }
         
+    }
+    
+    function editproject($projectid=null){
+        $this->global['pageTitle'] = 'Edit Project';
+        $post= $this->input->post();
+        if($projectid==null && empty($post)){
+            redirect('admin/projectlist');
+        }
+        $projectid=isset($post['projectid']) ? $post['projectid'] : $projectid;
+        $select=array('*');
+        $where=array(
+            'id'=>$projectid,
+            'isActive'=>1
+        );
+        $Info=$this->common_model->selectData(TABLE_MASTER_PROJECTS,$select,$where);
+       
+        $data=array(
+            'info'=>$Info[0]
+        );
+        //pre($data,1);
+        
+        if($post){
+            $name = $post['name'];
+            $breaks= implode(',',$post['breaks']);
+            $Infos = array(
+                'name'=>$name,
+                'breaks'=>$breaks,
+               );
+            $where=array(
+                'id'=>$projectid
+            );
+            //pre($Infos);pre($where,1);
+            $res= $this->common_model->edit_db(TABLE_MASTER_PROJECTS,$Infos,$where);
+            
+            if($res > 0)
+            {
+                $this->session->set_flashdata('success', 'Project Update Successfully');
+            }
+            else
+            {
+                $this->session->set_flashdata('error', 'Project update failed');
+            }
+            
+            redirect('admin/projectlist');
+        }
+        $select=array('*');
+        $where=array(
+            'isActive'=>1
+        );
+        $breaks=$this->common_model->selectData(TABLE_MASTER_BREAKS,$select,$where);
+        $data['breaks']=$breaks;
+        
+        $this->loadViews("editProject", $this->global, $data, NULL);
     }
     
     function team(){

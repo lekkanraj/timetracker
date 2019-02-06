@@ -2,7 +2,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <i class="fa fa-users"></i> Reports
+        <i class="fa fa-files-o"></i> Reports
         <small>By User & By Team</small>
       </h1>
     </section>
@@ -84,7 +84,7 @@
                                 	<div class="" style="margin-top: 24px;">
                                 		<input type='hidden' class='filetype' value='1' />
                                 		<input type="submit" class="btn btn-primary" value="Search" />
-                            			<input type="reset" class="btn btn-default" value="Reset" />
+                            			<input type="reset" class="btn btn-default" value="Reset" id='reset' />
                             		</div>
                                 </div>
 								<div class="col-md-2">
@@ -252,6 +252,9 @@ $(document).ready(function(){
 		$('.filetype').val(filetype);
 
 	});
+	$('#reset').on('click',function(){
+		window.location="<?php echo base_url().'reports';?>";
+	});
     $("#txtFromDate").datepicker({
     	//dateFormat: 'dd/mm/yy',
         numberOfMonths:1,
@@ -259,7 +262,8 @@ $(document).ready(function(){
           $("#txtToDate").datepicker("option","minDate", selected)
         },
        // maxDate:'+0 d',
-        currentdate:'now' 	
+        currentdate:'now',
+        maxDate:'now' 	
     });
     $("#txtToDate").datepicker({
     	//dateFormat: 'dd/mm/yy',

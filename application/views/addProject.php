@@ -11,7 +11,7 @@
     
         <div class="row">
             <!-- left column -->
-            <div class="col-md-8">
+            <div class="col-md-12">
               <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header">
@@ -29,10 +29,11 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
                             <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="project">Select Breaks:</label>
-                                        <select class="form-control multiselect-ui required" id="role" name="breaks[]" multiple="multiple">
+                                        <label for="project">Select Breaks:(* Use CTRL+Click to select multiple breaks.)</label>
+                                        <select class="form-control multiselect-ui required" id="role" name="breaks[]" multiple="multiple" size="<?php echo count($info)+1;?>">
                                             <option value="0">Select</option>
                                             <?php
                                             if(!empty($info))
@@ -47,6 +48,7 @@
                                             ?>
                                         </select>
                                     </div>
+                                </div>
                                 </div>
                         </div><!-- /.box-body -->
     
@@ -91,9 +93,7 @@
     
     <script type="text/javascript">
 $(function() {
-    $('.multiselect-ui').multiselect({
-        includeSelectAllOption: true
-    });
+    
 });
 </script>
     

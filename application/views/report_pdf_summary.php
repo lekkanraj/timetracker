@@ -20,6 +20,10 @@
     		color:red;
     		font-weight: normal;
     	}
+    	table.table-bordered > thead > tr > th,
+    	table.table-bordered > tbody > tr {
+          border:2px solid block;
+        }
     </style>
     <!-- jQuery 2.1.4 -->
     <script src="<?php echo base_url(); ?>assets/js/jQuery-2.1.4.min.js"></script>

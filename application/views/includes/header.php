@@ -62,14 +62,14 @@
                   <span class="hidden-xs"><?php echo $name; ?></span>
                 </a>
                 <ul class="dropdown-menu">
-                  <!-- User image -->
+                  <!-- User image 
                   <li class="user-header">
                     <img src="<?php echo base_url(); ?>assets/dist/img/avatar.png" class="img-circle" alt="User Image" />
                     <p>
                       <?php echo $name; ?>
                       <small><?php echo $role_text; ?></small>
                     </p>
-                  </li>
+                  </li>-->
                   <!-- Menu Footer-->
                   <li class="user-footer">
                     <div class="pull-left">
@@ -173,12 +173,19 @@
             <?php
             }
             ?>
+            <?php
+            if($role == ROLE_TEAMLEAD || $role == ROLE_MANAGER)
+            {
+            ?>
             <li class="treeview">
               <a href="<?php echo base_url().'reports'; ?>" >
                 <i class="fa fa-files-o"></i>
                 <span>Reports</span>
               </a>
             </li>
+            <?php
+            }
+            ?>
           </ul>
         </section>
         <!-- /.sidebar -->

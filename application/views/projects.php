@@ -2,7 +2,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <i class="fa fa-users"></i> Project Management
+        <i class="fa fa-tasks"></i> Project Management
         <small>Add, Edit, Delete</small>
       </h1>
     </section>
@@ -31,6 +31,35 @@
                     </div>
                 </div><!-- /.box-header -->
                 <div class="box-body table-responsive no-padding">
+                <div class="col-md-4">
+                <?php
+                    $this->load->helper('form');
+                    $error = $this->session->flashdata('error');
+                    if($error)
+                    {
+                ?>
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <?php echo $this->session->flashdata('error'); ?>                    
+                </div>
+                <?php } ?>
+                <?php  
+                    $success = $this->session->flashdata('success');
+                    if($success)
+                    {
+                ?>
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <?php echo $this->session->flashdata('success'); ?>
+                </div>
+                <?php } ?>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <?php echo validation_errors('<div class="alert alert-danger alert-dismissable">', ' <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></div>'); ?>
+                    </div>
+                </div>
+            </div>
                   <table class="table table-hover table-bordered project_table">
                     <tr>
                       <th>Id</th>
@@ -44,6 +73,7 @@
                     <?php
                     if(!empty($Info))
                     {
+                        $i=1;
                         foreach($Info as $record)
                         {
                             $breakText='';
@@ -64,19 +94,20 @@
                             
                     ?>
                         <tr>
-                          <td><?php echo $record->id ?></td>
-                          <td><?php echo $record->name ?></td>
+                          <td><?php echo $i; ?></td>
+                          <td><?php echo $record->name; ?></td>
                           <!--   <td><?php echo $record->shift_start_time ?></td>
                           <td><?php echo $record->shift_end_time ?></td> -->
                           <td><?php echo $breakText;?></td>
                           <td class="text-center">
-                          <!-- 
-                              <a class="btn btn-sm btn-info" href="<?php //echo base_url().'editOld/'.$record->id; ?>"><i class="fa fa-pencil"></i></a>
-                              <a class="btn btn-sm btn-danger deleteUser" href="#" data-userid="<?php //echo $record->id; ?>"><i class="fa fa-trash"></i></a>
+                         
+                              <a class="btn btn-sm btn-info" href="<?php echo base_url().'admin/editproject/'.$record->id; ?>"><i class="fa fa-pencil"></i></a>
+                              <!--  <a class="btn btn-sm btn-danger deleteUser" href="#" data-userid="<?php //echo $record->id; ?>"><i class="fa fa-trash"></i></a>
                            -->
                           </td>
                         </tr>
                         <?php
+                        $i++;
                         }
                     }
                     ?>

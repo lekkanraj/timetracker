@@ -78,6 +78,8 @@ $route['logoffemp'] = "login/logoff";
 //Admin
 $route['admin/projectlist'] = "admin/projectlist";
 $route['admin/addproject'] = "admin/addproject";
+$route['admin/editproject/(:num)'] = "admin/editproject/$1";
+$route['admin/editproject'] = "admin/editproject";
 $route['admin/team'] = "admin/team";
 
 
