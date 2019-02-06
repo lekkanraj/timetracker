@@ -33,8 +33,7 @@ class Reports extends BaseController
         $Info=$this->common_model->selectData(TABLE_MASTER_PROJECTS,$select,$where);
         $data=array(
             'projects'=>$Info
-        );
-        
+        );        
         
         $post= $this->input->post(); 
         $fromdate=$todate=$project='';
@@ -122,10 +121,7 @@ class Reports extends BaseController
         $this->loadViews("reports", $this->global, $data , NULL);
     }
     
-   
-    function bydays(){
-        $post= $this->input->get();
-        
+    public function getreportdata($post){
         $fromdate=$todate=$project=$reporttype='';
         if($post){
             $fromdate=isset($post['fromdate'])?$post['fromdate']:'';
@@ -135,10 +131,8 @@ class Reports extends BaseController
             $data['post']=$post;
         }else{
             $fromdate="1-".date("m-Y");
-        }
+        }       
         
-        //  $html = $this->load->view('pdf_report', $data, true); // render the view into HTML
-        //https://davidsimpson.me/2013/05/19/using-mpdf-with-codeigniter/
         $data=array();
         //$html="Welcome";
         $role=$this->session->userdata ( 'role' );
@@ -149,7 +143,7 @@ class Reports extends BaseController
         $userTable=TABLE_USERS;
         $projectsTable=TABLE_MASTER_PROJECTS;
         
-        $where=array(            
+        $where=array(
         );
         if($fromdate){
             $where["dt.created_on >="]=sqldateformate($fromdate);
@@ -170,14 +164,14 @@ class Reports extends BaseController
         );
         $order_by="dt.userid";
         //selectData($tableName=null,$select=null,$where=null,$join=null,$like=null,$order_by=null,$order=null,$ion_limit=null,$ion_offset=null,$group_by=null)
-        $res=$this->common_model->selectData("$trakingTable dt",$select,$where,$join,'',$order_by,$order="asc");       
+        $res=$this->common_model->selectData("$trakingTable dt",$select,$where,$join,'',$order_by,$order="asc");
         $data['info']=$res;
-       
+        
         if($reporttype && $reporttype!=1){
             $result=array();
             $user='';
             foreach ($res as $r){
-              
+                
                 $name=$r->name;
                 $userids=$r->userid;
                 $break_hours=$r->break_hours;
@@ -199,21 +193,27 @@ class Reports extends BaseController
                     'days'=>$days,
                     'hourscount'=>$hoursCount,
                     'breakscount'=>$breakCount
-                ); 
+                );
                 //echo $userids."==>".$hoursCount."<br>";
                 $days++;
-               
+                
             }
             //pre($result,1);
             $data['info']=$result;
         }
+        return $data;
+    }
+    
+   
+    function pdf(){
+        $post= $this->input->get();
+        $reporttype=isset($post['reporttype'])?$post['reporttype']:1;
+        $data=$this->getreportdata($post);
         if($reporttype==2){
             $html = $this->load->view('report_pdf_summary', $data, true);
         }else{
             $html = $this->load->view('report_pdf_bydays', $data, true);
         }
-        
-        
         
         $this->load->library('pdf');        
         $pdf = $this->pdf->load();        
@@ -223,6 +223,15 @@ class Reports extends BaseController
     }
     
     function excel(){
+        $post= $this->input->get();
+        $reporttype=isset($post['reporttype'])?$post['reporttype']:1;
+        $data=$this->getreportdata($post);
+        $info=$data['info'];
+        if($reporttype==2){
+            //$html = $this->load->view('report_pdf_summary', $data, true);
+        }else{
+            //$html = $this->load->view('report_pdf_bydays', $data, true);
+        }
         $style_header = array(
             'fill' => array(
                 'type' => PHPExcel_Style_Fill::FILL_SOLID,
@@ -269,19 +278,82 @@ class Reports extends BaseController
         //activate worksheet number 1
         $this->excel->setActiveSheetIndex(0);
         //name the worksheet
-        $this->excel->getActiveSheet()->setTitle('test worksheet');
+        $this->excel->getActiveSheet()->setTitle('Reports');
         //set cell A1 content with some text
-        $this->excel->getActiveSheet()->setCellValue('A1', 'This is just some text value');
+        
+       
         //change the font size
-        $this->excel->getActiveSheet()->getStyle('A1')->getFont()->setSize(20);
+        $this->excel->getActiveSheet()->getStyle('A1')->getFont()->setSize(10);
         //make the font become bold
         $this->excel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
         //merge cell A1 until D1
         $this->excel->getActiveSheet()->mergeCells('A1:D1');
         //set aligment to center for that merged cell (A1 to D1)
         $this->excel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+       
+        $sheet=$this->excel->getActiveSheet();
+        $sheet->getColumnDimension('A')->setWidth(10);
+        $sheet->getColumnDimension('B')->setWidth(20);
+        $sheet->getColumnDimension('C')->setWidth(20);
+        $sheet->getColumnDimension('D')->setWidth(15);
+        $sheet->getColumnDimension('E')->setWidth(15);
+        $sheet->getColumnDimension('F')->setWidth(15);
+        $sheet->getColumnDimension('G')->setWidth(15);  
+        $sheet->getColumnDimension('H')->setWidth(15); 
+        $filename='reports_by_.xlsx'; //save our workbook as this file name
+        if($reporttype==1){
+            $this->excel->getActiveSheet()->setCellValue('A1',"Reports By day");
+            $columnNames=array('Sno','Employee Name','Team','Date','Start Time','End Time','Spend Hours','Break Hours');
+            $headcol = 0;
+            $headrow=3;
+            foreach ($columnNames as $key=>$columns){
+                $sheet->setCellValueByColumnAndRow($headcol,$headrow ,$columns);
+                $headcol++;
+            }
+            
+            $headrow=4;
+            $i=1;
+            foreach ($info as $record){
+                $columndata=array($i,$record->name,$record->projectname,displayDate($record->day_start),displayTime($record->day_start),
+                    displayTime($record->day_end),$record->spend_hours,$record->break_hours
+                );
+                $headcol = 0;
+                foreach ($columndata as $key=>$columns){
+                    $sheet->setCellValueByColumnAndRow($headcol,$headrow ,$columns);
+                    $headcol++;
+                }
+                $headrow++;
+            
+            $i++;
+            } 
+            $filename='reports_by_days.xlsx'; //save our workbook as this file name
+        }elseif($reporttype==2){
+            $this->excel->getActiveSheet()->setCellValue('A1',"Reports By Summary");
+            $columnNames=array('Sno','Employee Name','Team','Days','Hours Spend','Break Hours');
+            $headcol = 0;
+            $headrow=3;
+            foreach ($columnNames as $key=>$columns){
+                $sheet->setCellValueByColumnAndRow($headcol,$headrow ,$columns);
+                $headcol++;
+            }
+            $headrow=4;
+            $i=1;
+            foreach ($info as $record){
+                $columndata=array($i,$record['name'],$record['projectname'],$record['days'],
+                    $record['hourscount'],$record['breakscount']
+                );
+                $headcol = 0;
+                foreach ($columndata as $key=>$columns){
+                    $sheet->setCellValueByColumnAndRow($headcol,$headrow ,$columns);
+                    $headcol++;
+                }
+                $headrow++;
+                
+                $i++;
+            } 
+            $filename='reports_by_summary.xlsx'; //save our workbook as this file name
+        }
         
-        $filename='just_some_random_name.xlsx'; //save our workbook as this file name
         header('Content-Type: application/vnd.ms-excel'); //mime type
         header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
         header('Cache-Control: max-age=0'); //no cache

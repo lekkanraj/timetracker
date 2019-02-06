@@ -90,7 +90,7 @@
 								<div class="col-md-2">
                                		<div class="input-group">
                                       <div class="input-group-btn">
-                                        <a target="_blank" class="btn btn-app" href="<?php echo base_url()."reports/bydays?fromdate=$fromdate&todate=$todate&project=$project&reporttype=$reporttype";?>">
+                                        <a target="_blank" class="btn btn-app" href="<?php echo base_url()."reports/pdf?fromdate=$fromdate&todate=$todate&project=$project&reporttype=$reporttype";?>">
 											<i class="fa fa-file-pdf-o" style="margin: 0;"></i> PDF
 										</a>
                                         <a target="_blank" class="btn btn-app" href="<?php echo base_url()."reports/excel?fromdate=$fromdate&todate=$todate&project=$project&reporttype=$reporttype";?>">

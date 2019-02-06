@@ -33,6 +33,7 @@
       <tr>
         <th align='center'>Sno</th>
         <th align='center'>Employee Name</th>
+        <th align='center'>Project</th>
         <th  align='center'>Date</th>
         <th  align='center'>Start Time</th>
         <th align='center'>End Time</th>
@@ -51,11 +52,12 @@
           <tr>
             <td align='center'><?php echo $i;?></td>
             <td align='center'><?php echo $record->name; ?></td>
+            <td align='center'><?php echo $record->projectname; ?></td>
             <td align='center'><?php echo displayDate($record->day_start); ?></td>
             <td align='center'><?php echo displayTime($record->day_start); ?></td>
             <td align='center'><?php echo displayTime($record->day_end); ?></td>
-            <td align='center'><?php echo $record->spend_hours ?></td>
-            <td align='center'><?php echo $record->break_hours ?></td>
+            <td align='center'><?php echo $record->spend_hours; ?></td>
+            <td align='center'><?php echo $record->break_hours; ?></td>
           </tr>
       <?php 
             $i++;

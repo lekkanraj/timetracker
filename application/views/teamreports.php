@@ -12,9 +12,9 @@
             <!-- left column -->
             <div class="col-md-12">
               <!-- general form elements -->
-                <div class="box box-primary">
+                <div class="box box-primary pad">
                     <div class="box-header">
-                        <h3 class="box-title">Logs</h3>
+                        <h3 class="box-title"><b>Logs</b></h3>
                     </div><!-- /.box-header -->
                     <!-- form start -->
                     <?php 
@@ -65,17 +65,17 @@
                                 <div class="col-md-2">
                                 	<div class="" style="margin-top: 24px;">
                                 		<input type='hidden' class='filetype' value='1' />
-                                		<input type="submit" class="btn btn-primary" value="Search" />
+                                		<input type="submit" class="btn btn-primary" value="Search" style=" margin-right:10px;" />
                             			<input type="reset" class="btn btn-default" value="Reset" />
                             		</div>
                                 </div>
                             </div>
                             </form>
                             </div>
-                        </div><!-- /.box-body -->
+                        
                       <div class="row">
                             <div class="col-md-12">  
-                        <table class="table table-bordered">
+                        <table class="table table-hover table-bordered project_table">
                         <thead>
                           <tr>
                             <th align='center'>Sno</th>
@@ -127,6 +127,7 @@
                       </table>
                     </div>
             	</div>
+				</div><!-- /.box-body -->
                 </div>
             </div>
             

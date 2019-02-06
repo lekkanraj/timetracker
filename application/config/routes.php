@@ -82,7 +82,8 @@ $route['admin/team'] = "admin/team";
 
 
 $route['reports'] = "reports/index";
-$route['reports/bydays'] = "reports/bydays";
+$route['reports/pdf'] = "reports/pdf";
+$route['reports/excel'] = "reports/excel";
 //$route['reports/bydays/(:any)'] = "reports/bydays/$1";
 $route['reports/summary'] = "reports/summary";
 
