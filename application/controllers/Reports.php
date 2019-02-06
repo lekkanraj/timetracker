@@ -37,26 +37,30 @@ class Reports extends BaseController
         
         
         $post= $this->input->post(); 
-        $fromdate=$todate=$project=$reporttype='';
+        $fromdate=$todate=$project='';
+        $reporttype=1;
         if($post){
             $fromdate=isset($post['fromdate'])?$post['fromdate']:'';
             $todate=isset($post['todate'])?$post['todate']:'';
             $project=isset($post['project'])?$post['project']:'';
             $reporttype=isset($post['reporttype'])?$post['reporttype']:'';
             $data['post']=$post;
+        }else{
+            $fromdate=date("m/01/Y");
+            //$data['post']['fromdate']=$fromdate;
+            $data['post']['reporttype']=$reporttype;
         }
-        
         $role=$this->session->userdata ( 'role' );
-        $projectId=$this->session->userdata ( 'projectId' );
+        $projectId=$this->session->userdata ('projectId' );
         $userId=$this->session->userdata ( 'userId' );
         $currentDate=date("Y-m-d");
         $trakingTable=TABLE_DAILY_TRACKING;
         $userTable=TABLE_USERS;
         $projectsTable=TABLE_MASTER_PROJECTS;
         
+        //pre($data,1);
         $where=array(
-           // 'dt.userid'=>$userId,
-            
+           // 'dt.userid'=>$userId,            
         );
         if($fromdate){
             $where["dt.created_on >="]=sqldateformate($fromdate);
@@ -67,6 +71,10 @@ class Reports extends BaseController
         if($project){
             $where["u.projectId"]=$project;
         }
+        
+        if($role==ROLE_TEAMLEAD){
+            $where["u.roleId !="]=ROLE_MANAGER;
+        }
         $select=array('u.name,dt.*,p.name as projectname');
         $join=array(
             "$userTable u"=>"u.userId=dt.userid",
@@ -75,6 +83,40 @@ class Reports extends BaseController
         //selectData($tableName=null,$select=null,$where=null,$join=null,$like=null,$order_by=null,$order=null,$ion_limit=null,$ion_offset=null,$group_by=null)
         $res=$this->common_model->selectData("$trakingTable dt",$select,$where,$join);
         $data['info']=$res;
+        if($reporttype && $reporttype==2){
+            $result=array();
+            $user='';
+            foreach ($res as $r){
+                
+                $name=$r->name;
+                $userids=$r->userid;
+                $break_hours=$r->break_hours;
+                $spend_hours=$r->spend_hours;
+                $projectname=$r->projectname;
+                
+                
+                if($user=='' || $userids !=$user){
+                    $user=$userids;
+                    $breakCount=$hoursCount=0;
+                    $days=1;
+                }
+                
+                $hoursCount=sumofTimes($hoursCount,$spend_hours);
+                $breakCount=sumofTimes($breakCount,$break_hours);
+                $result[$userids]=array(
+                    'name'=> $name,
+                    'projectname'=>$projectname,
+                    'days'=>$days,
+                    'hourscount'=>$hoursCount,
+                    'breakscount'=>$breakCount
+                );
+                //echo $userids."==>".$hoursCount."<br>";
+                $days++;
+                
+            }
+            //pre($result,1);
+            $data['info']=$result;
+        }
         
         
         $this->loadViews("reports", $this->global, $data , NULL);
@@ -91,6 +133,8 @@ class Reports extends BaseController
             $project=isset($post['project'])?$post['project']:'';
             $reporttype=isset($post['reporttype'])?$post['reporttype']:'';
             $data['post']=$post;
+        }else{
+            $fromdate="1-".date("m-Y");
         }
         
         //  $html = $this->load->view('pdf_report', $data, true); // render the view into HTML
@@ -115,6 +159,9 @@ class Reports extends BaseController
         }
         if($project){
             $where["u.projectId"]=$project;
+        }
+        if($role==ROLE_TEAMLEAD){
+            $where["u.roleId !="]=ROLE_MANAGER;
         }
         $select=array('u.name,dt.*,p.name as projectname');
         $join=array(
@@ -176,7 +223,47 @@ class Reports extends BaseController
     }
     
     function excel(){
+        $style_header = array(
+            'fill' => array(
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                'color' => array('rgb' => 'E1E0F7'),
+            ),
+            'font' => array(
+                'bold' => true,
+            )
+        );
+        $borderStyle = array(
+            'borders' => array(
+                'allborders' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THICK
+                )
+            )
+        );
+        $default_style = array(
+            'alignment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_TOP
+            )
+        );
+        $styleArray = array(
+            'borders' => array(
+                'allborders' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN
+                )
+            ),
+            'alignment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
+            )
+        );
         
+        //link css
+        $link_style_array = array(
+            'font'  =>array(
+                'color' => array('rgb' => '0000FF'),
+                'underline' => 'none'
+            )
+        );
         //load our new PHPExcel library
         $this->load->library('excel');
         //activate worksheet number 1

@@ -202,6 +202,15 @@ function displayDate($date1){
     
 }
 
+function datePicker($date1){
+    if($date1){
+        return date('m/d/Y',strtotime($date1));
+    }else{
+        return "";
+    }
+    
+}
+
 function displayTime($date1){    
     if($date1){
         return date('h:i a',strtotime($date1));

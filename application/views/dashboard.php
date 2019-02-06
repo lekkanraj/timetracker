@@ -89,7 +89,7 @@
                                 ?>
                             <div class="form-group col-md-4 tea_box">
                                 <label class="control-label col-sm-12 tea" for="email"><?php echo $break_name;?></label>
-                                <div class="col-sm-12">
+                                <div class="col-sm-12 text-center">
                                   <div class="onoffswitch">
                                   <?php 
                                         $res=getBreakInfoByBreakId($break);
@@ -133,8 +133,9 @@
                                             $firstassigned=false;
                                             ?>
                                    </div>
-                                </div>         
-                                            	<label>Spend : <?php echo $breakHours;?></label>                                    	
+                                </div>       <label>Started Time: <?php echo displayDateTime($breakStart);?></label>
+                                				<label>Ended Time: <?php echo displayDateTime($breakEnd);?></label>  
+                                            	<label>Spend Hours: <?php echo $breakHours;?></label>                                    	
                                             <?php }?>
                              </div>
                              <?php 

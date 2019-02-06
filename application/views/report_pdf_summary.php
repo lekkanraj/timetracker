@@ -48,12 +48,12 @@
             {
         ?>
           <tr>
-            <td><?php echo $i;?></td>
-            <td><?php echo $record['name']; ?></td>
-            <td><?php echo $record['projectname']; ?></td>
-            <td><?php echo $record['days']; ?></td>
-            <td><?php echo $record['hourscount']; ?></td>
-            <td><?php echo $record['breakscount']; ?></td>
+            <td align='center'><?php echo $i;?></td>
+            <td align='center'><?php echo $record['name']; ?></td>
+            <td align='center'><?php echo $record['projectname']; ?></td>
+            <td align='center'><?php echo $record['days']; ?></td>
+            <td align='center'><?php echo $record['hourscount']; ?></td>
+            <td align='center'><?php echo $record['breakscount']; ?></td>
           </tr>
       <?php 
             $i++;

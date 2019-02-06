@@ -2,8 +2,8 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <i class="fa fa-users"></i>TeEmployee Logs
-        <small>By User</small>
+        <i class="fa fa-users"></i>Employee Logs
+        <small>For Team</small>
       </h1>
     </section>
     <section class="content">

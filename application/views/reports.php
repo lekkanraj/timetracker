@@ -30,7 +30,7 @@
                                     <div class="form-group">
                                     	<label for="fromdate">From Date</label>
                                     	<div class="input-group">
-                                    		<input id="txtFromDate" type="input" class="form-control" name="fromdate" placeholder="dd/mm/yyyy" value=<?php echo displayDate($fromdate);?>>
+                                    		<input id="txtFromDate" type="input" class="form-control" name="fromdate" placeholder="mm/dd/yyyy" value=<?php echo datePicker($fromdate);?>>
 											<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 										</div>   
                                     </div>
@@ -39,11 +39,18 @@
                                     <div class="form-group">
                                     	<label for="todate">To Date</label>
                                     	<div class="input-group">
-                                    		<input id="txtToDate" type="input" class="form-control" name="todate" placeholder="dd/mm/yyyy" value=<?php echo displayDate($todate);?>>
+                                    		<input id="txtToDate" type="input" class="form-control" name="todate" placeholder="mm/dd/yyyy" value=<?php echo datePicker($todate);?>>
 											<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 										</div>   
                                     </div>
                                 </div>
+                                <?php 
+                                $role=$this->session->userdata ( 'role' );
+                                $projectId=$this->session->userdata ('projectId' );
+                                if($role==ROLE_TEAMLEAD){
+                                ?>
+                                <input type="hidden" name="project" value="<?php echo $projectId?>">
+                                <?php }else{?>
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="project">Project/Team</label>
@@ -63,13 +70,13 @@
                                         </select>
                                     </div>
                                 </div>
-                                
+                                <?php }?>
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="project">Select Report</label>
                                         <select class="form-control required" id="role" name="reporttype" selected=<?php echo $reporttype;?>>
-                                            <option value="1">Day Wise</option>
-                                            <option value="2">Summary</option>
+                                            <option value="1" <?php if($reporttype==1){ echo "selected";};?>>Day Wise</option>
+                                            <option value="2" <?php if($reporttype==2){ echo "selected";};?>>Summary</option>
                                         </select>
                                     </div>
                                 </div>
@@ -80,64 +87,103 @@
                             			<input type="reset" class="btn btn-default" value="Reset" />
                             		</div>
                                 </div>
-								 <div class="col-md-2">
-                               <div class="input-group">
+								<div class="col-md-2">
+                               		<div class="input-group">
                                       <div class="input-group-btn">
-                                        <a target="_blank" class="btn btn-app" href="<?php echo base_url()."reports/excel?fromdate=$fromdate&todate=$todate&project=$project&reporttype=$reporttype";?>">
-										<i class="fa fa-file-pdf-o" style="margin: 0;"></i> PDF
-										<button class="btn btn-md btn-default  downloadfile" filetype="1"></button></a>
                                         <a target="_blank" class="btn btn-app" href="<?php echo base_url()."reports/bydays?fromdate=$fromdate&todate=$todate&project=$project&reporttype=$reporttype";?>">
-										<i class="fa fa-file-excel-o" ></i> XL
-										<button class="btn btn-md btn-default  downloadfile" filetype="2"></button></a>
+											<i class="fa fa-file-pdf-o" style="margin: 0;"></i> PDF
+										</a>
+                                        <a target="_blank" class="btn btn-app" href="<?php echo base_url()."reports/excel?fromdate=$fromdate&todate=$todate&project=$project&reporttype=$reporttype";?>">
+											<i class="fa fa-file-excel-o" ></i> Excel
+										</a>
                                       </div>
                                     </div>
-                                
-                            </div>
+                             </div>
                             </div>
                             </form>
-							    <table class="table table-hover table-bordered project_table">
-                        <thead>
-                          <tr>
-                            <th align='center'>Sno</th>
-                            <th align='center'>Employee Name</th>
-                            <th align='center'>Project Name</th>
-                            <th  align='center'>Date</th>
-                            <th  align='center'>Start Time</th>
-                            <th align='center'>End Time</th>
-                            <th align='center'>Spend Hours</th>
-                            <th align='center'>Break Hours</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                         <?php
-                            if(!empty($info))
-                            {
-                                $i=1;
-                                foreach($info as $record)
-                                {
-                            ?>
-                              <tr>
-                                <td><?php echo $i;?></td>
-                                <td><?php echo $record->name; ?></td>
-                                <td><?php echo $record->projectname; ?></td>
-                                <td><?php echo displayDate($record->day_start); ?></td>
-                                <td><?php echo displayTime($record->day_start); ?></td>
-                                <td><?php echo displayTime($record->day_end); ?></td>
-                                <td><?php echo $record->spend_hours ?></td>
-                                <td><?php echo $record->break_hours ?></td>
-                              </tr>
-                          <?php 
-                                $i++;
-                                }
-                            }else{?>
-                            <tr>
-                                <td colspan='8'>No Records Found.</td>
-                              </tr>
-                            
-                            <?php }?>
-                        </tbody>
-                      </table>
-
+					<?php if($reporttype==1){?>
+        					<table class="table table-hover table-bordered project_table">
+                                <thead>
+                                  <tr>
+                                    <th align='center'>Sno</th>
+                                    <th align='center'>Employee Name</th>
+                                    <th align='center'>Project Name</th>
+                                    <th  align='center'>Date</th>
+                                    <th  align='center'>Start Time</th>
+                                    <th align='center'>End Time</th>
+                                    <th align='center'>Spend Hours</th>
+                                    <th align='center'>Break Hours</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                 <?php
+                                    if(!empty($info))
+                                    {
+                                        $i=1;
+                                        foreach($info as $record)
+                                        {
+                                    ?>
+                                      <tr>
+                                        <td><?php echo $i;?></td>
+                                        <td><?php echo $record->name; ?></td>
+                                        <td><?php echo $record->projectname; ?></td>
+                                        <td><?php echo displayDate($record->day_start); ?></td>
+                                        <td><?php echo displayTime($record->day_start); ?></td>
+                                        <td><?php echo displayTime($record->day_end); ?></td>
+                                        <td><?php echo $record->spend_hours ?></td>
+                                        <td><?php echo $record->break_hours ?></td>
+                                      </tr>
+                                  <?php 
+                                        $i++;
+                                        }
+                                    }else{?>
+                                    <tr>
+                                        <td colspan='8'>No Records Found.</td>
+                                      </tr>
+                                    
+                                    <?php }?>
+                                </tbody>
+                              </table>
+							<?php }else{?>
+							<table class="table table-hover table-bordered project_table">
+								<thead>
+                                  <tr>
+                                    <th align='center'>Sno</th>
+                                    <th align='center'>Employee Name</th>
+                                    <th  align='center'>Team</th>
+                                    <th  align='center'>Days</th>
+                                    <th align='center'>Spend Hours</th>
+                                    <th align='center'>Break Hours</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                 <?php
+                                    if(!empty($info))
+                                    {
+                                        $i=1;
+                                        foreach($info as $record)
+                                        {
+                                    ?>
+                                      <tr>
+                                        <td><?php echo $i;?></td>
+                                        <td><?php echo $record['name']; ?></td>
+                                        <td><?php echo $record['projectname']; ?></td>
+                                        <td><?php echo $record['days']; ?></td>
+                                        <td><?php echo $record['hourscount']; ?></td>
+                                        <td><?php echo $record['breakscount']; ?></td>
+                                      </tr>
+                                  <?php 
+                                        $i++;
+                                        }
+                                    }else{?>
+                                    <tr>
+                                        <td colspan='6'>No Records Found.</td>
+                                      </tr>
+                                    
+                                    <?php }?>
+                                </tbody>
+                              </table>
+							<?php }?>
                             </div>
                         </div><!-- /.box-body -->
     					
@@ -207,20 +253,23 @@ $(document).ready(function(){
 
 	});
     $("#txtFromDate").datepicker({
-        numberOfMonths: 2,
+    	//dateFormat: 'dd/mm/yy',
+        numberOfMonths:1,
         onSelect: function(selected) {
           $("#txtToDate").datepicker("option","minDate", selected)
         },
-        maxDate:'+0 d',
-        currentdate:'now'    	
+       // maxDate:'+0 d',
+        currentdate:'now' 	
     });
-    $("#txtToDate").datepicker({ 
-        numberOfMonths: 2,
+    $("#txtToDate").datepicker({
+    	//dateFormat: 'dd/mm/yy',
+        numberOfMonths: 1,
         onSelect: function(selected) {
            $("#txtFromDate").datepicker("option","maxDate", selected)
         },
         maxDate:'+0 d',
-        currentdate:'now'
+        currentdate:'now',
+            
     });  
 });
 </script>

@@ -49,20 +49,20 @@
             {
         ?>
           <tr>
-            <td><?php echo $i;?></td>
-            <td><?php echo $record->userid; ?></td>
-            <td><?php echo displayDate($record->day_start); ?></td>
-            <td><?php echo displayTime($record->day_start); ?></td>
-            <td><?php echo displayTime($record->day_end); ?></td>
-            <td><?php echo $record->spend_hours ?></td>
-            <td><?php echo $record->break_hours ?></td>
+            <td align='center'><?php echo $i;?></td>
+            <td align='center'><?php echo $record->name; ?></td>
+            <td align='center'><?php echo displayDate($record->day_start); ?></td>
+            <td align='center'><?php echo displayTime($record->day_start); ?></td>
+            <td align='center'><?php echo displayTime($record->day_end); ?></td>
+            <td align='center'><?php echo $record->spend_hours ?></td>
+            <td align='center'><?php echo $record->break_hours ?></td>
           </tr>
       <?php 
             $i++;
             }
         }else{?>
         <tr>
-            <td colspan='6'>No Records Found.</td>
+            <td colspan='6' align='center'>No Records Found.</td>
           </tr>
         
         <?php }?>
