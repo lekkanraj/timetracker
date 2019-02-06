@@ -90,6 +90,12 @@
                             <div class="form-group col-md-4 tea_box">
                                 <label class="control-label col-sm-12 tea" for="email"><?php echo $break_name;?></label>
                                 <div class="col-sm-12 text-center">
+								<div class="checkbox">
+  <label>
+    <input type="checkbox" data-toggle="toggle">
+    Option one is enabled
+  </label>
+</div>
                                   <div class="onoffswitch">
                                   <?php 
                                         $res=getBreakInfoByBreakId($break);
