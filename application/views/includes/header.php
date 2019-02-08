@@ -43,7 +43,7 @@
         <!-- Logo -->
         <a href="<?php echo base_url(); ?>" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini"><b>CI</b>AS</span>
+          <span class="logo-mini"><b>TT</b>AS</span>
           <!-- logo for regular state and mobile devices -->
           <span class="logo-lg"><b>TimeTracker</b>AS</span>
         </a>
@@ -131,7 +131,7 @@
             </li> -->
            <li class="treeview">
               <a href="<?php echo base_url(); ?>dashboard">
-                <i class="fa fa-home"></i>
+                <i class="fa fa-dashboard"></i>
                 <span>Dashboard</span>
               </a>
             </li>

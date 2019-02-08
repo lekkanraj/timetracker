@@ -21,6 +21,7 @@
                     
                     <form role="form" id="addUser" action="<?php echo base_url() ?>addNewUser" method="post" role="form">
                         <div class="box-body">
+                        <div class="row">
                         <div class="col-md-4">
                             <?php
                                 $this->load->helper('form');
@@ -49,6 +50,7 @@
                                     <?php echo validation_errors('<div class="alert alert-danger alert-dismissable">', ' <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></div>'); ?>
                                 </div>
                             </div>
+                        </div>
                         </div>
                             <div class="row">
                                 <div class="col-md-6">                                

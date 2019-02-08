@@ -4,7 +4,7 @@
         <div class="pull-right hidden-xs">
           <b>TimeTracker</b> Admin System | Version 1.0
         </div>
-        <strong>Copyright &copy; 2019 <a href="<?php echo base_url(); ?>">TimeTracker</a>.</strong> All rights reserved.
+        <strong>Copyright &copy; <?php echo date('Y');?> <a href="<?php echo base_url(); ?>">TimeTracker</a>.</strong> All rights reserved.
     </footer>
     
     <!-- jQuery UI 1.11.2 -->
