@@ -280,9 +280,10 @@ class Login extends CI_Controller
             $res= $this->common_model->edit_db(TABLE_DAILY_TRACKING,$data,$where);
             if($post){
                 redirect("/admin/team");
-            }else{
-                redirect("/logout");
             }
+            /* else{
+                redirect("/logout");
+            } */
         }
         redirect("/dashboard");
         

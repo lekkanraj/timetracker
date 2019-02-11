@@ -49,7 +49,7 @@ class Ajax extends BaseController
             $where=array(
                 'userid'=>$userId,
                 'breakid'=>$breakId,
-                'created_on'=>$currentDate
+                'user_tracking_id'=>$daytrackingId
             );
             $select=array('break_start');
             $count=0;
@@ -63,7 +63,7 @@ class Ajax extends BaseController
             $where=array(
                 'userid'=>$userId,
                 'breakid'=>$breakId,
-                'created_on'=>$currentDate
+                'user_tracking_id'=>$daytrackingId
             );
             $data=array(
                 'break_end'=>$currentTime,
