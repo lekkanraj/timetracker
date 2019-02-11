@@ -14,6 +14,9 @@ class Reports extends BaseController
         $this->load->model('common_model');
         $this->isLoggedIn(); 
         $this->load->library('excel');
+        if($this->isAdminManager()==true){
+            redirect('/');
+        }
     }
     
     

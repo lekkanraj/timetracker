@@ -73,10 +73,10 @@ class BaseController extends CI_Controller {
 	 * This function is used to check the access
 	 */
 	function isTeamLead() {
-	    if ($this->role != ROLE_TEAMLEAD) {
-	        return true;
-	    } else {
+	    if ($this->role == ROLE_TEAMLEAD) {
 	        return false;
+	    } else {
+	        return true;
 	    }
 	}
 	

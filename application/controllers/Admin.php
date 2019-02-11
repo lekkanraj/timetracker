@@ -12,7 +12,10 @@ class Admin extends BaseController
         parent::__construct();
         $this->load->model('user_model');
         $this->load->model('common_model');
-        $this->isLoggedIn();   
+        $this->isLoggedIn(); 
+        if($this->isAdminManager()==true){
+            redirect('/');
+        }
     }
     
     /**

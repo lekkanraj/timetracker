@@ -44,9 +44,9 @@
                          	</a>
                 		</div>
                 		<?php }else{?>
-                		<div class="col-md-6">
+                		<div class="col-md-4">
                     		<div class="table-responsive no-padding">
-                      			<table class="table table-hover table-bordered project_table">
+                      			<table class="table table-hoverproject_table">
                           			<tr>
                                       	<td> Logged In Time : </td>
                                       	<td><?php echo displayDateTime($dayStart); ?></td>
@@ -314,6 +314,7 @@ $(function(){
 		var h="<?php echo date('h',strtotime($dayStart));?>";
 		var mi="<?php echo date('i',strtotime($dayStart));?>";
 		var s="<?php echo date('s',strtotime($dayStart));?>";
+		var a="<?php echo date('A',strtotime($dayStart));?>";
 		
 		var now = moment().date(d).month(m).year(y).hours(h).minutes(mi).seconds(s).format("hhmmssdA");
 		
@@ -343,7 +344,8 @@ $(function(){
 		weekdays.removeClass('active').eq(dow).addClass('active');
 
 		// Set the am/pm text:
-		ampm.text(now[7]+now[8]);
+//		ampm.text(now[7]+now[8]);
+		ampm.text(a);
 
 		// Schedule this function to be run again in 1 sec
 		//setTimeout(update_time, 1000);
