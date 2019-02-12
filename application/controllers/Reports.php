@@ -36,7 +36,8 @@ class Reports extends BaseController
         $Info=$this->common_model->selectData(TABLE_MASTER_PROJECTS,$select,$where);
         $data=array(
             'projects'=>$Info
-        );        
+        );   
+        
         
         $post= $this->input->post(); 
         $fromdate=$todate=$project='';
@@ -49,6 +50,7 @@ class Reports extends BaseController
             $data['post']=$post;
         }else{
             $fromdate=date("m/01/Y");
+            //$fromdate=getFirstDayofWeek();
             //$data['post']['fromdate']=$fromdate;
             $data['post']['reporttype']=$reporttype;
         }

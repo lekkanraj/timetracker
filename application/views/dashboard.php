@@ -63,6 +63,11 @@
                                       	<td> Total Spend Hours : </td>
                                       	<td><?php echo $spend_hours; ?></td>
                                      </tr>
+                                     <tr>
+                                     	<td>
+                                     		<a href="<?php echo base_url().'logoff';?>">Click here to Logg of day again</a>
+                                     	</td>
+                                     </tr>
                       			</table>
                       		</div>
                       		</div>

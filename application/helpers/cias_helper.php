@@ -288,4 +288,14 @@ function sumofTimes($time1='',$time2=''){
     return $returnData;
 }
 
+function getFirstDayofWeek(){
+    $currentDate=date("Y-m-d");
+    $dateTime = new DateTime($currentDate);    
+    $weekNo = $dateTime->format("W");    
+    $newDate = new DateTime();
+    $newDate->setISODate($dateTime->format("Y"), $weekNo);
+    //pre($newDate,1);
+    return $newDate->date;
+}
+
 ?>
