@@ -143,24 +143,28 @@ class Admin extends BaseController
       
         $post= $this->input->post();
         $fromdate=$todate=$project=$reporttype='';
+        $currentDate=date("Y-m-d");
         if($post){
             $fromdate=isset($post['fromdate'])?$post['fromdate']:'';
             $todate=isset($post['todate'])?$post['todate']:'';
             $reporttype=isset($post['reporttype'])?$post['reporttype']:'';
             $data['post']=$post;
+        }else{
+            $fromdate=$currentDate;
         }
         
         $role=$this->session->userdata ( 'role' );
         $projectId=$this->session->userdata ( 'projectId' );
         $userId=$this->session->userdata ( 'userId' );
-        $currentDate=date("Y-m-d");
+       
         $trakingTable=TABLE_DAILY_TRACKING;
         $userTable=TABLE_USERS;
         $projectsTable=TABLE_MASTER_PROJECTS;
         
         $where=array(
             'u.projectId'=>$projectId,
-            'u.roleId !='=>1
+            'u.roleId !='=>1,
+            'u.teamleadId'=>$userId
         );
         if($fromdate){
             $where["dt.created_on >="]=sqldateformate($fromdate);
@@ -176,8 +180,12 @@ class Admin extends BaseController
         );
         //selectData($tableName=null,$select=null,$where=null,$join=null,$like=null,$order_by=null,$order=null,$ion_limit=null,$ion_offset=null,$group_by=null)
         $res=$this->common_model->selectData("$trakingTable dt",$select,$where,$join);
+        
+     
+        
         $data['info']=$res;
         $data['userId']=$userId;
+        $data['projectId']=$projectId;
         
         
         $this->loadViews("teamreports", $this->global, $data , NULL);

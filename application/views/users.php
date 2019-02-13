@@ -72,10 +72,12 @@
                       <th>Name</th>
                       <th>Email</th>
                       <th>Mobile</th>
+                      <th>Project</th>
                       <?php  if($roleId==ROLE_MANAGER){?>
                       <th>Role</th>                      
                       <th class="text-center">Actions</th>
                       <?php }?>
+                      
                     </tr>
                     <?php
                     if(!empty($userRecords))
@@ -88,6 +90,7 @@
                       <td><?php echo $record->name ?></td>
                       <td><?php echo $record->email ?></td>
                       <td><?php echo $record->mobile ?></td>
+                      <td><?php echo $record->projectname ?></td>
                       <?php  if($roleId==ROLE_MANAGER){?>
                       <td><?php echo $record->role ?></td>
                       <td class="text-center">

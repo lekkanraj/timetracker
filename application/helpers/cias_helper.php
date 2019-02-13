@@ -160,11 +160,14 @@ function timeDifference($startTime,$endTime){
     return $interval->format('%H').":".$interval->format('%i').":".$interval->format('%s');
 }
 
-function getBreakInfoByBreakId($breakId){
+function getBreakInfoByBreakId($breakId,$userID=''){
         $CI = get_instance();
         $CI->load->model('common_model');
         $userId=$CI->session->userdata ( 'userId' );
         $currentDate=date("Y-m-d");
+        if($userID){
+            $userId= $userID;
+        }
         $where=array(
             'userid'=>$userId,
             'created_on'=>$currentDate,
@@ -189,6 +192,21 @@ function getBreakInfo($breakId){
     $breakInfo=$CI->common_model->selectData(TABLE_MASTER_BREAKS,$select,$where);
     if(count($breakInfo)>0){
         $breakInfo=$breakInfo[0];
+    }
+    return $breakInfo;
+}
+
+function getBreaksbyProject($projectId){
+    $CI = get_instance();
+    $where=array(
+        'id'=>$projectId
+    );
+    $select=array('*');
+    
+    $breakInfo=$CI->common_model->selectData(TABLE_MASTER_PROJECTS,$select,$where);
+    if(count($breakInfo)>0){
+        $breakInfo=$breakInfo[0]->breaks;        
+        $breakInfo=explode(',', $breakInfo);        
     }
     return $breakInfo;
 }

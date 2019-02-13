@@ -2,7 +2,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <i class="fa fa-tasks"></i>Employee Logs
+        <i class="fa fa-tasks"></i>Moniter Team
         <small>For Team</small>
       </h1>
     </section>
@@ -14,7 +14,7 @@
               <!-- general form elements -->
                 <div class="box box-primary pad">
                     <div class="box-header">
-                        <h3 class="box-title"><b>Logs</b></h3>
+                        <!-- <h3 class="box-title"><b>Monitering</b></h3> -->
                     </div><!-- /.box-header -->
                     <!-- form start -->
                     <?php 
@@ -61,8 +61,18 @@
                             <th align='center'>Sno</th>
                             <th align='center'>Employee Name</th>
                             <th align='center'>Project Name</th>
-                            <th  align='center'>Date</th>
-                            <th  align='center'>Start Time</th>
+                            <th align='center'>Date</th>
+                            <th align='center'>Start Time</th>
+                            <?php 
+                            $breaks=getBreaksbyProject($projectId);
+                            foreach($breaks as $key=>$break){
+                            ?>
+                            <th>
+                                <?php 
+                                echo  $breakname=getBreakInfo($break)->break_name;
+                               ?>
+                            </th>
+                            <?php }?>
                             <th align='center'>End Time</th>
                             <th align='center'>Spend Hours</th>
                             <th align='center'>Break Hours</th>
@@ -83,6 +93,34 @@
                                 <td><?php echo $record->projectname; ?></td>
                                 <td><?php echo displayDate($record->day_start); ?></td>
                                 <td><?php echo displayTime($record->day_start); ?></td>
+                                <?php 
+                                    foreach($breaks as $key=>$break){
+                                    ?>
+                                    <td>
+                                        <?php 
+                                         $breakdata=getBreakInfoByBreakId($break,$record->userid);
+                                        // pre($breakdata);
+                                         $startTime=$endTime=$spendTime="";
+                                         if(!empty($breakdata)){
+                                             $startTime=isset($breakdata->break_start) ? $breakdata->break_start :'';
+                                             $endTime=isset($breakdata->break_end) ? $breakdata->break_end :'';
+                                             $spendTime=isset($breakdata->break_hours) ? $breakdata->break_hours :'';
+                                         }
+                                         if($startTime){
+                                             echo "ST : ".displayTime($startTime)."</br>";
+                                         }
+                                         if($endTime){
+                                             echo "ET : ".displayTime($endTime)."</br>";
+                                         }
+                                         if($spendTime){
+                                             echo "SPT : ".$spendTime."</br>";
+                                         }
+                                       ?>
+                                       
+                                    </td>
+                                    <?php }?>
+                                
+                                
                                 <td><?php echo displayTime($record->day_end); ?></td>
                                 <td><?php echo $record->spend_hours ?></td>
                                 <td><?php echo $record->break_hours ?></td>
@@ -99,7 +137,7 @@
                                 }
                             }else{?>
                             <tr>
-                                <td colspan='6'>No Records Found.</td>
+                                <td colspan='10'>No Records Found.</td>
                               </tr>
                             
                             <?php }?>

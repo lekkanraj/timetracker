@@ -37,7 +37,7 @@
   </head>
   <!-- <body class="sidebar-mini skin-black-light"> -->
   <body class="skin-blue sidebar-mini">
-    <div class="wrapper">
+    <div class="wrapper" >
       
       <header class="main-header">
         <!-- Logo -->
@@ -167,7 +167,7 @@
             <li class="treeview">
               <a href="<?php echo base_url().'admin/team'; ?>">
                 <i class="fa fa-tasks"></i>
-                <span>Employee Logs</span>
+                <span>Moniter Team</span>
               </a>
             </li>
             <?php
