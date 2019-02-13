@@ -159,10 +159,16 @@ class User extends BaseController
                 $projectId = $this->input->post('project');
                 $mobile = $this->input->post('mobile');
                 
+                
                 $userInfo = array('email'=>$email, 'password'=>getHashedPassword($password), 'roleId'=>$roleId, 'name'=> $name,
                     'mobile'=>$mobile, 'createdBy'=>$this->vendorId,'createdDtm'=>date('Y-m-d H:i:s'),
                     'projectId'=>$projectId
                 );
+                
+                if($this->input->post('teamlead')){
+                    $teamlead = $this->input->post('teamlead');
+                    $userInfo['teamleadId']=$teamlead;
+                }
                 
                 $this->load->model('user_model');
                 $result = $this->user_model->addNewUser($userInfo);
@@ -202,6 +208,16 @@ class User extends BaseController
             $data['roles'] = $this->user_model->getUserRoles();
             $data['userInfo'] = $this->user_model->getUserInfo($userId);
             
+            $projectid=$data['userInfo'][0]->projectId;
+            
+            $select=array('userId,name');
+            $where=array(
+                'isDeleted'=>0,
+                'roleId'=>2,
+                'projectId'=>$projectid,
+            );
+            $leadlist=$this->common_model->selectData(TABLE_USERS,$select,$where);
+            $data['leadlist'] =$leadlist;
             $where=array(
                 'isActive'=>1,
             );
@@ -264,6 +280,11 @@ class User extends BaseController
                     $userInfo = array('email'=>$email, 'password'=>getHashedPassword($password), 'roleId'=>$roleId,
                         'name'=>ucwords($name), 'mobile'=>$mobile, 'updatedBy'=>$this->vendorId, 'projectId'=>$projectId,
                         'updatedDtm'=>date('Y-m-d H:i:s'));
+                }
+                
+                if($this->input->post('teamlead')){
+                    $teamlead = $this->input->post('teamlead');
+                    $userInfo['teamleadId']=$teamlead;
                 }
                 
                 $result = $this->user_model->editUser($userInfo, $userId);
@@ -363,6 +384,28 @@ class User extends BaseController
         $this->global['pageTitle'] = '404 - Page Not Found';
         
         $this->loadViews("404", $this->global, NULL, NULL);
+    }
+    
+    function getteamlead(){
+        $post= $this->input->post();       
+        if($post){
+            $select=array('userId,name');
+            $where=array(
+                'isDeleted'=>0,
+                'roleId'=>2,
+                'projectId'=>$post['project'],
+            );
+            $Info=$this->common_model->selectData(TABLE_USERS,$select,$where);
+           
+            if(count($Info)>0){
+                $lead=array();
+                foreach($Info as $data){
+                    $lead[$data->userId]=$data->name;
+                }
+               // pre($lead);
+                echo json_encode($lead);
+            }
+        }
     }
 }
 

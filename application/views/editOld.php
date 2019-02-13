@@ -16,6 +16,7 @@ if(!empty($userInfo))
         $mobile = $uf->mobile;
         $roleId = $uf->roleId;
         $projectId=$uf->projectId;
+        $teamleadId=$uf->teamleadId;
     }
 }
 
@@ -137,8 +138,8 @@ if(!empty($userInfo))
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="project">Project/Team</label>
-                                        <select class="form-control required" id="role" name="project">
+                                        <label for="project">Project</label>
+                                        <select class="form-control required" id="project" name="project">
                                             <option value="0">Select</option>
                                             <?php
                                             if(!empty($projects))
@@ -153,7 +154,37 @@ if(!empty($userInfo))
                                             ?>
                                         </select>
                                     </div>
-                                </div>     
+                                </div>
+                                <?php 
+                                if($roleId==ROLE_EMPLOYEE)
+                                {
+                                    $display="display:block";
+                                }else{
+                                    $display="display:none";
+                                }
+                                ?>
+                                
+                                 <div class="col-md-6 teamleadinfo" style="">
+                                    <div class="form-group">
+                                        <label for="teamlead">Team Lead Name</label>
+                                        <select class="form-control required" id="teamlead" name="teamlead">
+                                            <option value="0">Select</option>
+                                             <?php
+                                             if(!empty($leadlist))
+                                            {
+                                                foreach ($leadlist as $rl)
+                                                {
+                                                    ?>
+                                                    <option value="<?php echo $rl->userId ?>" <?php if($rl->userId == $teamleadId) {echo "selected=selected";} ?>><?php echo $rl->name ?></option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                            
+                                        </select>
+                                    </div>
+                                </div>
+                                <?php ?>     
                             </div>
                         </div><!-- /.box-body -->
     
@@ -168,5 +199,37 @@ if(!empty($userInfo))
         </div>    
     </section>
 </div>
+<script type="text/javascript">
 
+$(function(){
+	 $('#role').change(function(){
+        
+         var role = $(this).val();
+         if(role==3){
+				$('.teamleadinfo').show();
+          }else{
+        	  $('.teamleadinfo').hide();
+         }
+        
+     });
+
+	 $('#project').change(function(){
+	        
+         var project = $(this).val();
+         var role = $('#role').val();
+         $('#teamlead').empty().append('<option value=0>Select Lead</option>');
+         //Ajax for calling php function
+         $.post('<?php echo  base_url().'getteamlead';?>', { project: project,role:role }, function(data){
+           //console.log('ajax completed. Response:  '+data);
+           var result =JSON.parse(data);           
+			if(data.length>0){				
+             $.each( result, function( key, value ) {
+            	 $("#teamlead").append('<option value="' +key + '">' +value + '</option>');
+            	});
+			}
+         });
+     });
+	
+});
+</script>
 <script src="<?php echo base_url(); ?>assets/js/editUser.js" type="text/javascript"></script>

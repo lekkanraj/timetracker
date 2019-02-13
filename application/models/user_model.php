@@ -128,7 +128,7 @@ class User_model extends CI_Model
      */
     function getUserInfo($userId)
     {
-        $this->db->select('userId, name, email, mobile, roleId,projectId');
+        $this->db->select('userId, name, email, mobile, roleId,projectId,teamleadId');
         $this->db->from('tbl_users');
         $this->db->where('isDeleted', 0);
 		$this->db->where('roleId !=', 1);
