@@ -22,6 +22,7 @@
             $dayEnd=isset($trackInfo->day_end)?$trackInfo->day_end:'';
             $break_hours=isset($trackInfo->break_hours)?$trackInfo->break_hours:'';
             $spend_hours=isset($trackInfo->spend_hours)?$trackInfo->spend_hours:'';
+            $daytrackingId=isset($trackInfo->id)?$trackInfo->id:'';
             ?>
               <!-- general form elements -->
                  <div class="box box-primary padding">
@@ -94,7 +95,7 @@
                                 <div class="col-sm-12 text-center">
                                   <div class="onoffswitch1">
                                   <?php 
-                                        $res=getBreakInfoByBreakId($break);
+                                        $res=getBreakInfoByBreakId($break,$userId,$daytrackingId);
                                         $breakStart=isset($res->break_start)? $res->break_start :'';
                                         $breakEnd=isset($res->break_end)? $res->break_end :'';
                                         $breakHours=isset($res->break_hours)? $res->break_hours :'';

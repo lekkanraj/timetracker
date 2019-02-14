@@ -120,6 +120,9 @@ class Reports extends BaseController
             }
             //pre($result,1);
             $data['info']=$result;
+            $data['projectId']=$projectId;
+            $data['userId']=$userId;
+            $data['roleId']=$role;
         }
         
         
@@ -148,6 +151,7 @@ class Reports extends BaseController
         $userTable=TABLE_USERS;
         $projectsTable=TABLE_MASTER_PROJECTS;
         
+        
         $where=array(
         );
         if($fromdate){
@@ -159,10 +163,15 @@ class Reports extends BaseController
         if($project){
             $where["u.projectId"]=$project;
         }
+        $teamleadId=$teadProjectId='';
         if($role==ROLE_TEAMLEAD){
             $where["u.roleId !="]=ROLE_MANAGER;
+            $teamleadId=$userId;
         }
-        $select=array('u.name,dt.*,p.name as projectname');
+        if($teamleadId){
+            $where["u.teamleadId"]=$teamleadId;
+        }
+        $select=array('u.name,u.userId,u.projectId,dt.*,p.name as projectname');
         $join=array(
             "$userTable u"=>"u.userId=dt.userid",
             "$projectsTable p"=>"p.id=u.projectId",
@@ -231,6 +240,7 @@ class Reports extends BaseController
         $post= $this->input->get();
         $reporttype=isset($post['reporttype'])?$post['reporttype']:1;
         $data=$this->getreportdata($post);
+        $projectId=$this->session->userdata ( 'projectId' );
         $info=$data['info'];
         if($reporttype==2){
             //$html = $this->load->view('report_pdf_summary', $data, true);
@@ -304,7 +314,11 @@ class Reports extends BaseController
         $sheet->getColumnDimension('E')->setWidth(15);
         $sheet->getColumnDimension('F')->setWidth(15);
         $sheet->getColumnDimension('G')->setWidth(15);  
-        $sheet->getColumnDimension('H')->setWidth(15); 
+        $sheet->getColumnDimension('H')->setWidth(15);
+        $sheet->getColumnDimension('I')->setWidth(15);
+        $sheet->getColumnDimension('J')->setWidth(15);
+        $sheet->getColumnDimension('K')->setWidth(15);
+        $sheet->getColumnDimension('L')->setWidth(15);
         $filename='reports_by_.xlsx'; //save our workbook as this file name
         if($reporttype==1){
             $this->excel->getActiveSheet()->setCellValue('A1',"Reports By day");
@@ -315,6 +329,17 @@ class Reports extends BaseController
                 $sheet->setCellValueByColumnAndRow($headcol,$headrow ,$columns);
                 $headcol++;
             }
+            $breaks=getBreaksbyProject($projectId);
+            foreach ($breaks as $key=>$break){
+                $breakname=getBreakInfo($break)->break_name;
+                $sheet->setCellValueByColumnAndRow($headcol,$headrow ,$breakname." Start Time");
+                $headcol++;
+                $sheet->setCellValueByColumnAndRow($headcol,$headrow ,$breakname." End Time");
+                $headcol++;
+                $sheet->setCellValueByColumnAndRow($headcol,$headrow ,$breakname." Spend Time");
+                $headcol++;
+            }
+           
             
             $headrow=4;
             $i=1;
@@ -327,6 +352,36 @@ class Reports extends BaseController
                     $sheet->setCellValueByColumnAndRow($headcol,$headrow ,$columns);
                     $headcol++;
                 }
+                /*Display Break Start*/
+                $breaks=getBreaksbyProject($record->projectId);
+               // pre($record,1);
+                foreach($breaks as $key=>$break){
+                    $breakdata=getBreakInfoByBreakId($break,$record->userid,$record->id);
+                  //  pre($breakdata,1);
+                    $startTime=$endTime=$spendTime="";
+                    if(!empty($breakdata)){
+                        $startTime=isset($breakdata->break_start) ? $breakdata->break_start :'';
+                        $endTime=isset($breakdata->break_end) ? $breakdata->break_end :'';
+                        $spendTime=isset($breakdata->break_hours) ? $breakdata->break_hours :'';
+                    }
+                    $dispayTime='';
+                    if($startTime){
+                        //$dispayTime .= "ST : ".displayTime($startTime).";";
+                        $sheet->setCellValueByColumnAndRow($headcol,$headrow ,displayTime($startTime));
+                    }
+                    $headcol++;
+                    if($endTime){
+                        //$dispayTime .= "ET : ".displayTime($endTime).";";
+                        $sheet->setCellValueByColumnAndRow($headcol,$headrow ,displayTime($endTime));
+                    }
+                    $headcol++;
+                    if($spendTime){
+                       // $dispayTime .= "SPT : ".$spendTime;
+                        $sheet->setCellValueByColumnAndRow($headcol,$headrow ,$spendTime);
+                    }
+                    $headcol++;
+                }
+                /*Display Break Start*/
                 $headrow++;
             
             $i++;

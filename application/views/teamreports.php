@@ -98,7 +98,7 @@
                                     ?>
                                     <td>
                                         <?php 
-                                         $breakdata=getBreakInfoByBreakId($break,$record->userid);
+                                        $breakdata=getBreakInfoByBreakId($break,$record->userid,$record->id);
                                         // pre($breakdata);
                                          $startTime=$endTime=$spendTime="";
                                          if(!empty($breakdata)){

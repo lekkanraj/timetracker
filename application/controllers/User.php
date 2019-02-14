@@ -43,7 +43,8 @@ class User extends BaseController
         }
         $pageInfo=array(
             'trackInfo'=>$trackInfo,
-            'breaks'=>$breaks
+            'breaks'=>$breaks,
+            'userId'=>$userId,
         );
         
         $this->loadViews("dashboard", $this->global, $pageInfo , NULL);

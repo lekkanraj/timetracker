@@ -160,19 +160,21 @@ function timeDifference($startTime,$endTime){
     return $interval->format('%H').":".$interval->format('%i').":".$interval->format('%s');
 }
 
-function getBreakInfoByBreakId($breakId,$userID=''){
+function getBreakInfoByBreakId($breakId,$userID='',$daytrackingId=''){
         $CI = get_instance();
         $CI->load->model('common_model');
-        $userId=$CI->session->userdata ( 'userId' );
-        $currentDate=date("Y-m-d");
+        //$userId=$CI->session->userdata ( 'userId' );
+      /*   $currentDate=date("Y-m-d");
         if($userID){
             $userId= $userID;
-        }
+        } */
         $where=array(
-            'userid'=>$userId,
-            'created_on'=>$currentDate,
+            'userid'=>$userID,
+            'user_tracking_id'=>$daytrackingId,
             'breakid'=>$breakId
         );
+        
+        
         $select=array('*');
         
         $breakInfo=$CI->common_model->selectData(TABLE_USER_BREAKS,$select,$where);

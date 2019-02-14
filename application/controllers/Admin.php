@@ -181,12 +181,9 @@ class Admin extends BaseController
         //selectData($tableName=null,$select=null,$where=null,$join=null,$like=null,$order_by=null,$order=null,$ion_limit=null,$ion_offset=null,$group_by=null)
         $res=$this->common_model->selectData("$trakingTable dt",$select,$where,$join);
         
-     
-        
         $data['info']=$res;
         $data['userId']=$userId;
         $data['projectId']=$projectId;
-        
         
         $this->loadViews("teamreports", $this->global, $data , NULL);
     }
