@@ -239,7 +239,8 @@ $(function(){
 		if(res==2){
 			alert("Stop the Break");
 		}else{
-			window.location="<?php echo base_url().'logoff';?>"
+			//alert(<?php echo $dayStart;?>);
+			window.location="<?php echo base_url().'logoff?datastart='.$dayStart;?>"
 		}
 	});
 });

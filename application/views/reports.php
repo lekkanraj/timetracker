@@ -22,6 +22,7 @@
                     $todate=isset($post['todate'])?$post['todate']:'';
                     $project=isset($post['project'])?$post['project']:'';
                     $reporttype=isset($post['reporttype'])?$post['reporttype']:'';
+                    $selecteduser=isset($post['users'])?$post['users']:'';
                     ?>
                     <div class="box-body">
                     	<form role="form" id="addUser" action="<?php echo base_url().'reports'; ?>" method="post" role="form">
@@ -50,6 +51,29 @@
                                 if($role==ROLE_TEAMLEAD){
                                 ?>
                                 <input type="hidden" name="project" value="<?php echo $projectId?>">
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                    <?php 
+                                        //$selected=explode(',',$info->breaks);
+                                    $selected=array($selecteduser);
+                                    ?>
+                                        <label for="project">Select User:</label>
+                                        <select class="form-control multiselect-ui required" id="users" name="users">
+                                            <option value="0">Select</option>
+                                            <?php
+                                            if(!empty($users))
+                                            {
+                                                foreach ($users as $rl)
+                                                {
+                                                    ?>
+                                                    <option value="<?php echo $rl->userId; ?>" <?php if(in_array($rl->userId,$selected)){ echo "selected";}?>><?php echo $rl->name ?></option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
                                 <?php }else{?>
                                 <div class="col-md-2">
                                     <div class="form-group">
@@ -71,6 +95,7 @@
                                     </div>
                                 </div>
                                 <?php }?>
+                                
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="project">Select Report</label>
@@ -90,10 +115,10 @@
 								<div class="col-md-2">
                                		<div class="input-group">
                                       <div class="input-group-btn">
-                                        <a target="_blank" class="btn btn-app" href="<?php echo base_url()."reports/pdf?fromdate=$fromdate&todate=$todate&project=$project&reporttype=$reporttype";?>">
+                                        <a target="_blank" class="btn btn-app" href="<?php echo base_url()."reports/pdf?fromdate=$fromdate&todate=$todate&project=$project&reporttype=$reporttype&users=$selecteduser";?>">
 											<i class="fa fa-file-pdf-o" style="margin: 0;"></i> PDF
 										</a>
-                                        <a target="_blank" class="btn btn-app" href="<?php echo base_url()."reports/excel?fromdate=$fromdate&todate=$todate&project=$project&reporttype=$reporttype";?>">
+                                        <a target="_blank" class="btn btn-app" href="<?php echo base_url()."reports/excel?fromdate=$fromdate&todate=$todate&project=$project&reporttype=$reporttype&users=$selecteduser";?>">
 											<i class="fa fa-file-excel-o" ></i> Excel
 										</a>
                                       </div>

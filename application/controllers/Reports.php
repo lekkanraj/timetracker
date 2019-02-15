@@ -33,20 +33,21 @@ class Reports extends BaseController
         );
         $select=array('*');
         
-        $Info=$this->common_model->selectData(TABLE_MASTER_PROJECTS,$select,$where);
+        $projects=$this->common_model->selectData(TABLE_MASTER_PROJECTS,$select,$where);
         $data=array(
-            'projects'=>$Info
+            'projects'=>$projects
         );   
         
         
         $post= $this->input->post(); 
-        $fromdate=$todate=$project='';
+        $fromdate=$todate=$project=$users='';
         $reporttype=1;
         if($post){
             $fromdate=isset($post['fromdate'])?$post['fromdate']:'';
             $todate=isset($post['todate'])?$post['todate']:'';
             $project=isset($post['project'])?$post['project']:'';
             $reporttype=isset($post['reporttype'])?$post['reporttype']:'';
+            $users=isset($post['users'])?$post['users']:'';
             $data['post']=$post;
         }else{
             $fromdate=date("m/01/Y");
@@ -76,8 +77,13 @@ class Reports extends BaseController
             $where["u.projectId"]=$project;
         }
         
+        if($users){
+            $where["u.userId"]=$users;
+        }
+        
         if($role==ROLE_TEAMLEAD){
             $where["u.roleId !="]=ROLE_MANAGER;
+            $where["u.teamleadId"]=$userId;
         }
         $select=array('u.name,dt.*,p.name as projectname');
         $join=array(
@@ -86,7 +92,20 @@ class Reports extends BaseController
         );
         //selectData($tableName=null,$select=null,$where=null,$join=null,$like=null,$order_by=null,$order=null,$ion_limit=null,$ion_offset=null,$group_by=null)
         $res=$this->common_model->selectData("$trakingTable dt",$select,$where,$join);
+        
         $data['info']=$res;
+        
+        $where_user=array(
+           
+        );
+        if($role==ROLE_TEAMLEAD){
+            $where_user["roleId !="]=ROLE_MANAGER;
+            $where_user["teamleadId"]=$userId;
+        }
+        $select_user=array('*');
+        
+        $Info_users=$this->common_model->selectData($userTable,$select_user,$where_user);
+        $data['users']=$Info_users;
         if($reporttype && $reporttype==2){
             $result=array();
             $user='';
@@ -125,17 +144,17 @@ class Reports extends BaseController
             $data['roleId']=$role;
         }
         
-        
         $this->loadViews("reports", $this->global, $data , NULL);
     }
     
     public function getreportdata($post){
-        $fromdate=$todate=$project=$reporttype='';
+        $fromdate=$todate=$project=$reporttype=$users='';
         if($post){
             $fromdate=isset($post['fromdate'])?$post['fromdate']:'';
             $todate=isset($post['todate'])?$post['todate']:'';
             $project=isset($post['project'])?$post['project']:'';
             $reporttype=isset($post['reporttype'])?$post['reporttype']:'';
+            $users=isset($post['users'])?$post['users']:'';
             $data['post']=$post;
         }else{
             $fromdate="1-".date("m-Y");
@@ -162,6 +181,9 @@ class Reports extends BaseController
         }
         if($project){
             $where["u.projectId"]=$project;
+        }
+        if($users){
+            $where["u.userId"]=$users;
         }
         $teamleadId=$teadProjectId='';
         if($role==ROLE_TEAMLEAD){

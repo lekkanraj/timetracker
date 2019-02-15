@@ -257,6 +257,8 @@ class Login extends CI_Controller
         if($post){
             $userId=isset($post['userid'])?$post['userid']:'';
             $currentDate=isset($post['logoffdate'])?$post['logoffdate']:'';
+        }else{            
+            $currentDate=$this->input->post('datastart'); 
         }
         
         $where=array(

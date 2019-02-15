@@ -211,7 +211,7 @@ class common_model extends CI_Model
 			$this->db->group_by($group_by);
 		}
 		$result = $this->db->get($tableName)->result();
-		//echo $this->db->last_query();die();
+		//echo $this->db->last_query()."<br>";
 		return $result;
 	}
 }
