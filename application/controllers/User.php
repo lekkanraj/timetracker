@@ -62,17 +62,32 @@ class User extends BaseController
         else
         {
             $this->load->model('user_model');
-        
+            $post=$this->input->post();
             $searchText = $this->input->post('searchText');
             $data['searchText'] = $searchText;
+            $role=$project=$teamlead='';
+            if($post){
+                $role=isset($post['role'])?$post['role']:'';
+                $project=isset($post['project'])? $post['project']:'';
+                $teamlead=isset($post['teamlead'])?$post['teamlead']:'';
+                $data['post']=$post;
+            }
+            
+            $select=array('*');
+            $where=array(
+                'isActive'=>1
+            );
+            $projects=$this->common_model->selectData(TABLE_MASTER_PROJECTS,$select,$where);
+            $data['projects']=$projects;
+            $data['roles'] = $this->user_model->getUserRoles();
             
             $this->load->library('pagination');
             
-            $count = $this->user_model->userListingCount($searchText);
+            $count = $this->user_model->userListingCount($searchText,$project,$role);
 
 			$returns = $this->paginationCompress ( "userListing/", $count, 5 );
             
-            $data['userRecords'] = $this->user_model->userListing($searchText, $returns["page"], $returns["segment"]);
+			$data['userRecords'] = $this->user_model->userListing($searchText,$project,$role, $returns["page"], $returns["segment"]);
             
             $this->global['pageTitle'] = 'User Listing';
             

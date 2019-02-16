@@ -51,18 +51,72 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
+            <form action="<?php echo base_url() ?>userListing" method="POST" id="searchList">
+                            <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="project">Project</label>
+                                        <select class="form-control required" id="project" name="project">
+                                            <option value="">All Projects</option>
+                                            <?php
+                                            $projectId=isset($post['project'])?$post['project']:'';
+                                            if(!empty($projects))
+                                            {
+                                                foreach ($projects as $rl)
+                                                {
+                                                    ?>
+                                                    <option value="<?php echo $rl->id ?>" <?php if($rl->id == $projectId) {echo "selected=selected";} ?>><?php echo $rl->name ?></option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="role">Role</label>
+                                        <select class="form-control" id="role" name="role">
+                                            <option value="">All Roles</option>
+                                            <?php
+                                            $roleId=isset($post['role'])?$post['role']:'';
+                                            if(!empty($roles))
+                                            {
+                                                foreach ($roles as $rl)
+                                                {
+                                                    ?>
+                                                    <option value="<?php echo $rl->roleId; ?>" <?php if($rl->roleId == $roleId) {echo "selected=selected";} ?>><?php echo $rl->role ?></option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                    	<label for="todate">By Name</label>
+                                    	<div class="input-group">
+                                    		<input id="txtToDate" type="input" class="form-control" name="searchText" value="<?php echo $searchText; ?>">
+											
+										</div>   
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                	<div class="" style="margin-top: 24px;">
+                                		<input type="submit" class="btn btn-primary" value="Search" style=" margin-right:10px;" />
+                            			<input type="reset" class="btn btn-default" value="Reset" id="reset"/>
+                            		</div>
+                                </div>
+                        </form>
+            </div>
+         </div>
+        <div class="row">
+            <div class="col-xs-12">
               <div class="box box-primary padding">
                 <div class="box-header">
                     <h3 class="box-title">Users List</h3>
                     <div class="box-tools">
-                        <form action="<?php echo base_url() ?>userListing" method="POST" id="searchList">
-                            <div class="input-group">
-                              <input type="text" name="searchText" value="<?php echo $searchText; ?>" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Search"/>
-                              <div class="input-group-btn">
-                                <button class="btn btn-sm btn-default searchList"><i class="fa fa-search"></i></button>
-                              </div>
-                            </div>
-                        </form>
+                        
                     </div>
                 </div><!-- /.box-header -->
                 <div class="box-body table-responsive no-padding">
@@ -101,8 +155,12 @@
                     </tr>
                     <?php
                         }
-                    }
+                    }else{
                     ?>
+                    <tr class="text-center">
+                      <td colspan=7>No Records Found</td>
+                     </tr>
+                    <?php }?>
                   </table>
                   
                 </div><!-- /.box-body -->

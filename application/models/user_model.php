@@ -7,7 +7,7 @@ class User_model extends CI_Model
      * @param string $searchText : This is optional search text
      * @return number $count : This is row count
      */
-    function userListingCount($searchText = '')
+    function userListingCount($searchText = '',$project='',$role='')
     {
         $userId=$this->session->userdata('userId');
         $roleId= $this->session->userdata('role');
@@ -30,6 +30,14 @@ class User_model extends CI_Model
             $this->db->where('BaseTbl.roleId !=', ROLE_MANAGER);
         }
         
+        if($project !=''){
+            $this->db->where('BaseTbl.projectId =', $project);
+        }
+        
+        if($role !=''){
+            $this->db->where('BaseTbl.roleId ', $role);
+        }
+        
         $query = $this->db->get();
         
         return count($query->result());
@@ -42,7 +50,7 @@ class User_model extends CI_Model
      * @param number $segment : This is pagination limit
      * @return array $result : This is result
      */
-    function userListing($searchText = '', $page, $segment)
+    function userListing($searchText = '',$project='',$role='', $page, $segment)
     {
         $userId=$this->session->userdata('userId');
         $roleId= $this->session->userdata('role');
@@ -63,6 +71,13 @@ class User_model extends CI_Model
             $this->db->where('BaseTbl.projectId =', $projectId);
         }else{
             $this->db->where('BaseTbl.roleId !=', ROLE_MANAGER);
+        }
+        if($project !=''){
+            $this->db->where('BaseTbl.projectId =', $project);
+        }
+        
+        if($role !=''){
+            $this->db->where('BaseTbl.roleId ', $role);
         }
         $this->db->limit($page, $segment);
         $query = $this->db->get();
