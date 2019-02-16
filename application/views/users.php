@@ -78,13 +78,13 @@
                                         <select class="form-control" id="role" name="role">
                                             <option value="">All Roles</option>
                                             <?php
-                                            $roleId=isset($post['role'])?$post['role']:'';
+                                            $roleIds=isset($post['role'])?$post['role']:'';
                                             if(!empty($roles))
                                             {
                                                 foreach ($roles as $rl)
                                                 {
                                                     ?>
-                                                    <option value="<?php echo $rl->roleId; ?>" <?php if($rl->roleId == $roleId) {echo "selected=selected";} ?>><?php echo $rl->role ?></option>
+                                                    <option value="<?php echo $rl->roleId; ?>" <?php if($rl->roleId == $roleIds) {echo "selected=selected";} ?>><?php echo $rl->role ?></option>
                                                     <?php
                                                 }
                                             }
