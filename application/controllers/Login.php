@@ -249,7 +249,7 @@ class Login extends CI_Controller
     }
     
     function logoff(){
-        $post= $this->input->post();        
+        $post= $this->input->post();
         
         $userId=$this->session->userdata ( 'userId' );
         $currentTime=date("Y-m-d H:i:s");
@@ -258,7 +258,7 @@ class Login extends CI_Controller
             $userId=isset($post['userid'])?$post['userid']:'';
             $currentDate=isset($post['logoffdate'])?$post['logoffdate']:'';
         }else{            
-            $currentDate=$this->input->post('datastart'); 
+            $currentDate=$this->input->get('datastart'); 
         }
         
         $where=array(
