@@ -25,7 +25,7 @@
                                 <div class="col-md-6">                                
                                     <div class="form-group">
                                         <label for="fname">Project Name</label>
-                                        <input type="text" class="form-control required" id="fname" name="name" maxlength="128">
+                                        <input type="text" class="form-control required" id="fname" name="name" maxlength="128" autocomplete="off">
                                     </div>
                                 </div>
                             </div>

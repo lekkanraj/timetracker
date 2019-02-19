@@ -96,7 +96,7 @@
                                     <div class="form-group">
                                     	<label for="todate">By Name</label>
                                     	<div class="input-group">
-                                    		<input id="txtToDate" type="input" class="form-control" name="searchText" value="<?php echo $searchText; ?>">
+                                    		<input id="txtToDate" type="input" class="form-control" name="searchText" value="<?php echo $searchText; ?>" autocomplete="off">
 											
 										</div>   
                                     </div>
