@@ -28,7 +28,7 @@
                                     <div class="form-group">
                                     	<label for="fromdate">From Date</label>
                                     	<div class="input-group">
-                                    		<input id="txtFromDate" type="input" class="form-control" name="fromdate" placeholder="mm/dd/yyyy" value=<?php echo datePicker($fromdate);?> autocomplete="off">
+                                    		<input id="txtFromDate" type="input" class="form-control" name="fromdate" placeholder="mm/dd/yyyy" value="<?php echo datePicker($fromdate);?>" autocomplete="off">
 											<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 										</div>   
                                     </div>
@@ -37,7 +37,7 @@
                                     <div class="form-group">
                                     	<label for="todate">To Date</label>
                                     	<div class="input-group">
-                                    		<input id="txtToDate" type="input" class="form-control" name="todate" placeholder="mm/dd/yyyy" value=<?php echo datePicker($todate);?> autocomplete="off">
+                                    		<input id="txtToDate" type="input" class="form-control" name="todate" placeholder="mm/dd/yyyy" value="<?php echo datePicker($todate);?>" autocomplete="off">
 											<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 										</div>   
                                     </div>
@@ -201,7 +201,7 @@ $(document).ready(function(){
      });
 
      function refresh() {
-         if(new Date().getTime() - time >= 6000) 
+         if(new Date().getTime() - time >= 5000) 
              window.location="<?php echo base_url()."admin/team"?>";
          else 
              setTimeout(refresh, 1000);
