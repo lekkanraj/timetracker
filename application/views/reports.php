@@ -77,7 +77,7 @@
                                 <?php }else{?>
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label for="project">Project/Team</label>
+                                        <label for="project">Project</label>
                                         <select class="form-control required" id="role" name="project">
                                             <option value="0">Select</option>
                                             <?php
