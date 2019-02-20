@@ -258,7 +258,7 @@ class Reports extends BaseController
         $this->load->library('pdf');        
         $pdf = $this->pdf->load();        
         $pdf->WriteHTML($html); // write the HTML into the PDF
-        
+        ob_clean(); 
         $pdf->Output('pdffile.pdf','I');
     }
     
