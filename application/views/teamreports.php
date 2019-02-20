@@ -115,6 +115,10 @@
                                          if($spendTime){
                                              echo "SPT : ".$spendTime."</br>";
                                          }
+                                         if($startTime && empty($spendTime)){
+                                             $currentTime=date("Y-m-d H:i:s");
+                                             echo "RT : ".getTimeDiffrence($startTime,$currentTime);
+                                         }
                                        ?>
                                        
                                     </td>

@@ -258,7 +258,8 @@ class Login extends CI_Controller
             $userId=isset($post['userid'])?$post['userid']:'';
             $currentDate=isset($post['logoffdate'])?$post['logoffdate']:'';
         }else{            
-            $currentDate=$this->input->get('datastart'); 
+            //$currentDate=$this->input->get('datastart');
+            $currentDate=date("Y-m-d");
         }
         
         $where=array(
@@ -268,8 +269,8 @@ class Login extends CI_Controller
         $select=array('day_start');
         $count=0;
         $count=$this->common_model->selectData(TABLE_DAILY_TRACKING,$select,$where);
-       
-        if(count($count)>0){
+      
+        if(count($count)>0){           
             $count=$count[0];
             $dayStart=$count->day_start;
             $spendHours=timeDifference($dayStart,$currentTime);

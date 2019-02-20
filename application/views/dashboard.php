@@ -43,6 +43,12 @@
                          	<a href="javascript:void(0)" class="text-center logoff">
                          		<img class="img_logoff" title="Logg Off the Day" alt="Logg Off the Day" src="<?php echo base_url().'/assets/images/logoff1.png';?>">
                          	</a>
+                         	<h4>
+                         	<?php 
+                         	  $currentTime=date("Y-m-d H:i:s");
+                         	  echo "Running Time(Hrs:Mins) : ".getTimeDiffrence($dayStart,$currentTime);
+                         	?>
+                         	</h4>
                 		</div>
                 		<?php }else{?>
                 		<div class="col-md-4">
@@ -366,4 +372,21 @@ $(function(){
 });
 </script>
 <script src="<?php echo base_url(); ?>assets/js/addUser.js" type="text/javascript"></script>
+<script>
+     var time = new Date().getTime();
+     $(document.body).bind("mousemove keypress", function(e) {
+         time = new Date().getTime();
+     });
 
+     function refresh() {
+         if(new Date().getTime() - time >= 60000){ 
+             window.location="<?php echo base_url()."dashboard"?>";
+         }
+     }
+
+    // setTimeout(refresh, 10000);
+     setInterval(function(){ 
+		//console.log("interval");
+		this.refresh();
+     }, 50000);
+</script>

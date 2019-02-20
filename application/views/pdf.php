@@ -28,7 +28,7 @@
 
 <div class="container">
   <h2>Traking Info by day</h2>          
-  <table class="table table-bordered">
+  <table class="table">
     <thead>
       <tr>
         <th align='center'>Sno</th>

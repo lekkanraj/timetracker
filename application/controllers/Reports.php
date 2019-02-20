@@ -84,6 +84,7 @@ class Reports extends BaseController
         if($role==ROLE_TEAMLEAD){
             $where["u.roleId !="]=ROLE_MANAGER;
             $where["u.teamleadId"]=$userId;
+            $where["u.isDeleted"]=0;
         }
         $select=array('u.name,dt.*,p.name as projectname');
         $join=array(
@@ -101,6 +102,8 @@ class Reports extends BaseController
         if($role==ROLE_TEAMLEAD){
             $where_user["roleId !="]=ROLE_MANAGER;
             $where_user["teamleadId"]=$userId;
+            $where_user["isDeleted"]=0;
+           
         }
         $select_user=array('*');
         
@@ -193,6 +196,7 @@ class Reports extends BaseController
         if($teamleadId){
             $where["u.teamleadId"]=$teamleadId;
         }
+        $where["u.isDeleted"]=0;
         $select=array('u.name,u.userId,u.projectId,dt.*,p.name as projectname');
         $join=array(
             "$userTable u"=>"u.userId=dt.userid",

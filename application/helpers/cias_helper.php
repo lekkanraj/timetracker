@@ -318,4 +318,14 @@ function getFirstDayofWeek(){
     return $newDate->date;
 }
 
+function getTimeDiffrence($startTime,$currentTime){
+    $dteStart = new DateTime($startTime);
+    $dteEnd   = new DateTime($currentTime);
+    
+    $dteDiff  = $dteStart->diff($dteEnd); 
+    
+    return $dteDiff->format("%H:%I");
+    //return $dteDiff->format("%H:%I:%S");
+}
+
 ?>
