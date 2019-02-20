@@ -25,14 +25,14 @@
                     $selecteduser=isset($post['users'])?$post['users']:'';
                     ?>
                     <div class="box-body">
-                    	<form role="form" id="addUser" action="<?php echo base_url().'reports'; ?>" method="post" role="form">
+                    	<form role="form" id="reportsearch" action="<?php echo base_url().'reports'; ?>" method="post" role="form">
                         	<div class="row">
                                 <div class="col-md-2">
                                     <div class="form-group">
                                     	<label for="fromdate">From Date</label>
                                     	<div class="input-group">
                                     		<input id="txtFromDate" type="input" class="form-control" name="fromdate" placeholder="mm/dd/yyyy" value="<?php echo datePicker($fromdate);?>" autocomplete="off">
-											<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+											<span class="input-group-addon"><i class="glyphicon glyphicon-calendar txtFromDate"></i></span>
 										</div>   
                                     </div>
                                 </div>
@@ -41,7 +41,7 @@
                                     	<label for="todate">To Date</label>
                                     	<div class="input-group">
                                     		<input id="txtToDate" type="input" class="form-control" name="todate" placeholder="mm/dd/yyyy" value="<?php echo datePicker($todate);?>" autocomplete="off">
-											<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+											<span class="input-group-addon"><i class="glyphicon glyphicon-calendar txtToDate"></i></span>
 										</div>   
                                     </div>
                                 </div>
@@ -50,35 +50,12 @@
                                 $projectId=$this->session->userdata ('projectId' );
                                 if($role==ROLE_TEAMLEAD){
                                 ?>
-                                <input type="hidden" name="project" value="<?php echo $projectId?>">
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                    <?php 
-                                        //$selected=explode(',',$info->breaks);
-                                    $selected=array($selecteduser);
-                                    ?>
-                                        <label for="project">Select User:</label>
-                                        <select class="form-control multiselect-ui required" id="users" name="users">
-                                            <option value="0">Select</option>
-                                            <?php
-                                            if(!empty($users))
-                                            {
-                                                foreach ($users as $rl)
-                                                {
-                                                    ?>
-                                                    <option value="<?php echo $rl->userId; ?>" <?php if(in_array($rl->userId,$selected)){ echo "selected";}?>><?php echo $rl->name ?></option>
-                                                    <?php
-                                                }
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                <?php }else{?>
+                                	<input type="hidden" name="project" value="<?php echo $projectId?>">
+                               <?php }else{?>
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="project">Project</label>
-                                        <select class="form-control required" id="role" name="project">
+                                        <select class="form-control required serachdata" id="project" name="project">
                                             <option value="0">Select</option>
                                             <?php
                                             if(!empty($projects))
@@ -95,23 +72,52 @@
                                     </div>
                                 </div>
                                 <?php }?>
+                                <?php if($project){?>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                    <?php 
+                                        //$selected=explode(',',$info->breaks);
+                                    $selected=array($selecteduser);
+                                    ?>
+                                        <label for="project">Select User:</label>
+                                        <select class="form-control multiselect-ui required serachdata" id="users" name="users">
+                                            <option value="0">Select</option>
+                                            <?php
+                                            if(!empty($users))
+                                            {
+                                                foreach ($users as $rl)
+                                                {
+                                                    ?>
+                                                    <option value="<?php echo $rl->userId; ?>" <?php if(in_array($rl->userId,$selected)){ echo "selected";}?>><?php echo $rl->name ?></option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <?php }?>
                                 
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="project">Select Report</label>
-                                        <select class="form-control required" id="role" name="reporttype" selected=<?php echo $reporttype;?>>
+                                        <select class="form-control required serachdata" id="role" name="reporttype" selected=<?php echo $reporttype;?>>
                                             <option value="1" <?php if($reporttype==1){ echo "selected";};?>>Day Wise</option>
                                             <option value="2" <?php if($reporttype==2){ echo "selected";};?>>Summary</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                	<div class="" style="margin-top: 24px;">
+                                	<div class="" style="margin-top: 28px;">
                                 		<input type='hidden' class='filetype' value='1' />
                                 		<input type="submit" class="btn btn-primary" value="Search" />
                             			<input type="reset" class="btn btn-default" value="Reset" id='reset' />
                             		</div>
                                 </div>
+                                </div>
+                                <div class="row">
+                                <div class="col-md-10"></div>
 								<div class="col-md-2">
                                		<div class="input-group">
                                       <div class="input-group-btn">
@@ -309,6 +315,9 @@
  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script type="text/javascript">
 $(document).ready(function(){
+	$(".serachdata").change(function(){
+		$("#reportsearch").submit();
+	});
 	$('.downloadfile').on('click',function(){
 		var filetype=$(this).attr('filetype');
 		$('.filetype').val(filetype);
@@ -336,6 +345,12 @@ $(document).ready(function(){
         maxDate:'+0 d',
         currentdate:'now',
             
-    });  
+    }); 
+    $('.txtFromDate').click(function() {
+        $("#txtFromDate").focus();
+      }); 
+    $('.txtToDate').click(function() {
+        $("#txtToDate").focus();
+      }); 
 });
 </script>

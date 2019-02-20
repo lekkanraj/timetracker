@@ -29,7 +29,7 @@
                                     	<label for="fromdate">From Date</label>
                                     	<div class="input-group">
                                     		<input id="txtFromDate" type="input" class="form-control" name="fromdate" placeholder="mm/dd/yyyy" value="<?php echo datePicker($fromdate);?>" autocomplete="off">
-											<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+											<span class="input-group-addon"><i class="glyphicon glyphicon-calendar txtFromDate"></i></span>
 										</div>   
                                     </div>
                                 </div>
@@ -38,7 +38,7 @@
                                     	<label for="todate">To Date</label>
                                     	<div class="input-group">
                                     		<input id="txtToDate" type="input" class="form-control" name="todate" placeholder="mm/dd/yyyy" value="<?php echo datePicker($todate);?>" autocomplete="off">
-											<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+											<span class="input-group-addon"><i class="glyphicon glyphicon-calendar txtToDate"></i></span>
 										</div>   
                                     </div>
                                 </div>
@@ -196,6 +196,12 @@ $(document).ready(function(){
 	        currentdate:'now',
 	            
 	    }); 
+	    $('.txtFromDate').click(function() {
+	        $("#txtFromDate").focus();
+	      }); 
+	    $('.txtToDate').click(function() {
+	        $("#txtToDate").focus();
+	      }); 
 });
 </script>
 <script>
