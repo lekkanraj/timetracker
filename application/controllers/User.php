@@ -85,7 +85,7 @@ class User extends BaseController
             
             $count = $this->user_model->userListingCount($searchText,$project,$role);
 
-			$returns = $this->paginationCompress ( "userListing/", $count, 5 );
+			$returns = $this->paginationCompress ( "userListing/", $count, 20 );
             
 			$data['userRecords'] = $this->user_model->userListing($searchText,$project,$role, $returns["page"], $returns["segment"]);
             
@@ -161,6 +161,7 @@ class User extends BaseController
             $this->form_validation->set_rules('role','Role','trim|required|numeric');
             $this->form_validation->set_rules('project','Project','trim|required|numeric');
             $this->form_validation->set_rules('mobile','Mobile Number','required|min_length[10]|xss_clean');
+            $this->form_validation->set_rules('employeeid','Employee Id','required|max_length[10]');
             
             if($this->form_validation->run() == FALSE)
             {
@@ -174,11 +175,11 @@ class User extends BaseController
                 $roleId = $this->input->post('role');
                 $projectId = $this->input->post('project');
                 $mobile = $this->input->post('mobile');
-                
+                $employeeid= $this->input->post('employeeid');
                 
                 $userInfo = array('email'=>$email, 'password'=>getHashedPassword($password), 'roleId'=>$roleId, 'name'=> $name,
                     'mobile'=>$mobile, 'createdBy'=>$this->vendorId,'createdDtm'=>date('Y-m-d H:i:s'),
-                    'projectId'=>$projectId
+                    'projectId'=>$projectId,'employeeid'=>$employeeid
                 );
                 
                 if($this->input->post('teamlead')){
@@ -270,6 +271,7 @@ class User extends BaseController
             $this->form_validation->set_rules('role','Role','trim|required|numeric');
             $this->form_validation->set_rules('mobile','Mobile Number','required|min_length[10]|xss_clean');
             $this->form_validation->set_rules('project','Project','trim|required|numeric');
+            $this->form_validation->set_rules('employeeid','Employee Id','required|max_length[10]');
             
             if($this->form_validation->run() == FALSE)
             {
@@ -283,19 +285,20 @@ class User extends BaseController
                 $roleId = $this->input->post('role');
                 $mobile = $this->input->post('mobile');
                 $projectId = $this->input->post('project');
+                $employeeid= $this->input->post('employeeid');
                 
                 $userInfo = array();
                 
                 if(empty($password))
                 {
                     $userInfo = array('email'=>$email, 'roleId'=>$roleId, 'name'=>$name,
-                        'mobile'=>$mobile, 'updatedBy'=>$this->vendorId,'projectId'=>$projectId, 'updatedDtm'=>date('Y-m-d H:i:s'));
+                        'mobile'=>$mobile, 'updatedBy'=>$this->vendorId,'projectId'=>$projectId, 'updatedDtm'=>date('Y-m-d H:i:s'),'employeeid'=>$employeeid);
                 }
                 else
                 {
                     $userInfo = array('email'=>$email, 'password'=>getHashedPassword($password), 'roleId'=>$roleId,
                         'name'=>ucwords($name), 'mobile'=>$mobile, 'updatedBy'=>$this->vendorId, 'projectId'=>$projectId,
-                        'updatedDtm'=>date('Y-m-d H:i:s'));
+                        'updatedDtm'=>date('Y-m-d H:i:s'),'employeeid'=>$employeeid);
                 }
                 
                 if($this->input->post('teamlead')){
@@ -377,7 +380,7 @@ class User extends BaseController
             
             if(empty($resultPas))
             {
-                $this->session->set_flashdata('nomatch', 'Your old password not correct');
+                $this->session->set_flashdata('nomatch', 'Your old password is incorrect');
                 redirect('loadChangePass');
             }
             else

@@ -17,6 +17,8 @@ if(!empty($userInfo))
         $roleId = $uf->roleId;
         $projectId=$uf->projectId;
         $teamleadId=$uf->teamleadId;
+        $employeeid = $uf->employeeid;
+        
     }
 }
 
@@ -184,6 +186,13 @@ if(!empty($userInfo))
                                         </select>
                                     </div>
                                 </div>
+                                	<div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="cpassword">Employee ID</label>
+                                            <input  class="form-control required " id="employeeid" name="employeeid" maxlength="10" autocomplete="off" value="<?php echo $employeeid;?>">
+                                        </div>
+                                    
+                            </div>
                                 <?php ?>     
                             </div>
                         </div><!-- /.box-body -->

@@ -348,7 +348,7 @@ class Reports extends BaseController
         $filename='reports_by_.xlsx'; //save our workbook as this file name
         if($reporttype==1){
             $this->excel->getActiveSheet()->setCellValue('A1',"Reports By day");
-            $columnNames=array('Sno','Employee Name','Team','Date','Start Time','End Time','Spend Hours','Break Hours');
+            $columnNames=array('Sno','Employee Name','Team','Date','Start Time','End Time','Login hours','Break Hours');
             $headcol = 0;
             $headrow=3;
             foreach ($columnNames as $key=>$columns){
@@ -362,7 +362,7 @@ class Reports extends BaseController
                 $headcol++;
                 $sheet->setCellValueByColumnAndRow($headcol,$headrow ,$breakname." End Time");
                 $headcol++;
-                $sheet->setCellValueByColumnAndRow($headcol,$headrow ,$breakname." Spend Time");
+                $sheet->setCellValueByColumnAndRow($headcol,$headrow ,$breakname." Login hours");
                 $headcol++;
             }
            
@@ -415,7 +415,7 @@ class Reports extends BaseController
             $filename='reports_by_days.xlsx'; //save our workbook as this file name
         }elseif($reporttype==2){
             $this->excel->getActiveSheet()->setCellValue('A1',"Reports By Summary");
-            $columnNames=array('Sno','Employee Name','Team','Days','Hours Spend','Break Hours');
+            $columnNames=array('Sno','Employee Name','Team','Days','Login hours','Break Hours');
             $headcol = 0;
             $headrow=3;
             foreach ($columnNames as $key=>$columns){

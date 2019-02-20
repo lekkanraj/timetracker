@@ -74,7 +74,7 @@
                             </th>
                             <?php }?>
                             <th align='center'>End Time</th>
-                            <th align='center'>Spend Hours</th>
+                            <th align='center'>Login hours</th>
                             <th align='center'>Break Hours</th>
                             <th align='center'>Actions</th>
                           </tr>

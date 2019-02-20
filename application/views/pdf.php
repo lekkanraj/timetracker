@@ -36,7 +36,7 @@
         <th  align='center'>Date</th>
         <th  align='center'>Start Time</th>
         <th align='center'>End Time</th>
-        <th align='center'>Spend Hours</th>
+        <th align='center'>Login hours</th>
         <th align='center'>Break Hours</th>
       </tr>
     </thead>

@@ -134,8 +134,15 @@
                                             
                                         </select>
                                     </div>
+                                </div>                                   
+                            </div>
+                            <div class="row">
+                            	<div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="cpassword">Employee ID</label>
+                                        <input  class="form-control required " id="employeeid" name="employeeid" maxlength="10" autocomplete="off">
+                                    </div>
                                 </div>
-                                   
                             </div>
                         </div><!-- /.box-body -->
     

@@ -153,7 +153,7 @@
                                         </th>
                                         <?php } }?>
                                     <th align='center'>End Time</th>
-                                    <th align='center'>Spend Hours</th>
+                                    <th align='center'>Login hours</th>
                                     <th align='center'>Break Hours</th>
                                   </tr>
                                 </thead>
@@ -220,7 +220,7 @@
                                     <th align='center'>Employee Name</th>
                                     <th  align='center'>Team</th>
                                     <th  align='center'>Days</th>
-                                    <th align='center'>Spend Hours</th>
+                                    <th align='center'>Login hours</th>
                                     <th align='center'>Break Hours</th>
                                   </tr>
                                 </thead>
