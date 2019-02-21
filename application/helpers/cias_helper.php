@@ -264,7 +264,7 @@ function updatebreakinfointracking($userId,$date){
     $breakInfo=$CI->common_model->selectData(TABLE_USER_BREAKS,$select,$where);
     $returnData='';
     if(count($breakInfo)>0){
-        $minutes = 0; //declare minutes either it gives Notice: Undefined variable
+        /* $minutes = 0; //declare minutes either it gives Notice: Undefined variable
         // loop throught all the times
         foreach ($breakInfo as $time) {            
             if(!empty($time->break_hours)){
@@ -275,11 +275,26 @@ function updatebreakinfointracking($userId,$date){
         }
         
         $hours = floor($minutes / 60);
-        $minutes -= $hours * 60;
+        $minutes -= $hours * 60; */
         
+        $seconds = 0;
+        foreach ($breakInfo as $time)
+        {
+            if(!empty($time->break_hours)){
+                list($hour,$minute,$second) = explode(':', $time->break_hours);
+                $seconds += $hour*3600;
+                $seconds += $minute*60;
+                $seconds += $second;
+            }
+        }
+        $hours = floor($seconds/3600);
+        $seconds -= $hours*3600;
+        $minutes  = floor($seconds/60);
+        $seconds -= $minutes*60;
+        //https://vasavaa.wordpress.com/2012/03/19/sum-time-with-format-hhmmss-by-using-php/
         // returns the time already formatted
         //return sprintf('%02d:%02d', $hours, $minutes);
-        $returnData="$hours:$minutes:00";
+        $returnData="$hours:$minutes:$seconds";
     }
     return $returnData;
 }

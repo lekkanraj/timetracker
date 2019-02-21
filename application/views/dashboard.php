@@ -67,7 +67,7 @@
                                       	<td><?php echo $break_hours; ?></td>
                                      </tr>
                                      <tr>
-                                      	<td> Total Spend Hours : </td>
+                                      	<td> Total Login Hours : </td>
                                       	<td><?php echo $spend_hours; ?></td>
                                      </tr>
                                      <tr>
@@ -152,7 +152,7 @@
 											<label>Ended Time: <?php echo displayTime($breakEnd);?></label>  
 									</div>
 									<div class="col-md-12">
-                                		<label>Spend Hours: <?php echo $breakHours;?></label>
+                                		<label>Break Hours: <?php echo $breakHours;?></label>
                                 	</div>                                    	
                                 <?php }?>
 								</div>

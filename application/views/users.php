@@ -122,7 +122,8 @@
                 <div class="box-body table-responsive no-padding">
                   <table class="table table-hover table-bordered project_table">
                     <tr>
-                      <th>Id</th>
+                      <th>Sno</th>
+                      <th>Emp Id</th>
                       <th>Name</th>
                       <th>Email</th>
                       <th>Mobile</th>
@@ -136,11 +137,13 @@
                     <?php
                     if(!empty($userRecords))
                     {
+                        $i=1;
                         foreach($userRecords as $record)
                         {
                     ?>
                     <tr>
-                      <td><?php echo $record->userId ?></td>
+                      <td><?php echo $i ?></td>
+                      <td><?php echo $record->employeeid ?></td>
                       <td><?php echo $record->name ?></td>
                       <td><?php echo $record->email ?></td>
                       <td><?php echo $record->mobile ?></td>
@@ -154,6 +157,7 @@
                       <?php }?>
                     </tr>
                     <?php
+                    $i++;
                         }
                     }else{
                     ?>

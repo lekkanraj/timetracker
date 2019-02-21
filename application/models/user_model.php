@@ -55,7 +55,7 @@ class User_model extends CI_Model
         $userId=$this->session->userdata('userId');
         $roleId= $this->session->userdata('role');
         $projectId= $this->session->userdata('projectId');
-        $this->db->select('BaseTbl.userId, BaseTbl.email, BaseTbl.name, BaseTbl.mobile, Role.role,projects.name as projectname');
+        $this->db->select('BaseTbl.userId, BaseTbl.email, BaseTbl.name, BaseTbl.mobile, Role.role,projects.name as projectname, BaseTbl.employeeid');
         $this->db->from('tbl_users as BaseTbl');
         $this->db->join('tbl_roles as Role', 'Role.roleId = BaseTbl.roleId','left');
         $this->db->join('master_projects as projects', 'projects.id = BaseTbl.projectId','left');
