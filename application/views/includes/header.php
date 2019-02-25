@@ -9,13 +9,14 @@
     <!-- FontAwesome 4.3.0 -->
     <link href="<?php echo base_url(); ?>assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <!-- Ionicons 2.0.0 -->
-    <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo base_url(); ?>assets/dist/css/ionicons.min.css" rel="stylesheet" type="text/css" />
     <!-- Theme style -->
     <link href="<?php echo base_url(); ?>assets/dist/css/AdminLTE.min.css" rel="stylesheet" type="text/css" />
     <!-- AdminLTE Skins. Choose a skin from the css/skins 
          folder instead of downloading all of them to reduce the load. -->
     <link href="<?php echo base_url(); ?>assets/dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />
 	<link href="<?php echo base_url(); ?>assets/css/custom.css" rel="stylesheet" type="text/css" /> 
+    <link href="<?php echo base_url(); ?>assets/images/favicon.png" rel="shortcut icon" type="image/x-icon" />
     <style>
     	.error{
     		color:red;
@@ -143,6 +144,12 @@
               <a href="<?php echo base_url().'admin/projectlist'; ?>">
                 <i class="fa fa-tasks"></i>
                 <span>Projects</span>
+              </a>
+            </li>
+            <li class="treeview">
+              <a href="<?php echo base_url().'admin/breaklist'; ?>">
+                <i class="fa fa-coffee"></i>
+                <span>Breaks</span>
               </a>
             </li>
             <li class="treeview">

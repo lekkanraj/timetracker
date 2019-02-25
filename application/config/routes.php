@@ -84,6 +84,10 @@ $route['admin/editproject/(:num)'] = "admin/editproject/$1";
 $route['admin/editproject'] = "admin/editproject";
 $route['admin/team'] = "admin/team";
 
+$route['admin/breaklist'] = "admin/breaklist";
+$route['admin/addbreak'] = "admin/addbreak";
+$route['admin/editbreak/(:num)'] = "admin/editbreak/$1";
+
 
 $route['reports'] = "reports/index";
 $route['reports/pdf'] = "reports/pdf";

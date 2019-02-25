@@ -18,9 +18,7 @@ class Admin extends BaseController
         }
     }
     
-    /**
-     * This function used to load the first screen of the user
-     */
+  
     public function projectlist()
     {
         $this->global['pageTitle'] = 'Projects';
@@ -188,8 +186,102 @@ class Admin extends BaseController
         $this->loadViews("teamreports", $this->global, $data , NULL);
     }
     
-
+    public function breaklist()
+    {
+        $this->global['pageTitle'] = 'Breaks';
+        $userId=$this->session->userdata ( 'userId' );
+        $currentDate=date("Y-m-d");
+        $where=array(
+            'isActive'=>1,
+        );
+        $select=array('*');
+        
+        $Info=$this->common_model->selectData(TABLE_MASTER_BREAKS,$select,$where);
+        
+        $pageInfo=array(
+            'Info'=>$Info,
+        );
+        
+        $this->loadViews("breaks", $this->global, $pageInfo , NULL);
+    }
     
+    
+    function addbreak()
+    {
+        $post= $this->input->post();
+        if(!$post){
+            $this->global['pageTitle'] = 'Add New Break';
+           $data=array(
+            );
+            $this->loadViews("addBreak", $this->global, $data, NULL);
+        }else{
+            $name = $post['name'];
+            $Info = array(
+                'break_name'=>$name,
+                'isActive'=>1
+            );
+            
+            $result = $this->common_model->insert_db(TABLE_MASTER_BREAKS,$Info);
+            
+            if($result > 0)
+            {
+                $this->session->set_flashdata('success', 'New Break Created Successfully');
+            }
+            else
+            {
+                $this->session->set_flashdata('error', 'Break creation failed');
+            }
+            
+            redirect('admin/breaklist');
+        }
+        
+    }
+    
+    function editbreak($id=null){
+        $this->global['pageTitle'] = 'Edit Break';
+        $post= $this->input->post();
+        if($id==null && empty($post)){
+            redirect('admin/breaktlist');
+        }
+        $id=isset($post['id']) ? $post['id'] : $id;
+        $select=array('*');
+        $where=array(
+            'id'=>$id,
+            'isActive'=>1
+        );
+        $Info=$this->common_model->selectData(TABLE_MASTER_BREAKS,$select,$where);
+        
+        $data=array(
+            'info'=>$Info[0]
+        );
+        //pre($data,1);
+        
+        if($post){
+            $name = $post['name'];
+            $Infos = array(
+                'break_name'=>$name,
+            );
+            $where=array(
+                'id'=>$id
+            );
+            //pre($Infos);pre($where,1);
+            $res= $this->common_model->edit_db(TABLE_MASTER_BREAKS,$Infos,$where);
+            
+            if($res > 0)
+            {
+                $this->session->set_flashdata('success', 'Break Update Successfully');
+            }
+            else
+            {
+                $this->session->set_flashdata('error', 'Break update failed');
+            }
+            
+            redirect('admin/breaklist');
+        }
+       
+        
+        $this->loadViews("editBreak", $this->global, $data, NULL);
+    }
 
     function pageNotFound()
     {
