@@ -63,6 +63,7 @@
                             <th align='center'>Project Name</th>
                             <th align='center'>Date</th>
                             <th align='center'>Start Time</th>
+                            <th align='center'>Running Time</th>
                             <?php 
                             $breaks=getBreaksbyProject($projectId);
                             foreach($breaks as $key=>$break){
@@ -83,7 +84,8 @@
                          <?php
                             if(!empty($info))
                             {
-                                $i=1;
+                                $i=1;                                
+                                $currentTime=date("Y-m-d H:i:s");
                                 foreach($info as $record)
                                 {
                             ?>
@@ -93,6 +95,7 @@
                                 <td><?php echo $record->projectname; ?></td>
                                 <td><?php echo displayDate($record->day_start); ?></td>
                                 <td><?php echo displayTime($record->day_start); ?></td>
+                                <td><?php echo getTimeDiffrence($record->day_start,$currentTime); ?></td>
                                 <?php 
                                     foreach($breaks as $key=>$break){
                                     ?>
@@ -116,7 +119,6 @@
                                              echo "SPT : ".$spendTime."</br>";
                                          }
                                          if($startTime && empty($spendTime)){
-                                             $currentTime=date("Y-m-d H:i:s");
                                              echo "RT : ".getTimeDiffrence($startTime,$currentTime);
                                          }
                                        ?>

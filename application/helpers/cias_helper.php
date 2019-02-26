@@ -339,7 +339,7 @@ function getTimeDiffrence($startTime,$currentTime){
     
     $dteDiff  = $dteStart->diff($dteEnd); 
     
-    return $dteDiff->format("%H:%I");
+    return $dteDiff->format("%H:%I:%S");
     //return $dteDiff->format("%H:%I:%S");
 }
 

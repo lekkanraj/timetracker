@@ -46,7 +46,7 @@
                          	<h4>
                          	<?php 
                          	  $currentTime=date("Y-m-d H:i:s");
-                         	  echo "Running Time(Hrs:Mins) : ".getTimeDiffrence($dayStart,$currentTime);
+                         	  echo "Running Time(Hrs:Mins:Secs) : ".getTimeDiffrence($dayStart,$currentTime);
                          	?>
                          	</h4>
                 		</div>
@@ -137,7 +137,11 @@
                                 </div>
                                             <?php if(!empty($breakStart)){?>
                                             <div class="col-md-12">
-                                            		<label>Started : <?php echo displayTime($breakStart);?></label>
+                                        		<label>Started : <?php echo displayTime($breakStart);?></label><br>
+                                        		<?php 
+                                         	      $currentTimes=date("Y-m-d H:i:s");
+                                                ?>
+                                         		<label>Running Time : <?php echo getTimeDiffrence($breakStart,$currentTimes);?></label>
                                             </div>
                                             <?php }?>  
                                         <?php }else{
@@ -379,7 +383,7 @@ $(function(){
      });
 
      function refresh() {
-         if(new Date().getTime() - time >= 60000){ 
+         if(new Date().getTime() - time >= 6000){ 
              window.location="<?php echo base_url()."dashboard"?>";
          }
      }
@@ -388,5 +392,5 @@ $(function(){
      setInterval(function(){ 
 		//console.log("interval");
 		this.refresh();
-     }, 50000);
+     }, 5000);
 </script>

@@ -113,6 +113,13 @@ if(!empty($userInfo))
                                 </div>
                             </div>
                             <div class="row">
+                        		<div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="cpassword">Employee ID</label>
+                                        <input  class="form-control required " id="employeeid" name="employeeid" maxlength="10" autocomplete="off" value="<?php echo $employeeid;?>">
+                                    </div>
+                                
+                        		</div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="mobile">Mobile Number</label>
@@ -185,15 +192,7 @@ if(!empty($userInfo))
                                             
                                         </select>
                                     </div>
-                                </div>
-                                	<div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="cpassword">Employee ID</label>
-                                            <input  class="form-control required " id="employeeid" name="employeeid" maxlength="10" autocomplete="off" value="<?php echo $employeeid;?>">
-                                        </div>
-                                    
-                            </div>
-                                <?php ?>     
+                                </div>  
                             </div>
                         </div><!-- /.box-body -->
     

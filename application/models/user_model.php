@@ -70,7 +70,7 @@ class User_model extends CI_Model
             $this->db->where('BaseTbl.roleId =', ROLE_EMPLOYEE);
             $this->db->where('BaseTbl.projectId =', $projectId);
         }else{
-            $this->db->where('BaseTbl.roleId !=', ROLE_MANAGER);
+            //$this->db->where('BaseTbl.roleId !=', ROLE_MANAGER);
         }
         if($project !=''){
             $this->db->where('BaseTbl.projectId =', $project);
