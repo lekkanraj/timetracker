@@ -172,8 +172,7 @@ if(!empty($userInfo))
                                     $display="display:none";
                                 }
                                 ?>
-                                
-                                 <div class="col-md-6 teamleadinfo" style="">
+                                 <div class="col-md-6 teamleadinfo" style="<?php echo $display;?>">
                                     <div class="form-group">
                                         <label for="teamlead">Team Lead Name</label>
                                         <select class="form-control required" id="teamlead" name="teamlead">
