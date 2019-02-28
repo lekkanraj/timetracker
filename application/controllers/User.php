@@ -224,8 +224,8 @@ class User extends BaseController
             
             $data['roles'] = $this->user_model->getUserRoles();
             $data['userInfo'] = $this->user_model->getUserInfo($userId);
-            
-            $projectid=$data['userInfo'][0]->projectId;
+           
+            $projectid=isset($data['userInfo'][0]->projectId)?$data['userInfo'][0]->projectId:'';
             
             $select=array('userId,name');
             $where=array(
@@ -268,24 +268,26 @@ class User extends BaseController
             $this->form_validation->set_rules('email','Email','trim|required|valid_email|xss_clean|max_length[128]');
             $this->form_validation->set_rules('password','Password','matches[cpassword]|max_length[20]');
             $this->form_validation->set_rules('cpassword','Confirm Password','matches[password]|max_length[20]');
-            $this->form_validation->set_rules('role','Role','trim|required|numeric');
             $this->form_validation->set_rules('mobile','Mobile Number','required|min_length[10]|xss_clean');
-            $this->form_validation->set_rules('project','Project','trim|required|numeric');
-            $this->form_validation->set_rules('employeeid','Employee Id','required|max_length[10]');
-            
+            if($userId !=1){
+                $this->form_validation->set_rules('role','Role','trim|required|numeric');
+                $this->form_validation->set_rules('project','Project','trim|required|numeric');
+                $this->form_validation->set_rules('employeeid','Employee Id','required|max_length[10]');
+            }
             if($this->form_validation->run() == FALSE)
             {
                 $this->editOld($userId);
             }
             else
             {
+                $post=$this->input->post(); 
                 $name = ucwords(strtolower($this->input->post('fname')));
-                $email = $this->input->post('email');
-                $password = $this->input->post('password');
-                $roleId = $this->input->post('role');
-                $mobile = $this->input->post('mobile');
-                $projectId = $this->input->post('project');
-                $employeeid= $this->input->post('employeeid');
+                $email = isset($post['email'])? $post['email']:'';
+                $password = isset($post['password'])? $post['password']:'';
+                $roleId = isset($post['role'])? $post['role']:'';
+                $mobile = isset($post['mobile'])? $post['mobile']:'';
+                $projectId = isset($post['project'])? $post['project']:'';
+                $employeeid= isset($post['employeeid'])? $post['employeeid']:'';
                 
                 $userInfo = array();
                 
@@ -304,6 +306,20 @@ class User extends BaseController
                 if($this->input->post('teamlead')){
                     $teamlead = $this->input->post('teamlead');
                     $userInfo['teamleadId']=$teamlead;
+                }
+                
+                if($userId==1){
+                    if(empty($password))
+                    {
+                        $userInfo = array('email'=>$email, 'name'=>$name,
+                            'mobile'=>$mobile, 'updatedBy'=>$this->vendorId,'updatedDtm'=>date('Y-m-d H:i:s'),'employeeid'=>$employeeid);
+                    }
+                    else
+                    {
+                        $userInfo = array('email'=>$email, 'password'=>getHashedPassword($password),
+                            'name'=>ucwords($name), 'mobile'=>$mobile, 'updatedBy'=>$this->vendorId, 
+                            'updatedDtm'=>date('Y-m-d H:i:s'),'employeeid'=>$employeeid);
+                    }
                 }
                 
                 $result = $this->user_model->editUser($userInfo, $userId);

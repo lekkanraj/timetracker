@@ -147,7 +147,7 @@ class User_model extends CI_Model
         $this->db->select('userId, name, email, mobile, roleId,projectId,teamleadId,employeeid');
         $this->db->from('tbl_users');
         $this->db->where('isDeleted', 0);
-		$this->db->where('roleId !=', 1);
+		//$this->db->where('roleId !=', 1);
         $this->db->where('userId', $userId);
         $query = $this->db->get();
         

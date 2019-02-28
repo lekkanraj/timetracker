@@ -5,19 +5,21 @@ $name = '';
 $email = '';
 $mobile = '';
 $roleId = '';
-
+$projectId='';
+$teamleadId='';
+$employeeid='';
 if(!empty($userInfo))
 {
     foreach ($userInfo as $uf)
     {
-        $userId = $uf->userId;
-        $name = $uf->name;
-        $email = $uf->email;
-        $mobile = $uf->mobile;
-        $roleId = $uf->roleId;
-        $projectId=$uf->projectId;
-        $teamleadId=$uf->teamleadId;
-        $employeeid = $uf->employeeid;
+        $userId = isset($uf->userId) ? $uf->userId :'';
+        $name = isset($uf->name) ? $uf->name :'';
+        $email = isset($uf->email) ? $uf->email :'';
+        $mobile = isset($uf->mobile) ? $uf->mobile :'';
+        $roleId = isset($uf->roleId) ? $uf->roleId :'';
+        $projectId=isset($uf->projectId) ? $uf->projectId  :'';
+        $teamleadId=isset($uf->teamleadId) ? $uf->teamleadId :'';
+        $employeeid = isset($uf->employeeid) ? $uf->employeeid: '';
         
     }
 }
@@ -126,6 +128,7 @@ if(!empty($userInfo))
                                         <input type="text" class="form-control" id="mobile" placeholder="Mobile Number" name="mobile" value="<?php echo $mobile; ?>" maxlength="10">
                                     </div>
                                 </div>
+                                <?php if($userId!=1){?>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="role">Role</label>
@@ -191,7 +194,8 @@ if(!empty($userInfo))
                                             
                                         </select>
                                     </div>
-                                </div>  
+                                </div> 
+                                <?php }?> 
                             </div>
                         </div><!-- /.box-body -->
     
