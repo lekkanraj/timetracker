@@ -63,36 +63,56 @@ class Login extends CI_Controller
             if(count($result) > 0)
             {
                 foreach ($result as $res)
-                {
-                    $sessionArray = array('userId'=>$res->userId,                    
-                                            'role'=>$res->roleId,
-                                            'roleText'=>$res->role,
-                                            'name'=>$res->name,
-                                            'projectId'=>$res->projectId,
-                                            'isLoggedIn' => TRUE
-                                    );
-                                    
-                    $this->session->set_userdata($sessionArray);
+                {  $sessionArray = array('userId'=>$res->userId,
+                    'role'=>$res->roleId,
+                    'roleText'=>$res->role,
+                    'name'=>$res->name,
+                    'projectId'=>$res->projectId,
+                    'isLoggedIn' => TRUE,
+                );
+                $this->session->set_userdata($sessionArray); 
                     
                     /*Day Tracking Insert*/
                     $userId=$this->session->userdata ( 'userId' );
+                    
+                    $select=array('id');
+                    $where=array(
+                        'userid'=>$userId,
+                    );
+                    $tracklist=$this->common_model->selectData(TABLE_DAILY_TRACKING,$select,$where);
+                    //echo count($tracklist);
+                    //pre($tracklist,1);
+                    
+                    $lasttrackingid='';
+                    if(count($tracklist)>0){
+                        $c=(count($tracklist))-1;
+                        $lasttrackingid=$tracklist[$c]->id;
+                    }
+                    
+                    //$dailytrackingid=$this->session->userdata ( 'dailytrackingid' );
                     $currentTime=date("Y-m-d H:i:s");
                     $currentDate=date("Y-m-d");
                     $where=array(
                         'userid'=>$userId,
-                        'created_on'=>$currentDate
+                       // 'created_on'=>$currentDate
+                        'id'=>$lasttrackingid
                     );
                     $count=0;
                     $count=$this->common_model->get_num_rows(TABLE_DAILY_TRACKING,$where);
+                    $insertID=isset($lasttrackingid)?$lasttrackingid:'';
                     if($count<=0){
                         $data=array(
                             'userid'=>$userId,
                             'day_start'=>$currentTime,
                             'created_on'=>$currentDate,
                         );
-                        $res= $this->common_model->insert_db(TABLE_DAILY_TRACKING,$data);
+                        $insertID= $this->common_model->insert_db(TABLE_DAILY_TRACKING,$data);
                     }
                     
+                    if($insertID){
+                        $sessionArray['dailytrackingid']=$insertID;
+                    }                    
+                    $this->session->set_userdata($sessionArray);                  
                     
                     redirect('/dashboard');
                 }

@@ -29,7 +29,8 @@ class Ajax extends BaseController
         $breakId=$post['breakid'];
         $breakStatus=isset($post['breakStatus'])?$post['breakStatus']:'';
         //$daytrackingId=isset($post['daytrackingId'])?$post['daytrackingId']:'';
-        $daytrackingId=$this->getTrackingid();
+       // $daytrackingId=$this->getTrackingid();
+        $daytrackingId=$this->session->userdata ( 'dailytrackingid' );
         $userId=$this->session->userdata ( 'userId' );
         $currentTime=date("Y-m-d H:i:s");
         $currentDate=date("Y-m-d");
