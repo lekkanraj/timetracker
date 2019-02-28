@@ -72,7 +72,7 @@
                                      </tr>
                                      <tr>
                                      	<td>
-                                     		<a href="<?php echo base_url().'logoff';?>">Click here to Logg of day again</a>
+                                     		<a class="logoff" href="javascript:void(0)">Click here to Logg of day again</a>
                                      	</td>
                                      </tr>
                       			</table>

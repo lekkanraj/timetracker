@@ -83,7 +83,7 @@ class Login extends CI_Controller
                     $tracklist=$this->common_model->selectData(TABLE_DAILY_TRACKING,$select,$where);
                     //echo count($tracklist);
                     //pre($tracklist,1);
-                    
+                    $c=0;
                     $lasttrackingid=0;
                     if(count($tracklist)>0){
                         $c=(count($tracklist))-1;
@@ -115,8 +115,8 @@ class Login extends CI_Controller
                    
                     $count1=0;
                     $count1=$this->common_model->get_num_rows(TABLE_DAILY_TRACKING,$where);
-                    
-                    if($count<=0 &&  $count1<=0){
+                    //echo $c.'=='.$count."==".$count1;die();
+                    if(($c==0 || $count>0) &&  $count1<=0){
                         $data=array(
                             'userid'=>$userId,
                             'day_start'=>$currentTime,
@@ -294,8 +294,8 @@ class Login extends CI_Controller
             $userId=isset($post['userid'])?$post['userid']:'';
             $currentDate=isset($post['logoffdate'])?$post['logoffdate']:'';
         }else{            
-            //$currentDate=$this->input->get('datastart');
-            $currentDate=date("Y-m-d");
+            $currentDate=$this->input->get('datastart');
+            //$currentDate=date("Y-m-d");
         }
         
         $where=array(
