@@ -23,10 +23,12 @@ class User extends BaseController
     {
         $this->global['pageTitle'] = 'Dashboard';
         $userId=$this->session->userdata ( 'userId' );
+        $dailytrackingid=$this->session->userdata ( 'dailytrackingid' );
         $currentDate=date("Y-m-d");
         $where=array(
             'userid'=>$userId,
-            'created_on'=>$currentDate
+            //'created_on'=>$currentDate
+            'id'=>$dailytrackingid
         );
         $select=array('*');
         

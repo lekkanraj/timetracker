@@ -75,7 +75,56 @@ class Login extends CI_Controller
                     
                     /*Day Tracking Insert*/
                     $userId=$this->session->userdata ( 'userId' );
+                    $currentTime=date("Y-m-d H:i:s");
+                    $currentDate=date("Y-m-d");
+                    $yesterday=date('Y-m-d',strtotime("-1 days"));
                     
+                    /*Yesterday Data*/
+                    $select=array('id,day_end');
+                    $where=array(
+                        'userid'=>$userId,
+                        'created_on'=>$yesterday,
+                        'day_end'=>null
+                    );
+                    $yesterdayResult=$this->common_model->selectData(TABLE_DAILY_TRACKING,$select,$where);
+                    if(count($yesterdayResult)>0){                   
+                            $sessionArray['dailytrackingid']=$yesterdayResult[0]->id;                     
+                    }
+                    /*Yesterday Data*/
+                   /*Current day data*/
+                    $select1=array('id,day_end');
+                    $where1=array(
+                        'userid'=>$userId,
+                        'created_on'=>$currentDate,
+                        'day_end'=>null
+                    );
+                    $currentdayResult=$this->common_model->selectData(TABLE_DAILY_TRACKING,$select1,$where1);
+                    if(count($currentdayResult)>0){
+                          $sessionArray['dailytrackingid']=$currentdayResult[0]->id;                        
+                    }
+                    //pre($yesterdayResult);
+                    //pre($currentdayResult);
+                    /*Current day data*/
+                    if(count($yesterdayResult)==0 && count($currentdayResult)==0){
+                        $data=array(
+                            'userid'=>$userId,
+                            'day_start'=>$currentTime,
+                            'created_on'=>$currentDate,
+                        );
+                        $insertID= $this->common_model->insert_db(TABLE_DAILY_TRACKING,$data);
+                    }
+                    
+                    if($insertID){
+                        $sessionArray['dailytrackingid']=$insertID;
+                    }
+                    $this->session->set_userdata($sessionArray);
+                    
+                    redirect('/dashboard');
+                    
+                    //die();
+                    
+                    
+                    /*                    
                     $select=array('id,day_end');
                     $where=array(
                         'userid'=>$userId,
@@ -93,6 +142,7 @@ class Login extends CI_Controller
                     $dailytrackingid=$this->session->userdata ( 'dailytrackingid' );
                     $currentTime=date("Y-m-d H:i:s");
                     $currentDate=date("Y-m-d");
+                    $yesterday=date('Y-m-d',strtotime("-1 days"));
                     $where=array(
                         'userid'=>$userId,
                        // 'created_on'=>$currentDate
@@ -131,6 +181,7 @@ class Login extends CI_Controller
                     $this->session->set_userdata($sessionArray);                  
                     
                     redirect('/dashboard');
+                     */
                 }
             }
             else
