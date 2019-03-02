@@ -59,9 +59,9 @@ if(!function_exists('getBrowserAgent'))
     {
         $CI = get_instance();
         $CI->load->library('user_agent');
-
+        
         $agent = '';
-
+        
         if ($CI->agent->is_browser())
         {
             $agent = $CI->agent->browser().' '.$CI->agent->version();
@@ -78,7 +78,7 @@ if(!function_exists('getBrowserAgent'))
         {
             $agent = 'Unidentified User Agent';
         }
-
+        
         return $agent;
     }
 }
@@ -88,7 +88,7 @@ if(!function_exists('setProtocol'))
     function setProtocol()
     {
         $CI = &get_instance();
-                    
+        
         $CI->load->library('email');
         
         $config['protocol'] = PROTOCOL;
@@ -131,7 +131,7 @@ if(!function_exists('resetPasswordEmail'))
         // pre($detail);
         // die;
         
-        $CI = setProtocol();        
+        $CI = setProtocol();
         
         $CI->email->from(EMAIL_FROM, FROM_NAME);
         $CI->email->subject("Reset Password");
@@ -161,27 +161,27 @@ function timeDifference($startTime,$endTime){
 }
 
 function getBreakInfoByBreakId($breakId,$userID='',$daytrackingId=''){
-        $CI = get_instance();
-        $CI->load->model('common_model');
-        //$userId=$CI->session->userdata ( 'userId' );
-      /*   $currentDate=date("Y-m-d");
-        if($userID){
-            $userId= $userID;
-        } */
-        $where=array(
-            'userid'=>$userID,
-            'user_tracking_id'=>$daytrackingId,
-            'breakid'=>$breakId
-        );
-        
-        
-        $select=array('*');
-        
-        $breakInfo=$CI->common_model->selectData(TABLE_USER_BREAKS,$select,$where);
-        if(count($breakInfo)>0){
-            $breakInfo=$breakInfo[0];
-        }
-        return $breakInfo;
+    $CI = get_instance();
+    $CI->load->model('common_model');
+    //$userId=$CI->session->userdata ( 'userId' );
+    /*   $currentDate=date("Y-m-d");
+     if($userID){
+     $userId= $userID;
+     } */
+    $where=array(
+        'userid'=>$userID,
+        'user_tracking_id'=>$daytrackingId,
+        'breakid'=>$breakId
+    );
+    
+    
+    $select=array('*');
+    
+    $breakInfo=$CI->common_model->selectData(TABLE_USER_BREAKS,$select,$where);
+    if(count($breakInfo)>0){
+        $breakInfo=$breakInfo[0];
+    }
+    return $breakInfo;
 }
 
 function getBreakInfo($breakId){
@@ -207,8 +207,8 @@ function getBreaksbyProject($projectId){
     
     $breakInfo=$CI->common_model->selectData(TABLE_MASTER_PROJECTS,$select,$where);
     if(count($breakInfo)>0){
-        $breakInfo=$breakInfo[0]->breaks;        
-        $breakInfo=explode(',', $breakInfo);        
+        $breakInfo=$breakInfo[0]->breaks;
+        $breakInfo=explode(',', $breakInfo);
     }
     return $breakInfo;
 }
@@ -231,9 +231,9 @@ function datePicker($date1){
     
 }
 
-function displayTime($date1){    
+function displayTime($date1){
     if($date1){
-        return date('h:i a',strtotime($date1));
+        return date('h:i:s a',strtotime($date1));
     }else{
         return "";
     }
@@ -254,7 +254,7 @@ function sqldateformate($date){
 function updatebreakinfointracking($userId,$date){
     $CI = get_instance();
     $CI->load->model('common_model');
-   
+    
     $where=array(
         'userid'=>$userId,
         'created_on'=>sqldateformate($date),
@@ -265,17 +265,17 @@ function updatebreakinfointracking($userId,$date){
     $returnData='';
     if(count($breakInfo)>0){
         /* $minutes = 0; //declare minutes either it gives Notice: Undefined variable
-        // loop throught all the times
-        foreach ($breakInfo as $time) {            
-            if(!empty($time->break_hours)){
-                list($hour, $minute,$seconds) = explode(':', $time->break_hours);
-                $minutes += $hour * 60;
-                $minutes += $minute;
-            }
-        }
-        
-        $hours = floor($minutes / 60);
-        $minutes -= $hours * 60; */
+         // loop throught all the times
+         foreach ($breakInfo as $time) {
+         if(!empty($time->break_hours)){
+         list($hour, $minute,$seconds) = explode(':', $time->break_hours);
+         $minutes += $hour * 60;
+         $minutes += $minute;
+         }
+         }
+         
+         $hours = floor($minutes / 60);
+         $minutes -= $hours * 60; */
         
         $seconds = 0;
         foreach ($breakInfo as $time)
@@ -325,8 +325,8 @@ function sumofTimes($time1='',$time2=''){
 
 function getFirstDayofWeek(){
     $currentDate=date("Y-m-d");
-    $dateTime = new DateTime($currentDate);    
-    $weekNo = $dateTime->format("W");    
+    $dateTime = new DateTime($currentDate);
+    $weekNo = $dateTime->format("W");
     $newDate = new DateTime();
     $newDate->setISODate($dateTime->format("Y"), $weekNo);
     //pre($newDate,1);
@@ -337,7 +337,7 @@ function getTimeDiffrence($startTime,$currentTime){
     $dteStart = new DateTime($startTime);
     $dteEnd   = new DateTime($currentTime);
     
-    $dteDiff  = $dteStart->diff($dteEnd); 
+    $dteDiff  = $dteStart->diff($dteEnd);
     
     return $dteDiff->format("%H:%I:%S");
     //return $dteDiff->format("%H:%I:%S");

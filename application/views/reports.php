@@ -72,7 +72,7 @@
                                     </div>
                                 </div>
                                 <?php }?>
-                                <?php if($project){?>
+                                <?php if($projectId){?>
                                 <div class="col-md-2">
                                     <div class="form-group">
                                     <?php 

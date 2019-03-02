@@ -100,7 +100,7 @@ class Reports extends BaseController
            
         );
         if($role==ROLE_TEAMLEAD){
-            $where_user["roleId !="]=ROLE_MANAGER;
+            //$where_user["roleId !="]=ROLE_MANAGER;
             $where_user["teamleadId"]=$userId;
             $where_user["isDeleted"]=0;
            

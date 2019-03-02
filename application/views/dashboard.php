@@ -250,7 +250,8 @@ $(function(){
 			alert("Stop the Break");
 		}else{
 			//alert(<?php echo $dayStart;?>);
-			window.location="<?php echo base_url().'logoff?datastart='.$dayStart;?>"
+			//alert("<?php echo base_url().'logoff?datastart='.$dayStart.'daytrackingId='.$daytrackingId;?>");
+			window.location="<?php echo base_url().'logoff?datastart='.$dayStart.'&daytrackingId='.$daytrackingId;?>";
 		}
 	});
 });

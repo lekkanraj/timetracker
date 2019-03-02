@@ -341,17 +341,23 @@ class Login extends CI_Controller
         $userId=$this->session->userdata ( 'userId' );
         $currentTime=date("Y-m-d H:i:s");
         $currentDate=date("Y-m-d");
+        $daytrackingId='';
+        $remarks='';
         if($post){
             $userId=isset($post['userid'])?$post['userid']:'';
             $currentDate=isset($post['logoffdate'])?$post['logoffdate']:'';
+            $daytrackingId=isset($post['daytrackingId'])?$post['daytrackingId']:'';
+            $remarks="Logging of the day by Lead";
         }else{            
             $currentDate=$this->input->get('datastart');
+            $daytrackingId=$this->input->get('daytrackingId');
             //$currentDate=date("Y-m-d");
         }
         
         $where=array(
             'userid'=>$userId,
-            'created_on'=>sqldateformate($currentDate)
+            'id'=>$daytrackingId
+           // 'created_on'=>sqldateformate($currentDate)
         );
         $select=array('day_start');
         $count=0;
@@ -365,7 +371,8 @@ class Login extends CI_Controller
             $data=array(
                 'day_end'=>$currentTime,
                 'spend_hours'=>$spendHours,
-                'break_hours'=>$break_hours
+                'break_hours'=>$break_hours,
+                'remarks'=>$remarks
             );
             $res= $this->common_model->edit_db(TABLE_DAILY_TRACKING,$data,$where);
             if($post){

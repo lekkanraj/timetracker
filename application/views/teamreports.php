@@ -95,7 +95,15 @@
                                 <td><?php echo $record->projectname; ?></td>
                                 <td><?php echo displayDate($record->day_start); ?></td>
                                 <td><?php echo displayTime($record->day_start); ?></td>
-                                <td><?php echo getTimeDiffrence($record->day_start,$currentTime); ?></td>
+                                <td><?php 
+                                    if(empty($record->spend_hours)){
+                                        echo getTimeDiffrence($record->day_start,$currentTime);
+                                    }else{
+                                         //echo $record->spend_hours;
+                                         echo "Logged Out";
+                                    }
+                                    ?>
+                                  </td>
                                 <?php 
                                     foreach($breaks as $key=>$break){
                                     ?>
@@ -133,7 +141,7 @@
                                 <td>
                                 	<?php $record->day_end; if(empty($record->day_end) && $record->userid !=$userId){?>
                                         
-                                	    <a href='javascript:void(0)' class='logoffusers' userid="<?php echo $record->userid;?>" logoffdate="<?php echo $record->day_start;?>">Log Off</a>
+                                	    <a href='javascript:void(0)' class='logoffusers' userid="<?php echo $record->userid;?>" logoffdate="<?php echo $record->day_start;?>" daytrackingId="<?php echo $record->id;?>">Log Off</a>
                                         
                                 	<?php    } ?> 
                                 </td>
@@ -161,6 +169,7 @@
 <form id="logoffemp" method="post" action="<?php echo base_url().'logoffemp';?>" style="display: none;">
 <input type="hidden" name="userid" id="userid" />
 <input type="hidden" name="logoffdate" id="logoffdate" />
+<input type="hidden" name="daytrackingId" id="daytrackingId" />
 </form>
 
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/common.js" charset="utf-8"></script>
@@ -171,8 +180,10 @@ $(document).ready(function(){
 	$('.logoffusers').on('click',function(){
 		var userid=$(this).attr('userid');
 		var logoffdate=$(this).attr('logoffdate');
+		var daytrackingId=$(this).attr('daytrackingId');
 		$("#userid").val(userid);
 		$("#logoffdate").val(logoffdate);
+		$("#daytrackingId").val(daytrackingId);
 		$("#logoffemp").submit();
 		
 	});
