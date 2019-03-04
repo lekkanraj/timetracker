@@ -344,7 +344,19 @@ class Reports extends BaseController
         $sheet->getColumnDimension('I')->setWidth(15);
         $sheet->getColumnDimension('J')->setWidth(15);
         $sheet->getColumnDimension('K')->setWidth(15);
-        $sheet->getColumnDimension('L')->setWidth(15);
+        $sheet->getColumnDimension('L')->setWidth(15);        
+        $sheet->getColumnDimension('M')->setWidth(15);
+        $sheet->getColumnDimension('N')->setWidth(15);
+        $sheet->getColumnDimension('O')->setWidth(15);
+        $sheet->getColumnDimension('P')->setWidth(15);
+        $sheet->getColumnDimension('Q')->setWidth(15);
+        $sheet->getColumnDimension('R')->setWidth(15);
+        $sheet->getColumnDimension('S')->setWidth(15);
+        $sheet->getColumnDimension('T')->setWidth(15);
+        $sheet->getColumnDimension('U')->setWidth(15);
+        $sheet->getColumnDimension('V')->setWidth(15);
+        $sheet->getColumnDimension('W')->setWidth(15);
+        $sheet->getColumnDimension('X')->setWidth(15);
         $filename='reports_by_.xlsx'; //save our workbook as this file name
         if($reporttype==1){
             $this->excel->getActiveSheet()->setCellValue('A1',"Reports By day");
