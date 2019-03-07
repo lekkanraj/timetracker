@@ -197,7 +197,7 @@ class Reports extends BaseController
             $where["u.teamleadId"]=$teamleadId;
         }
         $where["u.isDeleted"]=0;
-        $select=array('u.name,u.userId,u.projectId,dt.*,p.name as projectname');
+        $select=array('u.name,u.employeeid,u.userId,u.projectId,dt.*,p.name as projectname');
         $join=array(
             "$userTable u"=>"u.userId=dt.userid",
             "$projectsTable p"=>"p.id=u.projectId",
@@ -217,6 +217,7 @@ class Reports extends BaseController
                 $break_hours=$r->break_hours;
                 $spend_hours=$r->spend_hours;
                 $projectname=$r->projectname;
+                $employeeid=$r->employeeid;
                 
                 
                 if($user=='' || $userids !=$user){
@@ -229,6 +230,7 @@ class Reports extends BaseController
                 $breakCount=sumofTimes($breakCount,$break_hours);
                 $result[$userids]=array(
                     'name'=> $name,
+                    'employeeid'=>$employeeid,
                     'projectname'=>$projectname,
                     'days'=>$days,
                     'hourscount'=>$hoursCount,
@@ -329,6 +331,8 @@ class Reports extends BaseController
         $this->excel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
         //merge cell A1 until D1
         $this->excel->getActiveSheet()->mergeCells('A1:D1');
+        $this->excel->getActiveSheet()->mergeCells('A2:D2');
+        $this->excel->getActiveSheet()->mergeCells('A3:D3');
         //set aligment to center for that merged cell (A1 to D1)
         $this->excel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
        
@@ -358,11 +362,20 @@ class Reports extends BaseController
         $sheet->getColumnDimension('W')->setWidth(15);
         $sheet->getColumnDimension('X')->setWidth(15);
         $filename='reports_by_.xlsx'; //save our workbook as this file name
+        $role=$this->session->userdata ( 'role' );
+        $bydate=date("d_m_Y_H_i_s");
         if($reporttype==1){
-            $this->excel->getActiveSheet()->setCellValue('A1',"Reports By day");
-            $columnNames=array('Sno','Employee Name','Team','Date','Start Time','End Time','Login hours','Break Hours');
+            $this->excel->getActiveSheet()->setCellValue('A1',"Scintillate RCM Healthcare");
+ 
+            if($role==ROLE_TEAMLEAD){
+                $name=$this->session->userdata ( 'name' );
+                $projectname=isset($info[0]->projectname)?$info[0]->projectname:'';
+                $this->excel->getActiveSheet()->setCellValue('A2',"Project Name : $projectname");
+                $this->excel->getActiveSheet()->setCellValue('A3',"Team Leader : $name ");
+            }
+            $columnNames=array('Sno','Emplayee Id','Employee Name','Team','Date','Start Time','End Time','Login hours','Break Hours');
             $headcol = 0;
-            $headrow=3;
+            $headrow=5;
             foreach ($columnNames as $key=>$columns){
                 $sheet->setCellValueByColumnAndRow($headcol,$headrow ,$columns);
                 $headcol++;
@@ -379,10 +392,10 @@ class Reports extends BaseController
             }
            
             
-            $headrow=4;
+            $headrow=6;
             $i=1;
             foreach ($info as $record){
-                $columndata=array($i,$record->name,$record->projectname,displayDate($record->day_start),displayTime($record->day_start),
+                $columndata=array($i,$record->employeeid,$record->name,$record->projectname,displayDate($record->day_start),displayTime($record->day_start),
                     displayTime($record->day_end),$record->spend_hours,$record->break_hours
                 );
                 $headcol = 0;
@@ -424,20 +437,32 @@ class Reports extends BaseController
             
             $i++;
             } 
-            $filename='reports_by_days.xlsx'; //save our workbook as this file name
+            $filename=trim($projectname)."_$bydate.xlsx"; //save our workbook as this file name
         }elseif($reporttype==2){
             $this->excel->getActiveSheet()->setCellValue('A1',"Reports By Summary");
-            $columnNames=array('Sno','Employee Name','Team','Days','Login hours','Break Hours');
+            
+            if($role==ROLE_TEAMLEAD){
+                $pp='';
+                foreach ($info as $record){
+                    $pp=$record['projectname'];
+                    break;
+                }
+                $name=$this->session->userdata ( 'name' );
+                //$projectname=isset($info[0]['projectname'])?$info[0]['projectname']:'';
+                $this->excel->getActiveSheet()->setCellValue('A2',"Project Name : $pp ");
+                $this->excel->getActiveSheet()->setCellValue('A3',"Team Leader : $name");
+            }
+            $columnNames=array('Sno','Emplayee Id','Employee Name','Team','Days','Login hours','Break Hours');
             $headcol = 0;
-            $headrow=3;
+            $headrow=5;
             foreach ($columnNames as $key=>$columns){
                 $sheet->setCellValueByColumnAndRow($headcol,$headrow ,$columns);
                 $headcol++;
             }
-            $headrow=4;
+            $headrow=6;
             $i=1;
             foreach ($info as $record){
-                $columndata=array($i,$record['name'],$record['projectname'],$record['days'],
+                $columndata=array($i,$record['employeeid'],$record['name'],$record['projectname'],$record['days'],
                     $record['hourscount'],$record['breakscount']
                 );
                 $headcol = 0;
@@ -449,7 +474,7 @@ class Reports extends BaseController
                 
                 $i++;
             } 
-            $filename='reports_by_summary.xlsx'; //save our workbook as this file name
+            $filename=trim($pp)."_$bydate.xlsx"; //save our workbook as this file name
         }
         
         header('Content-Type: application/vnd.ms-excel'); //mime type
