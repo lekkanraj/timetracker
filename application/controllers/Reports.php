@@ -12,7 +12,7 @@ class Reports extends BaseController
         parent::__construct();
         $this->load->model('user_model');
         $this->load->model('common_model');
-        $this->isLoggedIn(); 
+        $this->isLoggedIn();
         $this->load->library('excel');
         if($this->isAdminManager()==true){
             redirect('/');
@@ -36,10 +36,10 @@ class Reports extends BaseController
         $projects=$this->common_model->selectData(TABLE_MASTER_PROJECTS,$select,$where);
         $data=array(
             'projects'=>$projects
-        );   
+        );
         
         
-        $post= $this->input->post(); 
+        $post= $this->input->post();
         $fromdate=$todate=$project=$users='';
         $reporttype=1;
         if($post){
@@ -65,7 +65,7 @@ class Reports extends BaseController
         
         //pre($data,1);
         $where=array(
-           // 'dt.userid'=>$userId,            
+            // 'dt.userid'=>$userId,
         );
         if($fromdate){
             $where["dt.created_on >="]=sqldateformate($fromdate);
@@ -97,13 +97,13 @@ class Reports extends BaseController
         $data['info']=$res;
         
         $where_user=array(
-           
+            
         );
         if($role==ROLE_TEAMLEAD){
             //$where_user["roleId !="]=ROLE_MANAGER;
             $where_user["teamleadId"]=$userId;
             $where_user["isDeleted"]=0;
-           
+            
         }
         $select_user=array('*');
         
@@ -161,7 +161,7 @@ class Reports extends BaseController
             $data['post']=$post;
         }else{
             $fromdate="1-".date("m-Y");
-        }       
+        }
         
         $data=array();
         //$html="Welcome";
@@ -246,7 +246,7 @@ class Reports extends BaseController
         return $data;
     }
     
-   
+    
     function pdf(){
         $post= $this->input->get();
         $reporttype=isset($post['reporttype'])?$post['reporttype']:1;
@@ -257,10 +257,10 @@ class Reports extends BaseController
             $html = $this->load->view('report_pdf_bydays', $data, true);
         }
         
-        $this->load->library('pdf');        
-        $pdf = $this->pdf->load();        
+        $this->load->library('pdf');
+        $pdf = $this->pdf->load();
         $pdf->WriteHTML($html); // write the HTML into the PDF
-        ob_clean(); 
+        ob_clean();
         $pdf->Output('pdffile.pdf','I');
     }
     
@@ -324,18 +324,27 @@ class Reports extends BaseController
         $this->excel->getActiveSheet()->setTitle('Reports');
         //set cell A1 content with some text
         
-       
+        
         //change the font size
         $this->excel->getActiveSheet()->getStyle('A1')->getFont()->setSize(10);
+        $this->excel->getActiveSheet()->getStyle('A2')->getFont()->setSize(10);
+        $this->excel->getActiveSheet()->getStyle('A3')->getFont()->setSize(10);
+      
+   
         //make the font become bold
         $this->excel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('A2')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('A3')->getFont()->setBold(true);
+        
         //merge cell A1 until D1
         $this->excel->getActiveSheet()->mergeCells('A1:D1');
         $this->excel->getActiveSheet()->mergeCells('A2:D2');
         $this->excel->getActiveSheet()->mergeCells('A3:D3');
         //set aligment to center for that merged cell (A1 to D1)
         $this->excel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-       
+        $this->excel->getActiveSheet()->getStyle('A2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $this->excel->getActiveSheet()->getStyle('A3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        
         $sheet=$this->excel->getActiveSheet();
         $sheet->getColumnDimension('A')->setWidth(10);
         $sheet->getColumnDimension('B')->setWidth(20);
@@ -343,12 +352,12 @@ class Reports extends BaseController
         $sheet->getColumnDimension('D')->setWidth(15);
         $sheet->getColumnDimension('E')->setWidth(15);
         $sheet->getColumnDimension('F')->setWidth(15);
-        $sheet->getColumnDimension('G')->setWidth(15);  
+        $sheet->getColumnDimension('G')->setWidth(15);
         $sheet->getColumnDimension('H')->setWidth(15);
         $sheet->getColumnDimension('I')->setWidth(15);
         $sheet->getColumnDimension('J')->setWidth(15);
         $sheet->getColumnDimension('K')->setWidth(15);
-        $sheet->getColumnDimension('L')->setWidth(15);        
+        $sheet->getColumnDimension('L')->setWidth(15);
         $sheet->getColumnDimension('M')->setWidth(15);
         $sheet->getColumnDimension('N')->setWidth(15);
         $sheet->getColumnDimension('O')->setWidth(15);
@@ -364,9 +373,9 @@ class Reports extends BaseController
         $filename='reports_by_.xlsx'; //save our workbook as this file name
         $role=$this->session->userdata ( 'role' );
         $bydate=date("d_m_Y_H_i_s");
-        if($reporttype==1){
-            $this->excel->getActiveSheet()->setCellValue('A1',"Scintillate RCM Healthcare");
- 
+        $this->excel->getActiveSheet()->setCellValue('A1',"Scintillate RCM Healthcare");
+        if($reporttype==1){           
+            
             if($role==ROLE_TEAMLEAD){
                 $name=$this->session->userdata ( 'name' );
                 $projectname=isset($info[0]->projectname)?$info[0]->projectname:'';
@@ -390,7 +399,7 @@ class Reports extends BaseController
                 $sheet->setCellValueByColumnAndRow($headcol,$headrow ,$breakname." Login hours");
                 $headcol++;
             }
-           
+            
             
             $headrow=6;
             $i=1;
@@ -405,10 +414,10 @@ class Reports extends BaseController
                 }
                 /*Display Break Start*/
                 $breaks=getBreaksbyProject($record->projectId);
-               // pre($record,1);
+                // pre($record,1);
                 foreach($breaks as $key=>$break){
                     $breakdata=getBreakInfoByBreakId($break,$record->userid,$record->id);
-                  //  pre($breakdata,1);
+                    //  pre($breakdata,1);
                     $startTime=$endTime=$spendTime="";
                     if(!empty($breakdata)){
                         $startTime=isset($breakdata->break_start) ? $breakdata->break_start :'';
@@ -427,19 +436,19 @@ class Reports extends BaseController
                     }
                     $headcol++;
                     if($spendTime){
-                       // $dispayTime .= "SPT : ".$spendTime;
+                        // $dispayTime .= "SPT : ".$spendTime;
                         $sheet->setCellValueByColumnAndRow($headcol,$headrow ,$spendTime);
                     }
                     $headcol++;
                 }
                 /*Display Break Start*/
                 $headrow++;
-            
-            $i++;
-            } 
+                
+                $i++;
+            }
             $filename=trim($projectname)."_$bydate.xlsx"; //save our workbook as this file name
         }elseif($reporttype==2){
-            $this->excel->getActiveSheet()->setCellValue('A1',"Reports By Summary");
+           // $this->excel->getActiveSheet()->setCellValue('A1',"Reports By Summary");
             
             if($role==ROLE_TEAMLEAD){
                 $pp='';
@@ -473,7 +482,7 @@ class Reports extends BaseController
                 $headrow++;
                 
                 $i++;
-            } 
+            }
             $filename=trim($pp)."_$bydate.xlsx"; //save our workbook as this file name
         }
         
