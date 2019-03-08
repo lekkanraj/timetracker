@@ -367,7 +367,7 @@ class Login extends CI_Controller
             $count=$count[0];
             $dayStart=$count->day_start;
             $spendHours=timeDifference($dayStart,$currentTime);
-            $break_hours=updatebreakinfointracking($userId,$currentDate);
+            $break_hours=updatebreakinfointracking($userId,$daytrackingId);
             $data=array(
                 'day_end'=>$currentTime,
                 'spend_hours'=>$spendHours,

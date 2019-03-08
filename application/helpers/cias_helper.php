@@ -251,13 +251,13 @@ function sqldateformate($date){
     return date('Y-m-d',strtotime($date));
 }
 
-function updatebreakinfointracking($userId,$date){
+function updatebreakinfointracking($userId,$daytrackingId){
     $CI = get_instance();
     $CI->load->model('common_model');
     
     $where=array(
         'userid'=>$userId,
-        'created_on'=>sqldateformate($date),
+        'user_tracking_id'=>$daytrackingId,
     );
     $select=array('break_hours');
     
