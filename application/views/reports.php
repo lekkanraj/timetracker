@@ -142,7 +142,12 @@
                                     <th  align='center'>Date</th>
                                     <th  align='center'>Start Time</th>
                                     <?php 
+                                    if($project){
+                                        $breaks=getBreaksbyProject($project);
+                                    }else{
                                         $breaks=getBreaksbyProject($projectId);
+                                    }
+                                      
                                         if($breaks){
                                         foreach($breaks as $key=>$break){
                                         ?>

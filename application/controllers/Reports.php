@@ -388,7 +388,12 @@ class Reports extends BaseController
                 $sheet->setCellValueByColumnAndRow($headcol,$headrow ,$columns);
                 $headcol++;
             }
-            $breaks=getBreaksbyProject($projectId);
+            if($project){
+                $breaks=getBreaksbyProject($project);
+            }else{
+                $breaks=getBreaksbyProject($projectId);
+            }
+            
             foreach ($breaks as $key=>$break){
                 $breakname=getBreakInfo($break)->break_name;
                 $sheet->setCellValueByColumnAndRow($headcol,$headrow ,$breakname." Start Time");
