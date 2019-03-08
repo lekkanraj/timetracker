@@ -269,12 +269,9 @@ class Reports extends BaseController
         $reporttype=isset($post['reporttype'])?$post['reporttype']:1;
         $data=$this->getreportdata($post);
         $projectId=$this->session->userdata ( 'projectId' );
+        $project=isset($post['project'])?$post['project']:'';
         $info=$data['info'];
-        if($reporttype==2){
-            //$html = $this->load->view('report_pdf_summary', $data, true);
-        }else{
-            //$html = $this->load->view('report_pdf_bydays', $data, true);
-        }
+        
         $style_header = array(
             'fill' => array(
                 'type' => PHPExcel_Style_Fill::FILL_SOLID,
@@ -374,12 +371,14 @@ class Reports extends BaseController
         $role=$this->session->userdata ( 'role' );
         $bydate=date("d_m_Y_H_i_s");
         $this->excel->getActiveSheet()->setCellValue('A1',"Scintillate RCM Healthcare");
-        if($reporttype==1){           
-            
+        if($reporttype==1){
+            $projectname="Day_Report";
+            if(!empty($project)){
+                $projectname=isset($info[0]->projectname)?$info[0]->projectname:'';                
+                $this->excel->getActiveSheet()->setCellValue('A2',"Project Name : $projectname ");
+            }            
             if($role==ROLE_TEAMLEAD){
-                $name=$this->session->userdata ( 'name' );
-                $projectname=isset($info[0]->projectname)?$info[0]->projectname:'';
-                $this->excel->getActiveSheet()->setCellValue('A2',"Project Name : $projectname");
+                $name=$this->session->userdata ( 'name' );               
                 $this->excel->getActiveSheet()->setCellValue('A3',"Team Leader : $name ");
             }
             $columnNames=array('Sno','Emplayee Id','Employee Name','Team','Date','Start Time','End Time','Login hours','Break Hours');
@@ -450,17 +449,20 @@ class Reports extends BaseController
         }elseif($reporttype==2){
            // $this->excel->getActiveSheet()->setCellValue('A1',"Reports By Summary");
             
-            if($role==ROLE_TEAMLEAD){
-                $pp='';
+            if(!empty($project)){
+                $projectname='Summary_Report';
                 foreach ($info as $record){
-                    $pp=$record['projectname'];
+                    $projectname=$record['projectname'];
                     break;
                 }
                 $name=$this->session->userdata ( 'name' );
-                //$projectname=isset($info[0]['projectname'])?$info[0]['projectname']:'';
-                $this->excel->getActiveSheet()->setCellValue('A2',"Project Name : $pp ");
+                $this->excel->getActiveSheet()->setCellValue('A2',"Project Name : $projectname ");
+            }
+            if($role==ROLE_TEAMLEAD){
                 $this->excel->getActiveSheet()->setCellValue('A3',"Team Leader : $name");
             }
+            
+            
             $columnNames=array('Sno','Emplayee Id','Employee Name','Team','Days','Login hours','Break Hours');
             $headcol = 0;
             $headrow=5;
@@ -483,7 +485,7 @@ class Reports extends BaseController
                 
                 $i++;
             }
-            $filename=trim($pp)."_$bydate.xlsx"; //save our workbook as this file name
+            $filename=trim($projectname)."_$bydate.xlsx"; //save our workbook as this file name
         }
         
         header('Content-Type: application/vnd.ms-excel'); //mime type
