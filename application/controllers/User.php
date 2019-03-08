@@ -194,7 +194,18 @@ class User extends BaseController
                 
                 if($result > 0)
                 {
-                    $this->session->set_flashdata('success', 'New User created successfully');
+                    $data1=array();
+                    $data1["name"] = $name;
+                    $data1["email"] = $email;
+                    $data1["password"] = $password;                  
+                    
+                    $sendStatus = newUserEmail($data1);
+                    if($sendStatus){
+                        $this->session->set_flashdata('success', 'New User created & Email Sent successfully ');
+                    }else{
+                        $this->session->set_flashdata('success', 'New User created successfully');
+                    }
+                   
                 }
                 else
                 {

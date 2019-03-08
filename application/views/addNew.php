@@ -22,7 +22,7 @@
                     <form role="form" id="addUser" action="<?php echo base_url() ?>addNewUser" method="post" role="form">
                         <div class="box-body">
                         <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-8">
                             <?php
                                 $this->load->helper('form');
                                 $error = $this->session->flashdata('error');
